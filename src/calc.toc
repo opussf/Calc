@@ -1,1 +1,10 @@
+## Interface: @INTERFACE@
+## Title: Calculator
+## Notes: Simple RPN calculator. @VERSION@
+## Author: opussf
+## Version: @VERSION@
+## Description: Command line calculator.
+## SavedVariables:
+## SavedVariablesPerCharacter:
 
+calc.lua
