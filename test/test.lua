@@ -1,10 +1,18 @@
-I'm working on master now.
+#!/usr/bin/env lua
 
-This file will be changed in both branches.
-And I will rebase working off of the new master commit.
+addonData = { ["Version"] = "1.0",
+}
+
+require "wowTest"
+
+test.outFileName = "testOut.xml"
+
+-- require the file to test
+package.path = "../src/?.lua;'" .. package.path
+require "calc"
 
 function test.test_MSG_ADDONNAME()
-	assertEquals( "Calc", CALC_MSG_ADDONNAME )
+	assert( CALC_MSG_ADDONNAME )
 end
 function test.test_MSG_VERSION()
 	-- just make sure this is assigned
@@ -13,3 +21,5 @@ end
 function test.test_MSG_AUTHOR()
 	assert( CALC_MSG_AUTHOR )
 end
+
+test.run()
