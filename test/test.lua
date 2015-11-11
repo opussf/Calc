@@ -21,5 +21,7 @@ end
 function test.test_MSG_AUTHOR()
 	assert( CALC_MSG_AUTHOR )
 end
-
+function test.test_Command()
+	calc.Command()
+end
 test.run()
