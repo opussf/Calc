@@ -5,6 +5,12 @@ strfind = string.find
 strsub = string.sub
 
 -- Define those from the WoW API
+function GetMoney()
+	return 0
+end
+function UnitHealthMax()
+	return 0
+end
 function GetAddOnMetadata( )
 	return "@VERSION@"
 end
