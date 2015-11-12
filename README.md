@@ -39,7 +39,7 @@ The operands currently supported are:
 * `-` - biparameter subtraction `5 7 -` yields `5 - 7`
 * `*` - biparameter addition
 * `/` - biparameter division `9 5 /` yields `9 / 5`
-* `^` - biparameter power `3 3 ^` yields `3^3`
+* `^` - biparameter power `3 3 ^` yields `3^3`. `4 0.5 ^` yields the `sqrt(4)`
 * `ln` - monoparameter natural log `e ln` yields 1
 * 'sin' - monoparameter `sine` in radians
 * 'cos' - monoparameter `cosine` in radians
