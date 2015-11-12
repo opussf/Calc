@@ -85,13 +85,15 @@ function calc.Log()
 	end
 end
 calc.functions = {
+	-- commands
 	["ac"] = function() calc.stack={} end,
+	["deg"] = function() calc.useDegree = true calc.Print("Set to use Degrees") end,
+	["rad"] = function() calc.useDegree = nil calc.Print("Set to use Radians") end,
+	-- functions
 	["+"] = calc.Add,
 	["-"] = calc.Sub,
 	["*"] = calc.Mul,
 	["/"] = calc.Div,
-	["deg"] = function() calc.useDegree = true calc.Print("Set to use Degrees") end,
-	["rad"] = function() calc.useDegree = nil calc.Print("Set to use Radians") end,
 	["sin"] = calc.Sin,
 	["cos"] = calc.Cos,
 	["tan"] = calc.Tan,
