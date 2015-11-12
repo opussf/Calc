@@ -220,6 +220,31 @@ function test.test_specialFunctions_AC_inTheMiddle()
 	calc.Command( "2 3 AC 42 69 + + +" )
 	assertEquals( 111, calc.stack[1] )
 end
-
+-- 1.1 tests
+function test.test_wowVariable_gold()
+	myCopper = 123456
+	calc.Command( "gold" )
+	assertEquals( 12.3456, calc.stack[1] )
+end
+function test.test_wowVariable_silver()
+	myCopper = 123456
+	calc.Command( "silver" )
+	assertEquals( 1234.56, calc.stack[1] )
+end
+function test.test_wowVariable_copper()
+	myCopper = 123456
+	calc.Command( "copper" )
+	assertEquals( 123456, calc.stack[1] )
+end
+function test.test_wowVariable_health()
+	calc.Command( "health" )
+	assertEquals( 123456, calc.stack[1] )
+end
+function test.test_wowVariable_hp()
+	calc.Command( "hp" )
+	assertEquals( 123456, calc.stack[1] )
+end
+function test.test_wowVariable_()
+end
 
 test.run()
