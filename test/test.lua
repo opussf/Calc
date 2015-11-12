@@ -195,6 +195,10 @@ function test.test_complicated_05()
 	calc.Command( "deg 3 e 2 ^ ln * 8 60 cos * + 3 4 0.5 ^ * 1 - /" )
 	assertEquals( 2, calc.stack[1] )
 end
+function test.test_complicated_06()
+	calc.Command( "1.2 2 ^ .5 2 ^ + .5 ^")
+	assertEquals( 1.3, calc.stack[1] )
+end
 function test.test_variables_pi()
 	calc.Command( "pi" )
 	assert( calc.stack[1] > 3.141 )
