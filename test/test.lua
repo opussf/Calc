@@ -207,10 +207,15 @@ function test.test_variables_e()
 	assert( calc.stack[1] < 2.719 )
 	assertEquals( math.exp(1), calc.stack[1] )
 end
-function test.test_specialFunctions()
+function test.test_specialFunctions_AC()
 	calc.Command( "2 5 3 2 3 4" )
 	calc.Command( "AC" )
 	assertEquals( 0, table.getn( calc.stack ) )
 end
+function test.test_specialFunctions_AC_inTheMiddle()
+	calc.Command( "2 3 AC 42 69 + + +" )
+	assertEquals( 111, calc.stack[1] )
+end
+
 
 test.run()
