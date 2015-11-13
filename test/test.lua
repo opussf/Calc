@@ -244,7 +244,9 @@ function test.test_wowVariable_hp()
 	calc.Command( "hp" )
 	assertEquals( 123456, calc.stack[1] )
 end
-function test.test_wowVariable_()
+function test.test_wowVariable_power()
+	calc.Command( "power" )
+	assertEquals( 12345, calc.stack[1] )
 end
 
 test.run()

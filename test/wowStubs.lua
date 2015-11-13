@@ -841,6 +841,11 @@ function UnitName( who )
 	}
 	return unitNames[who]
 end
+function UnitPowerMax( who, powerType )
+	-- http://wowwiki.wikia.com/wiki/API_UnitPowerMax
+	-- VERY simplified version of this function for now.
+	return 12345
+end
 function UnitRace( who )
 	local unitRaces = {
 		["player"] = "Human",

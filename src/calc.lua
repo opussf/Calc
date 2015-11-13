@@ -121,6 +121,7 @@ calc.functions = {
 	["copper"] = function() table.insert( calc.stack, GetMoney() ) end,
 	["health"] = function() calc.Push( UnitHealthMax('player') ) end,
 	["hp"] = function() calc.Push( UnitHealthMax('player') ) end,
+	["power"] = function() calc.Push( UnitPowerMax('player') ) end,
 }
 
 function calc.Parse( msg )
