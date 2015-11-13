@@ -124,6 +124,13 @@ calc.functions = {
 	["power"] = function() calc.Push( UnitPowerMax('player') ) end,
 	["haste"] = function() calc.Push( GetHaste() ) end,
 	["mastery"] = function() calc.Push( GetMastery() ) end,
+	["conquest"] = function() calc.Push( select(2, GetCurrencyInfo(390) ) or 0 ) end,
+	["cp"] = function() calc.Push( select(2, GetCurrencyInfo(390) ) or 0 ) end,
+	["honor"] = function() calc.Push( select(2, GetCurrencyInfo(392) ) or 0 ) end,
+	["justice"] = function() calc.Push( select(2, GetCurrencyInfo(395) ) or 0 ) end,
+	["jp"] = function() calc.Push( select(2, GetCurrencyInfo(395) ) or 0 ) end,
+	["valor"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
+	["vp"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
 }
 
 function calc.Parse( msg )

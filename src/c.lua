@@ -14,7 +14,7 @@ SlashCmdList = {}
 require "calc"
 
 -- remove the WowSpecific commands
-WowSpecific = {"gold","silver","copper","health","hp","power","haste","mastery"}
+WowSpecific = {"gold","silver","copper","health","hp","power","haste","mastery","honor","conquest","cp","valor","vp","justice","jp"}
 for _, fun in pairs(WowSpecific) do
 	calc.functions[fun] = nil
 end
