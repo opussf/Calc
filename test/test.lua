@@ -334,5 +334,18 @@ function test.test_Pop_twoVal()
 	assertEquals( 1, table.getn( calc.stack ) )
 	assertEquals( 5, calc.stack[1] )
 end
+function test.test_Swap_oneVal()
+	calc.Command( "3 swap" )
+	assertEquals( 3, calc.stack[1] )
+end
+function test.test_Swap_twoVals()
+	calc.Command( "5 3 swap" )
+	assertEquals( 3, calc.stack[1] )
+end
+function test.test_Swap_threeVals()
+	calc.Command( "1 2 3 swap" )
+	assertEquals( 3, calc.stack[2] )
+	assertEquals( 2, calc.stack[3] )
+end
 
 test.run()

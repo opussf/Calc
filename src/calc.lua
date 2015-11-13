@@ -112,6 +112,13 @@ function calc.Factorial()
 		end
 	end
 end
+function calc.Swap()
+	-- RPN should let you swap the most recent 2 values on the stack  X <=> Y
+	local X = calc.Pop()
+	local Y = calc.Pop()
+	calc.Push( X )
+	calc.Push( Y )
+end
 calc.functions = {
 	-- commands
 	["ac"] = function() calc.stack={} end,
@@ -129,6 +136,7 @@ calc.functions = {
 	["ln"] = calc.Log,
 	["!"] = calc.Factorial,
 	["pop"] = calc.Pop,
+	["swap"] = calc.Swap,
 	-- constants
 	["pi"] = function() calc.Push( math.pi ) end,
 	["e"] = function() calc.Push( math.exp(1) ) end,
