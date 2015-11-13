@@ -821,6 +821,13 @@ function UnitClass( who )
 	}
 	return unitClasses[who]
 end
+function UnitHealthMax( who )
+	-- http://wowwiki.wikia.com/wiki/API_UnitHealth
+	local unitHealth = {
+		["player"] = {["current"] = 100000, ["max"] = 123456},
+	}
+	return unitHealth[who].max
+end
 function UnitFactionGroup( who )
 	-- http://www.wowwiki.com/API_UnitFactionGroup
 	local unitFactions = {
@@ -833,6 +840,11 @@ function UnitName( who )
 		["player"] = "testPlayer",
 	}
 	return unitNames[who]
+end
+function UnitPowerMax( who, powerType )
+	-- http://wowwiki.wikia.com/wiki/API_UnitPowerMax
+	-- VERY simplified version of this function for now.
+	return 12345
 end
 function UnitRace( who )
 	local unitRaces = {

@@ -51,6 +51,14 @@ The current commands supported are:
 * `deg` - sets trig functions to use degrees
 * `rad` - sets trig functions to use radians
 
+### WowVariables
+These will be replaced with the value at the time:
+* `gold` - your money in units of gold.
+* `silver` - your money in units of silver.
+* `copper` - your money in units of copper.
+* `health` | `hp` - your current max health.
+* `power` - your usable power max (rage / energy / mana)
+
 ### Entering data
 HP is notorius for using, or forcing the use of, **ENTER** to seperate values as they were entered on their calculators.
 This can be simulated here with using a seperate `/calc` for each value, though that can get old and annoying in a hurry.

@@ -115,6 +115,13 @@ calc.functions = {
 	-- constants
 	["pi"] = function() calc.Push( math.pi ) end,
 	["e"] = function() calc.Push( math.exp(1) ) end,
+	-- wowVariables
+	["gold"] = function() table.insert( calc.stack, GetMoney() / 10000 ) end,
+	["silver"] = function() table.insert( calc.stack, GetMoney() / 100 ) end,
+	["copper"] = function() table.insert( calc.stack, GetMoney() ) end,
+	["health"] = function() calc.Push( UnitHealthMax('player') ) end,
+	["hp"] = function() calc.Push( UnitHealthMax('player') ) end,
+	["power"] = function() calc.Push( UnitPowerMax('player') ) end,
 }
 
 function calc.Parse( msg )
