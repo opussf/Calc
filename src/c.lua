@@ -19,6 +19,7 @@ calc.functions["silver"] = nil
 calc.functions["copper"] = nil
 calc.functions["health"] = nil
 calc.functions["hp"] = nil
+calc.functions["power"] = nil
 
 -- over-ride some functions.
 function calc.Print( msg )
