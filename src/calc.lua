@@ -25,63 +25,76 @@ function calc.Print( msg, showName )
 	end
 	DEFAULT_CHAT_FRAME:AddMessage( msg );
 end
+function calc.Push( val )
+	table.insert( calc.stack, val )
+end
+function calc.Pop()
+	return table.remove( calc.stack )
+end
 function calc.ShowStack()
 	calc.Print( table.concat( calc.stack, " " ) )
 end
 
 function calc.Add()
 	if table.getn(calc.stack) >= 2 then
-		table.insert( calc.stack, ( table.remove( calc.stack ) + table.remove( calc.stack ) ) )
+		calc.Push( calc.Pop() + calc.Pop() )
 	end
 end
 function calc.Sub()
+	-- instead of poping 2 values to temp variables, this is done by
+	-- adding the negitive of the last number.
+	-- 4 3 -  = 4 -3 +
 	if table.getn(calc.stack) >= 2 then
-		table.insert( calc.stack, ( (0 - table.remove( calc.stack ) ) + table.remove( calc.stack ) ) )
+		calc.Push( (0 - calc.Pop() ) + calc.Pop() )
 	end
 end
 function calc.Mul()
 	if table.getn(calc.stack) >= 2 then
-		table.insert( calc.stack, ( table.remove( calc.stack ) * table.remove( calc.stack ) ) )
+		calc.Push( calc.Pop() * calc.Pop() )
 	end
 end
 function calc.Div()
+	-- division does need a temp variable for checking and calculation
 	if table.getn(calc.stack) >= 2 then
-		local d = table.remove( calc.stack )
+		local d = calc.Pop()
 		if d == 0 then
-			table.insert( calc.stack, d )
-			calc.Print("Cannot divide by zero.  Number pushed back on the stack")
+			calc.Push( d )
+			calc.Print("Cannot divide by zero.  Number pushed back on the stack.")
 		else
-			table.insert( calc.stack, ( table.remove( calc.stack ) / d ) )
+			calc.Push( calc.Pop() / d )
 		end
 	end
 end
 function calc.Sin()
 	if table.getn(calc.stack) >= 1 then
-		local val = ( calc.useDegree and ( table.remove( calc.stack ) * ( math.pi / 180 ) ) or table.remove( calc.stack ) )
-		table.insert( calc.stack, ( math.sin( val ) ) )
+		local val = ( calc.useDegree and ( calc.Pop() * ( math.pi / 180 ) ) or calc.Pop() )
+		calc.Push( math.sin( val ) )
 	end
 end
 function calc.Cos()
 	if table.getn(calc.stack) >= 1 then
-		local val = ( calc.useDegree and ( table.remove( calc.stack ) * ( math.pi / 180 ) ) or table.remove( calc.stack ) )
-		table.insert( calc.stack, ( math.cos( val ) ) )
+		local val = ( calc.useDegree and ( calc.Pop() * ( math.pi / 180 ) ) or calc.Pop() )
+		calc.Push( math.cos( val ) )
 	end
 end
 function calc.Tan()
 	if table.getn(calc.stack) >= 1 then
-		local val = ( calc.useDegree and ( table.remove( calc.stack ) * ( math.pi / 180 ) ) or table.remove( calc.stack ) )
-		table.insert( calc.stack, ( math.tan( val ) ) )
+		local val = ( calc.useDegree and ( calc.Pop() * ( math.pi / 180 ) ) or calc.Pop() )
+		calc.Push( math.tan( val ) )
 	end
 end
 function calc.Power()
+	-- the calculator button reads y^x.
+	-- can I define a sqrt command that pushes 0.5 and calls ^?
+	-- can I define a ^2 that pushes 2 and calls ^?
 	if table.getn(calc.stack) >= 2 then
-		local toPower = table.remove( calc.stack )
-		table.insert( calc.stack, ( math.pow( table.remove( calc.stack ), toPower ) ) )
+		local toPower = calc.Pop()
+		calc.Push( math.pow( calc.Pop(), toPower ) )
 	end
 end
 function calc.Log()
 	if table.getn(calc.stack) >= 1 then
-		table.insert( calc.stack, ( math.log( table.remove( calc.stack ) ) ) )
+		calc.Push( math.log( calc.Pop() ) )
 	end
 end
 calc.functions = {
@@ -100,8 +113,15 @@ calc.functions = {
 	["^"] = calc.Power,
 	["ln"] = calc.Log,
 	-- constants
-	["pi"] = function() table.insert( calc.stack, math.pi ) end,
-	["e"] = function() table.insert( calc.stack, math.exp(1) ) end,
+	["pi"] = function() calc.Push( math.pi ) end,
+	["e"] = function() calc.Push( math.exp(1) ) end,
+	-- wowVariables
+	["gold"] = function() table.insert( calc.stack, GetMoney() / 10000 ) end,
+	["silver"] = function() table.insert( calc.stack, GetMoney() / 100 ) end,
+	["copper"] = function() table.insert( calc.stack, GetMoney() ) end,
+	["health"] = function() calc.Push( UnitHealthMax('player') ) end,
+	["hp"] = function() calc.Push( UnitHealthMax('player') ) end,
+	["power"] = function() calc.Push( UnitPowerMax('player') ) end,
 }
 
 function calc.Parse( msg )
