@@ -115,7 +115,7 @@ function test.test_Mul_twoPositive()
 	calc.Command( "2 5 *" )
 	assertEquals( 10, calc.stack[1] )
 end
-function test.test_Mul_twoNegitive()
+function test.test_Mul_twoNegative()
 	calc.Command( "-2 -5 *" )
 	assertEquals( 10, calc.stack[1] )
 end
@@ -256,7 +256,6 @@ function test.test_wowVariable_mastery()
 	calc.Command( "mastery" )
 	assertEquals( 21.3572, calc.stack[1] )
 end
-
 function test.test_wowCurrency_honor()
 	myCurrencies[392] = 12
 	calc.Command( "honor" )
@@ -291,6 +290,31 @@ function test.test_wowCurrency_vp()
 	myCurrencies[396] = 16
 	calc.Command( "vp" )
 	assertEquals( 16, calc.stack[1] )
+end
+-- 1.2 tests
+function test.test_Fac_noVals()
+	calc.Command( "!" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
+function test.test_Fac_negative()
+	calc.Command( "-1 !" )
+	assertEquals( math.huge, calc.stack[1] )
+end
+function test_test_Fac_zero()
+	calc.Command( "0 !" )
+	assertEquals( 1, calc.stack[1] )
+end
+function test.test_Fac_one()
+	calc.Command( "1 !" )
+	assertEquals( 1, calc.stack[1] )
+end
+function test.test_Fac_three()
+	calc.Command( "3 !" )
+	assertEquals( 6, calc.stack[1] )
+end
+function test.test_Fac_five()
+	calc.Command( "5 !" )
+	assertEquals( 120, calc.stack[1] )
 end
 
 

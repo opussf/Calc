@@ -42,7 +42,7 @@ function calc.Add()
 end
 function calc.Sub()
 	-- instead of poping 2 values to temp variables, this is done by
-	-- adding the negitive of the last number.
+	-- adding the negative of the last number.
 	-- 4 3 -  = 4 -3 +
 	if table.getn(calc.stack) >= 2 then
 		calc.Push( (0 - calc.Pop() ) + calc.Pop() )
@@ -97,6 +97,21 @@ function calc.Log()
 		calc.Push( math.log( calc.Pop() ) )
 	end
 end
+function calc.Factorial()
+	--  EH!  http://www.springerplus.com/content/pdf/2193-1801-3-658.pdf
+	if table.getn(calc.stack) >= 1 then
+		local val = calc.Pop()
+		if val < 0 then calc.Push( math.huge )
+		elseif val == 0 then calc.Push( 1 )
+		else
+			fac = 1
+			for i=val,1,-1 do
+				fac = fac * i
+			end
+			calc.Push( fac )
+		end
+	end
+end
 calc.functions = {
 	-- commands
 	["ac"] = function() calc.stack={} end,
@@ -112,6 +127,7 @@ calc.functions = {
 	["tan"] = calc.Tan,
 	["^"] = calc.Power,
 	["ln"] = calc.Log,
+	["!"] = calc.Factorial,
 	-- constants
 	["pi"] = function() calc.Push( math.pi ) end,
 	["e"] = function() calc.Push( math.exp(1) ) end,
