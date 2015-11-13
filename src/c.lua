@@ -4,13 +4,7 @@
 strfind = string.find
 strsub = string.sub
 
--- Define those from the WoW API
-function GetMoney()
-	return 0
-end
-function UnitHealthMax()
-	return 0
-end
+
 function GetAddOnMetadata( )
 	return "@VERSION@"
 end
@@ -19,11 +13,22 @@ SlashCmdList = {}
 -- import the addon file
 require "calc"
 
+-- remove the WowSpecific commands
+calc.functions["gold"] = nil
+calc.functions["silver"] = nil
+calc.functions["copper"] = nil
+calc.functions["health"] = nil
+calc.functions["hp"] = nil
+
 -- over-ride some functions.
 function calc.Print( msg )
 	msg = "("..(calc.useDegree and "d" or "r")..")> "..msg;
 	print( msg )
 end
+
+-- add a command to quit
+calc.functions["quit"] = function() running=false end
+print("Calc (v@VERSION@)")
 
 -- Start the game
 running = true
