@@ -248,5 +248,14 @@ function test.test_wowVariable_power()
 	calc.Command( "power" )
 	assertEquals( 12345, calc.stack[1] )
 end
+function test.test_wowVariable_haste()
+	calc.Command( "haste" )
+	assertEquals( 15.42345, calc.stack[1] )
+end
+function test.test_wowVariable_mastery()
+	calc.Command( "mastery" )
+	assertEquals( 21.3572, calc.stack[1] )
+end
+
 
 test.run()

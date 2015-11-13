@@ -473,6 +473,9 @@ function GetEquipmentSetInfoByName( nameIn )
 		end
 	end
 end
+function GetHaste()
+	return 15.42345
+end
 function GetInventoryItemID( unitID, invSlot )
 	-- http://www.wowwiki.com/API_GetInventoryItemID
 	-- unitID: string   (http://www.wowwiki.com/API_TYPE_UnitId)  (bossN 1-4, player, partyN 1-4, raidN 1-40)
@@ -514,6 +517,9 @@ function GetItemInfo( itemID )
 	if Items[itemID] then
 		return Items[itemID].name, Items[itemID].link
 	end
+end
+function GetMastery()
+	return 21.3572
 end
 function GetMerchantItemCostInfo( index )
 	-- returns count of alterate items needed to purchase an item

@@ -14,12 +14,10 @@ SlashCmdList = {}
 require "calc"
 
 -- remove the WowSpecific commands
-calc.functions["gold"] = nil
-calc.functions["silver"] = nil
-calc.functions["copper"] = nil
-calc.functions["health"] = nil
-calc.functions["hp"] = nil
-calc.functions["power"] = nil
+WowSpecific = {"gold","silver","copper","health","hp","power","haste","mastery"}
+for _, fun in pairs(WowSpecific) do
+	calc.functions[fun] = nil
+end
 
 -- over-ride some functions.
 function calc.Print( msg )

@@ -122,6 +122,8 @@ calc.functions = {
 	["health"] = function() calc.Push( UnitHealthMax('player') ) end,
 	["hp"] = function() calc.Push( UnitHealthMax('player') ) end,
 	["power"] = function() calc.Push( UnitPowerMax('player') ) end,
+	["haste"] = function() calc.Push( GetHaste() ) end,
+	["mastery"] = function() calc.Push( GetMastery() ) end,
 }
 
 function calc.Parse( msg )
