@@ -128,6 +128,7 @@ calc.functions = {
 	["^"] = calc.Power,
 	["ln"] = calc.Log,
 	["!"] = calc.Factorial,
+	["pop"] = calc.Pop,
 	-- constants
 	["pi"] = function() calc.Push( math.pi ) end,
 	["e"] = function() calc.Push( math.exp(1) ) end,

@@ -316,6 +316,23 @@ function test.test_Fac_five()
 	calc.Command( "5 !" )
 	assertEquals( 120, calc.stack[1] )
 end
-
+function test.test_Pop_oneVal_01()
+	calc.Command( "5" )
+	calc.Command( "pop" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
+function test.test_Pop_oneVal_02()
+	calc.Command( "5 pop" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
+function test.test_Pop_noVal()
+	calc.Command( "pop" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
+function test.test_Pop_twoVal()
+	calc.Command( "5 3 pop" )
+	assertEquals( 1, table.getn( calc.stack ) )
+	assertEquals( 5, calc.stack[1] )
+end
 
 test.run()
