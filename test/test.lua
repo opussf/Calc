@@ -347,5 +347,37 @@ function test.test_Swap_threeVals()
 	assertEquals( 3, calc.stack[2] )
 	assertEquals( 2, calc.stack[3] )
 end
+-- 1.3 tests
+function test.test_asin()
+	calc.Command( "0 asin" )
+	assertEquals( 0, calc.stack[1] )
+end
+function test.test_asin_deg()
+	calc.Command( "deg 0.5 asin" )
+	assertEquals( 33, calc.stack[1] * 1.1 )  -- 30 != 30  the value from asin and the conversion changes the return value.
+end
+function test.test_asin_2()
+	calc.Command( "2 asin")
+	local x = calc.stack[1]
+	assert( x ~= x )  -- true if x is nan    nan is not equal to itself
+end
+function test.test_acos()
+	calc.Command( "1 acos" )
+	assertEquals( 0, calc.stack[1] )
+end
+function test.test_acos_deg()
+	calc.Command( "deg 0.5 acos" )
+	assertEquals( 66, calc.stack[1] * 1.1 ) -- 60 != 60  the value from acos and the conversion changes the return value.
+end
+function test.test_acos_2()
+	calc.Command( "2 acos" )
+	local x = calc.stack[1]
+	assert( x ~= x )  -- true if x is nan    nan is not equal to itself
+end
+--[[
+function test.test_atan()
+	calc.Command( "deg 45 tan atan" )
+end
 
+]]
 test.run()
