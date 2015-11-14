@@ -67,20 +67,40 @@ function calc.Div()
 end
 function calc.Sin()
 	if table.getn(calc.stack) >= 1 then
-		local val = ( calc.useDegree and ( calc.Pop() * ( math.pi / 180 ) ) or calc.Pop() )
+		local val = ( calc.useDegree and math.rad( calc.Pop() ) or calc.Pop() )
 		calc.Push( math.sin( val ) )
+	end
+end
+function calc.Asin()
+	if table.getn(calc.stack) >= 1 then
+		local val = math.asin( calc.Pop() )
+		-- val is in rad
+		calc.Push( ( calc.useDegree and math.deg( val ) or val ) )
 	end
 end
 function calc.Cos()
 	if table.getn(calc.stack) >= 1 then
-		local val = ( calc.useDegree and ( calc.Pop() * ( math.pi / 180 ) ) or calc.Pop() )
+		local val = ( calc.useDegree and math.rad( calc.Pop() ) or calc.Pop() )
 		calc.Push( math.cos( val ) )
+	end
+end
+function calc.Acos()
+	if table.getn(calc.stack) >= 1 then
+		local val = math.acos( calc.Pop() )
+		-- val is in rad
+		calc.Push( ( calc.useDegree and math.deg( val ) or val ) )
 	end
 end
 function calc.Tan()
 	if table.getn(calc.stack) >= 1 then
-		local val = ( calc.useDegree and ( calc.Pop() * ( math.pi / 180 ) ) or calc.Pop() )
+		local val = ( calc.useDegree and math.rad( calc.Pop() ) or calc.Pop() )
 		calc.Push( math.tan( val ) )
+	end
+end
+function calc.Atan()
+	if table.getn(calc.stack) >= 1 then
+		local val = math.atan( calc.Pop() )
+		calc.Push( ( calc.useDegree and math.deg( val ) or val ) )
 	end
 end
 function calc.Power()
@@ -132,6 +152,9 @@ calc.functions = {
 	["sin"] = calc.Sin,
 	["cos"] = calc.Cos,
 	["tan"] = calc.Tan,
+	["asin"] = calc.Asin,
+	["acos"] = calc.Acos,
+	["atan"] = calc.Atan,
 	["^"] = calc.Power,
 	["ln"] = calc.Log,
 	["!"] = calc.Factorial,
