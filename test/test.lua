@@ -353,8 +353,8 @@ function test.test_asin()
 	assertEquals( 0, calc.stack[1] )
 end
 function test.test_asin_deg()
-	calc.Command( "deg 0.5 asin" )
-	assertEquals( 33, calc.stack[1] * 1.1 )  -- 30 != 30  the value from asin and the conversion changes the return value.
+	calc.Command( "deg 1 asin" )
+	assertEquals( 90, calc.stack[1] )  -- 30 != 30  the value from asin and the conversion changes the return value.
 end
 function test.test_asin_2()
 	calc.Command( "2 asin")
@@ -366,8 +366,8 @@ function test.test_acos()
 	assertEquals( 0, calc.stack[1] )
 end
 function test.test_acos_deg()
-	calc.Command( "deg 0.5 acos" )
-	assertEquals( 66, calc.stack[1] * 1.1 ) -- 60 != 60  the value from acos and the conversion changes the return value.
+	calc.Command( "deg 0 acos" )
+	assertEquals( 90, calc.stack[1] ) -- 60 != 60  the value from acos and the conversion changes the return value.
 end
 function test.test_acos_2()
 	calc.Command( "2 acos" )
