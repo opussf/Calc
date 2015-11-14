@@ -374,10 +374,13 @@ function test.test_acos_2()
 	local x = calc.stack[1]
 	assert( x ~= x )  -- true if x is nan    nan is not equal to itself
 end
---[[
 function test.test_atan()
-	calc.Command( "deg 45 tan atan" )
+	calc.Command( "0.8 atan" )
+	assertEquals( 0.6747, math.floor(calc.stack[1] * 10000) / 10000 )
+end
+function test.test_atan_deg()
+	calc.Command( "deg 0.8 atan" )
+	assertEquals( 38.6598, math.floor(calc.stack[1] * 10000) / 10000 )
 end
 
-]]
 test.run()

@@ -97,6 +97,12 @@ function calc.Tan()
 		calc.Push( math.tan( val ) )
 	end
 end
+function calc.Atan()
+	if table.getn(calc.stack) >= 1 then
+		local val = math.atan( calc.Pop() )
+		calc.Push( ( calc.useDegree and math.deg( val ) or val ) )
+	end
+end
 function calc.Power()
 	-- the calculator button reads y^x.
 	-- can I define a sqrt command that pushes 0.5 and calls ^?
@@ -148,6 +154,7 @@ calc.functions = {
 	["tan"] = calc.Tan,
 	["asin"] = calc.Asin,
 	["acos"] = calc.Acos,
+	["atan"] = calc.Atan,
 	["^"] = calc.Power,
 	["ln"] = calc.Log,
 	["!"] = calc.Factorial,
