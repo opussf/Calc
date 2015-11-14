@@ -115,7 +115,7 @@ function test.test_Mul_twoPositive()
 	calc.Command( "2 5 *" )
 	assertEquals( 10, calc.stack[1] )
 end
-function test.test_Mul_twoNegitive()
+function test.test_Mul_twoNegative()
 	calc.Command( "-2 -5 *" )
 	assertEquals( 10, calc.stack[1] )
 end
@@ -256,7 +256,6 @@ function test.test_wowVariable_mastery()
 	calc.Command( "mastery" )
 	assertEquals( 21.3572, calc.stack[1] )
 end
-
 function test.test_wowCurrency_honor()
 	myCurrencies[392] = 12
 	calc.Command( "honor" )
@@ -292,6 +291,61 @@ function test.test_wowCurrency_vp()
 	calc.Command( "vp" )
 	assertEquals( 16, calc.stack[1] )
 end
-
+-- 1.2 tests
+function test.test_Fac_noVals()
+	calc.Command( "!" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
+function test.test_Fac_negative()
+	calc.Command( "-1 !" )
+	assertEquals( math.huge, calc.stack[1] )
+end
+function test_test_Fac_zero()
+	calc.Command( "0 !" )
+	assertEquals( 1, calc.stack[1] )
+end
+function test.test_Fac_one()
+	calc.Command( "1 !" )
+	assertEquals( 1, calc.stack[1] )
+end
+function test.test_Fac_three()
+	calc.Command( "3 !" )
+	assertEquals( 6, calc.stack[1] )
+end
+function test.test_Fac_five()
+	calc.Command( "5 !" )
+	assertEquals( 120, calc.stack[1] )
+end
+function test.test_Pop_oneVal_01()
+	calc.Command( "5" )
+	calc.Command( "pop" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
+function test.test_Pop_oneVal_02()
+	calc.Command( "5 pop" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
+function test.test_Pop_noVal()
+	calc.Command( "pop" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
+function test.test_Pop_twoVal()
+	calc.Command( "5 3 pop" )
+	assertEquals( 1, table.getn( calc.stack ) )
+	assertEquals( 5, calc.stack[1] )
+end
+function test.test_Swap_oneVal()
+	calc.Command( "3 swap" )
+	assertEquals( 3, calc.stack[1] )
+end
+function test.test_Swap_twoVals()
+	calc.Command( "5 3 swap" )
+	assertEquals( 3, calc.stack[1] )
+end
+function test.test_Swap_threeVals()
+	calc.Command( "1 2 3 swap" )
+	assertEquals( 3, calc.stack[2] )
+	assertEquals( 2, calc.stack[3] )
+end
 
 test.run()
