@@ -24,32 +24,40 @@ Feel free to search the web on how to use this amazingly simple notation.
 
 ## Commands
 This uses `/calc <data>` to accept input.
-If `<data>` is a value, or a known constant, or predefined variable, that value is pushed to the stack.
+If `<data>` is a value, or a known constant, or predefined variable, that value is pushed to the stack as the `x` value.
 `/calc pi` would push the value of `pi` to the stack.
 After each command, the values on the stack will be displayed.
+`x` is the most recent, right most value, where `y` is the next value down.
 
 ### Constants
 The constants currently supported are:
-* pi - uses *Lua's* `math.pi` constant
-* e - uses *Lua's* `math.exp(1)` to get `e`
+* `pi` - uses *Lua's* `math.pi` constant
+* `e` - uses *Lua's* `math.exp(1)` to get `e`
 
 ### Operands
+Operands normally act on the `x` or `y` values from the stack, and push the result back to the stack as `x`.
 The operands currently supported are:
-* `+` - biparameter addition
-* `-` - biparameter subtraction `5 7 -` yields `5 - 7`
-* `*` - biparameter addition
-* `/` - biparameter division `9 5 /` yields `9 / 5`
-* `^` - biparameter power `3 3 ^` yields `3^3`. `4 0.5 ^` yields the `sqrt(4)`
-* `ln` - monoparameter natural log `e ln` yields 1
-* 'sin' - monoparameter `sine` in radians
-* 'cos' - monoparameter `cosine` in radians
-* 'tan' - monoparameter `tangent` in radians
+* `+` - adds `x` and `y`.
+* `-` - subtracts `x` from `y`
+* `*` - multiply `x` and `y`
+* `/` - divide `y` by `x` (`9 5 /` yields `9 / 5`)
+* `^` - raises `y` to the power of `x`. `3 3 ^` yields `3^3`. `4 0.5 ^` yields the `sqrt(4)`
+* `ln` - natural log of `x`. `e ln` yields 1
+* `!` - factorial of `x`
+* `sin` - sine of `x`
+* `cos` - cosine of `x`
+* `tan` - tangent of `x`
+* `asin` - arcsin of `x`
+* `acos` - arccos of `x`
+* `atan` - arctan of `x`
 
 ### Commands
 The current commands supported are:
 * `AC` - All Clear - clear the entire stack
 * `deg` - sets trig functions to use degrees
 * `rad` - sets trig functions to use radians
+* `swap` - swaps `x` and `y`
+* `pop` - pops `x` from the stack
 
 ### WowVariables
 These will be replaced with the value at the time:
@@ -58,6 +66,7 @@ These will be replaced with the value at the time:
 * `copper` - your money in units of copper.
 * `health` | `hp` - your current max health.
 * `power` - your usable power max (rage / energy / mana)
+* `haste` - your haste rating
 
 ### Entering data
 HP is notorius for using, or forcing the use of, **ENTER** to seperate values as they were entered on their calculators.

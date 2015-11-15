@@ -91,6 +91,9 @@
 			<fileset dir="${working.dir}">
 				<include name="*.txt"/>
 			</fileset>
+			<fileset dir=".">
+				<include name="*.md"/>
+			</fileset>
 		</copy>
 		<zip 	destfile="${target.dir}/${project.zip}"
 				basedir="${working.dir}"
