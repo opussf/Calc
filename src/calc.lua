@@ -139,11 +139,46 @@ function calc.Swap()
 	calc.Push( X )
 	calc.Push( Y )
 end
+function calc.Help()
+	calc.Print(CALC_MSG_ADDONNAME.." v"..CALC_MSG_VERSION, false)
+	calc.Print("is a RPN calculator. Where '5 2 -' subtracts 2 from 5.", false)
+	calc.Print("/calc AC   - clear the stack", false)
+	calc.Print("/calc deg / rad  - change to degrees or radians for trig functions.", false)
+	calc.Print("/calc pop  - remove last value on stack", false)
+	calc.Print("/calc swap - swap last 2 values", false)
+	calc.Print("/calc fhelp - list of functions", false)
+	calc.Print("/calc whelp - list of variables from WoW", false)
+end
+function calc.FHelp()
+	calc.Print("+ - * /  -- normal functions '1 2 /' = 0.5", false)
+	calc.Print("sin cos tan asin acos atan -- trig functions", false)
+	calc.Print("^ -- power", false)
+	calc.Print("ln -- log", false)
+	calc.Print("! -- factorial", false)
+	calc.Print("pi e -- constants", false)
+end
+function calc.WHelp()
+	calc.Print("gold silver copper -- current money in those units", false)
+	calc.Print("health hp -- current health", false)
+	calc.Print("power -- max rage / mana / power", false)
+	calc.Print("haste mastery -- your current values", false)
+	calc.Print("conquest cp -- conquest points", false)
+	calc.Print("honor -- honor points", false)
+	calc.Print("justice jp -- justice points", false)
+	calc.Print("valor vp -- valor points", false)
+end
 calc.functions = {
+	["help"] = calc.Help,
+	["fhelp"] = calc.FHelp,
+	["whelp"] = calc.WHelp,
+	["rpnhelp"] = calc.RPNHelp,
+
 	-- commands
 	["ac"] = function() calc.stack={} end,
 	["deg"] = function() calc.useDegree = true calc.Print("Set to use Degrees") end,
 	["rad"] = function() calc.useDegree = nil calc.Print("Set to use Radians") end,
+	["pop"] = calc.Pop,
+	["swap"] = calc.Swap,
 	-- functions
 	["+"] = calc.Add,
 	["-"] = calc.Sub,
@@ -158,8 +193,6 @@ calc.functions = {
 	["^"] = calc.Power,
 	["ln"] = calc.Log,
 	["!"] = calc.Factorial,
-	["pop"] = calc.Pop,
-	["swap"] = calc.Swap,
 	-- constants
 	["pi"] = function() calc.Push( math.pi ) end,
 	["e"] = function() calc.Push( math.exp(1) ) end,
