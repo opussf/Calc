@@ -167,7 +167,6 @@ calc.functions = {
 	["help"] = calc.Help,
 	["fhelp"] = calc.FHelp,
 	["whelp"] = calc.WHelp,
-	["rpnhelp"] = calc.RPNHelp,
 
 	-- commands
 	["ac"] = function() calc.stack={} end,
