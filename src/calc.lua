@@ -36,7 +36,7 @@ function calc.ShowStack()
 end
 
 function calc.Add()
-	if table.getn(calc.stack) >= 2 then
+	if #calc.stack >= 2 then
 		calc.Push( calc.Pop() + calc.Pop() )
 	end
 end
@@ -44,18 +44,18 @@ function calc.Sub()
 	-- instead of poping 2 values to temp variables, this is done by
 	-- adding the negative of the last number.
 	-- 4 3 -  = 4 -3 +
-	if table.getn(calc.stack) >= 2 then
+	if #calc.stack >= 2 then
 		calc.Push( (0 - calc.Pop() ) + calc.Pop() )
 	end
 end
 function calc.Mul()
-	if table.getn(calc.stack) >= 2 then
+	if #calc.stack >= 2 then
 		calc.Push( calc.Pop() * calc.Pop() )
 	end
 end
 function calc.Div()
 	-- division does need a temp variable for checking and calculation
-	if table.getn(calc.stack) >= 2 then
+	if #calc.stack >= 2 then
 		local d = calc.Pop()
 		if d == 0 then
 			calc.Push( d )
@@ -66,39 +66,39 @@ function calc.Div()
 	end
 end
 function calc.Sin()
-	if table.getn(calc.stack) >= 1 then
+	if #calc.stack >= 1 then
 		local val = ( calc.useDegree and math.rad( calc.Pop() ) or calc.Pop() )
 		calc.Push( math.sin( val ) )
 	end
 end
 function calc.Asin()
-	if table.getn(calc.stack) >= 1 then
+	if #calc.stack >= 1 then
 		local val = math.asin( calc.Pop() )
 		-- val is in rad
 		calc.Push( ( calc.useDegree and math.deg( val ) or val ) )
 	end
 end
 function calc.Cos()
-	if table.getn(calc.stack) >= 1 then
+	if #calc.stack >= 1 then
 		local val = ( calc.useDegree and math.rad( calc.Pop() ) or calc.Pop() )
 		calc.Push( math.cos( val ) )
 	end
 end
 function calc.Acos()
-	if table.getn(calc.stack) >= 1 then
+	if #calc.stack >= 1 then
 		local val = math.acos( calc.Pop() )
 		-- val is in rad
 		calc.Push( ( calc.useDegree and math.deg( val ) or val ) )
 	end
 end
 function calc.Tan()
-	if table.getn(calc.stack) >= 1 then
+	if #calc.stack >= 1 then
 		local val = ( calc.useDegree and math.rad( calc.Pop() ) or calc.Pop() )
 		calc.Push( math.tan( val ) )
 	end
 end
 function calc.Atan()
-	if table.getn(calc.stack) >= 1 then
+	if #calc.stack >= 1 then
 		local val = math.atan( calc.Pop() )
 		calc.Push( ( calc.useDegree and math.deg( val ) or val ) )
 	end
@@ -107,19 +107,19 @@ function calc.Power()
 	-- the calculator button reads y^x.
 	-- can I define a sqrt command that pushes 0.5 and calls ^?
 	-- can I define a ^2 that pushes 2 and calls ^?
-	if table.getn(calc.stack) >= 2 then
+	if #calc.stack >= 2 then
 		local toPower = calc.Pop()
 		calc.Push( math.pow( calc.Pop(), toPower ) )
 	end
 end
 function calc.Log()
-	if table.getn(calc.stack) >= 1 then
+	if #calc.stack >= 1 then
 		calc.Push( math.log( calc.Pop() ) )
 	end
 end
 function calc.Factorial()
 	--  EH!  http://www.springerplus.com/content/pdf/2193-1801-3-658.pdf
-	if table.getn(calc.stack) >= 1 then
+	if #calc.stack >= 1 then
 		local val = calc.Pop()
 		if val < 0 then calc.Push( math.huge )
 		elseif val == 0 then calc.Push( 1 )
