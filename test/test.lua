@@ -382,5 +382,9 @@ function test.test_atan_deg()
 	calc.Command( "deg 0.8 atan" )
 	assertEquals( 38.6598, math.floor(calc.stack[1] * 10000) / 10000 )
 end
+function test.test_percent()
+	calc.Command( "1000 10 %")
+	assertEquals( 100, calc.stack[1] )
+end
 
 test.run()
