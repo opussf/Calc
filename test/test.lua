@@ -383,8 +383,16 @@ function test.test_atan_deg()
 	assertEquals( 38.6598, math.floor(calc.stack[1] * 10000) / 10000 )
 end
 function test.test_percent()
-	calc.Command( "1000 10 %")
+	calc.Command( "1000 10 %" )
 	assertEquals( 100, calc.stack[1] )
+end
+function test.test_percent_2()
+	calc.Command( "1000 1 %" )
+	assertEquals( 10, calc.stack[1] )
+end
+function test.test_percent_3()
+	calc.Command( "1000 2 %" )
+	assertEquals( 20, calc.stack[1] )
 end
 
 test.run()
