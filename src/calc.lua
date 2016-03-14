@@ -65,6 +65,15 @@ function calc.Div()
 		end
 	end
 end
+function calc.Percent()
+	-- give the percent of a value
+	-- "1000 10 %"  = "1000 10 100 / *"
+	if #calc.stack >= 2 then
+		calc.Push( 100 )
+		calc.Div()
+		calc.Mul()
+	end
+end
 function calc.Sin()
 	if #calc.stack >= 1 then
 		local val = ( calc.useDegree and math.rad( calc.Pop() ) or calc.Pop() )
@@ -179,6 +188,7 @@ calc.functions = {
 	["-"] = calc.Sub,
 	["*"] = calc.Mul,
 	["/"] = calc.Div,
+	["%"] = calc.Percent,
 	["sin"] = calc.Sin,
 	["cos"] = calc.Cos,
 	["tan"] = calc.Tan,
