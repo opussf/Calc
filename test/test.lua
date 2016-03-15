@@ -403,5 +403,17 @@ function test.test_percent_plus()
 	calc.Command( "1000 2 % +" )
 	assertEquals( 1020, calc.stack[1] )
 end
+function test.test_oneOver()
+	calc.Command( "2 1/x" )
+	assertEquals( 0.5, calc.Pop() )
+end
+function test.test_oneOver2()
+	calc.Command( "0.5 1/x" )
+	assertEquals( 2, calc.Pop() )
+end
+function test.test_oneOver3()
+	calc.Command( "1 1/x" )
+	assertEquals( 1, calc.Pop() )
+end
 
 test.run()
