@@ -69,6 +69,11 @@ function calc.Percent()
 	-- give the percent of a value
 	-- "1000 10 %"  = "1000 10 100 / *"
 	if #calc.stack >= 2 then
+		local b = calc.Pop()
+		local a = calc.Pop()
+		calc.Push( a )
+		calc.Push( a )
+		calc.Push( b )
 		calc.Push( 100 )
 		calc.Div()
 		calc.Mul()
