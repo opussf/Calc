@@ -316,6 +316,11 @@ function test.test_Fac_five()
 	calc.Command( "5 !" )
 	assertEquals( 120, calc.stack[1] )
 end
+function test.test_Fac_69()
+	calc.Command( "120 !" )
+	assertTrue( calc.stack[1] > 6.689502913449e+198 )
+	assertTrue( calc.stack[1] < 6.6895029134492e+198 )
+end
 function test.test_Pop_oneVal_01()
 	calc.Command( "5" )
 	calc.Command( "pop" )

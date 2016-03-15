@@ -134,7 +134,7 @@ end
 function calc.Factorial()
 	--  EH!  http://www.springerplus.com/content/pdf/2193-1801-3-658.pdf
 	if #calc.stack >= 1 then
-		local val = calc.Pop()
+		local val = calc.Pop() * 1.0
 		if val < 0 then calc.Push( math.huge )
 		elseif val == 0 then calc.Push( 1 )
 		else
