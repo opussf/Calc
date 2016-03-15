@@ -65,6 +65,14 @@ function calc.Div()
 		end
 	end
 end
+function calc.oneOver()
+	-- calc 1/x  (1/2 = 0.5)
+	if #calc.stack >= 1 then
+		calc.Push( 1 )
+		calc.Swap()
+		calc.Div()
+	end
+end
 function calc.Percent()
 	-- give the percent of a value
 	-- "1000 10 %"  = "1000 10 100 / *"
@@ -164,8 +172,9 @@ function calc.Help()
 	calc.Print("   whelp - list of variables from WoW", false)
 end
 function calc.FHelp()
-	calc.Print("+ - * / ^ ln ! pi e", false)
+	calc.Print("+ - * / % ^ ln ! pi e", false)
 	calc.Print("sin cos tan asin acos atan", false)
+	calc.Print("1/x")
 end
 function calc.WHelp()
 	calc.Print("gold silver copper -- current money in those units", false)
@@ -188,6 +197,7 @@ calc.functions = {
 	["rad"] = function() calc.useDegree = nil calc.Print("Set to use Radians") end,
 	["pop"] = calc.Pop,
 	["swap"] = calc.Swap,
+	["1/x"] = calc.oneOver,
 	-- functions
 	["+"] = calc.Add,
 	["-"] = calc.Sub,
