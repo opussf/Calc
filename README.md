@@ -41,7 +41,9 @@ The operands currently supported are:
 * `-` - subtracts `x` from `y`
 * `*` - multiply `x` and `y`
 * `/` - divide `y` by `x` (`9 5 /` yields `9 / 5`)
+* `1/x` - reciprocal of `x`
 * `^` - raises `y` to the power of `x`. `3 3 ^` yields `3^3`. `4 0.5 ^` yields the `sqrt(4)`
+*     - `4 2 1/x ^` yields the square root of 4, and `9 3 1/x ^` yields the cube root of 9.
 * `ln` - natural log of `x`. `e ln` yields 1
 * `!` - factorial of `x`
 * `sin` - sine of `x`
