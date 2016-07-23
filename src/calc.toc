@@ -7,4 +7,4 @@
 ## SavedVariables:
 ## SavedVariablesPerCharacter:
 
-calc.lua
+c.lua
