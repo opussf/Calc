@@ -11,7 +11,7 @@ end
 SlashCmdList = {}
 
 -- import the addon file
-require "calc"
+require "c"
 
 -- remove the WowSpecific commands
 WowSpecific = {"gold","silver","copper","health","hp","power","haste","mastery","honor","conquest","cp","valor","vp","justice","jp"}

@@ -10,7 +10,7 @@ test.outFileName = "testOut.xml"
 
 -- require the file to test
 package.path = "../src/?.lua;'" .. package.path
-require "calc"
+require "c"
 
 function test.before()
 	calc.stack = {}
