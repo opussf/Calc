@@ -11,6 +11,7 @@ end
 SlashCmdList = {}
 
 -- import the addon file
+package.path = "/usr/local/bin/?.lua;'" .. package.path
 require "c"
 
 -- remove the WowSpecific commands
