@@ -100,6 +100,16 @@ class RPNCalc( object ):
 		"""Push e onto the stack"""
 		self.stack.append( math.e )
 
+	def percent( self ):
+		""" give the percent of a value
+		1000 10 % = 1000 1000 10 100 / *
+		"""
+		if len( self.stack ) >= 2:
+			y = self.stack.pop()
+			x = self.stack.pop()
+			self.stack.extend( [x, x, y, 100])
+			self.parseLine( "/ *" )
+
 	# This is at the end to be able to reference functions.
 	commands = {
 		"+": add,
@@ -112,6 +122,7 @@ class RPNCalc( object ):
 		"ac": clear,
 		"pi": pi,
 		"e": e,
+		"%": percent,
 	}
 
 if __name__ == "__main__":
