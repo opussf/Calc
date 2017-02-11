@@ -76,7 +76,6 @@ class In2end( object ):
 		while( len(self.opStack) ):
 			self.moveFromOpStack()
 
-
 if __name__ == "__main__":
 	import unittest
 	class ShuntingTest( unittest.TestCase ):
@@ -120,6 +119,9 @@ if __name__ == "__main__":
 		def test_mixedWithParen_04( self ):
 			self.con.parse( "(4+8)*(6-5)/((3-2)*(2+2))" )
 			self.assertEquals( "4 8 + 6 5 - * 3 2 - 2 2 + * /", str(self.con) )
+		def test_mixedWithParen_05( self ):
+			self.con.parse( "(4+8)*((6-5)/((3-2)*(2+2)))" )
+			self.assertEquals( "4 8 + 6 5 - 3 2 - 2 2 + * / *", str(self.con) )
 		def test_mixedWithPowers_01( self ):
 			self.con.parse( "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3" )
 			self.assertEquals( "3 4 2 * 1 5 - 2 3 ^ ^ / +", str(self.con) )
@@ -137,3 +139,4 @@ if __name__ == "__main__":
 			self.assertEquals( "300 23 + 43 21 - * 84 7 + /", str(self.con) )
 
 	unittest.main()
+	print "Done"
