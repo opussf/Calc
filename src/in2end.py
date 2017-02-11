@@ -137,6 +137,8 @@ if __name__ == "__main__":
 		def test_mixed_04( self ):
 			self.con.parse( "(300+23)*(43-21)/(84+7)")
 			self.assertEquals( "300 23 + 43 21 - * 84 7 + /", str(self.con) )
+		def test_mixed_05( self ):
+			self.con.parse( "1/1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6 + 1/7 + 1/8 + 1/9")
+			self.assertEquals( "", str(self.con) )
 
 	unittest.main()
-	print "Done"
