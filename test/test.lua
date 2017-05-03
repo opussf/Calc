@@ -257,37 +257,37 @@ function test.test_wowVariable_mastery()
 	assertEquals( 21.3572, calc.stack[1] )
 end
 function test.test_wowCurrency_honor()
-	myCurrencies[392] = 12
+	myCurrencies["392"] = 12
 	calc.Command( "honor" )
 	assertEquals( 12, calc.stack[1] )
 end
 function test.test_wowCurrency_conquest()
-	myCurrencies[390] = 10
+	myCurrencies["390"] = 10
 	calc.Command( "conquest" )
 	assertEquals( 10, calc.stack[1] )
 end
 function test.test_wowVariable_cp()
-	myCurrencies[390] = 10
+	myCurrencies["390"] = 10
 	calc.Command( "cp" )
 	assertEquals( 10, calc.stack[1] )
 end
 function test.test_wowCurrency_justice()
-	myCurrencies[395] = 15
+	myCurrencies["395"] = 15
 	calc.Command( "justice" )
 	assertEquals( 15, calc.stack[1] )
 end
 function test.test_wowCurrency_jp()
-	myCurrencies[395] = 15
+	myCurrencies["395"] = 15
 	calc.Command( "jp" )
 	assertEquals( 15, calc.stack[1] )
 end
 function test.test_wowCurrency_valor()
-	myCurrencies[396] = 16
+	myCurrencies["396"] = 16
 	calc.Command( "valor" )
 	assertEquals( 16, calc.stack[1] )
 end
 function test.test_wowCurrency_vp()
-	myCurrencies[396] = 16
+	myCurrencies["396"] = 16
 	calc.Command( "vp" )
 	assertEquals( 16, calc.stack[1] )
 end

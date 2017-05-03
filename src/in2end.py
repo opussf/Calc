@@ -76,6 +76,14 @@ class In2end( object ):
 		while( len(self.opStack) ):
 			self.moveFromOpStack()
 
+def main():
+	con = In2end()
+	running = true
+	while( running ):
+		line = input(">")
+		con.parse( line )
+		print( con )
+		running = line
 
 if __name__ == "__main__":
 	import unittest
@@ -136,4 +144,5 @@ if __name__ == "__main__":
 			self.con.parse( "(300+23)*(43-21)/(84+7)")
 			self.assertEquals( "300 23 + 43 21 - * 84 7 + /", str(self.con) )
 
-	unittest.main()
+	-- unittest.main()
+	main()

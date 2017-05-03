@@ -2,12 +2,13 @@
 A RPN calculator for WoW
 
 # RPN (postfix)
-In short, RPN is a way of writing calculations without the need of brackets.
+In short, RPN is a way of writing calculations where the function follows the set of values it works on.
 Values are entered, and then the operands are given to work with the previous 1 or 2 values.
-In the simple case of `1 + 2`, a user would enter `1 2 +`, and the result would be the remaining value.
+In the simple case of adding the values 1 and 2, a user would enter `1 2 +`, and the result would be the remaining value.
 
 RPN uses the idea of a stack, where values are pushed on and operands pop off the last 1 or 2 values and push on the result.
 In the example above `1 2 +` pushes 1 and 2 onto the stack, `+` then pops off `1` and `2`, adds them together and pushes `3` back to the stack.
+In the case of a function that takes a single value, like factorial(!), or `sin`, `5 !` pops off a single value, and pushes on the result.
 
 Conversion of complicated equations is much simplier that one might expect.
 In case the reader does not wish to research this on their own, I'll give a quick example.
