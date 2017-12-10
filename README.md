@@ -6,7 +6,11 @@ In short, RPN is a way of writing calculations where the function follows the se
 Values are entered, and then the operands are given to work with the previous 1 or 2 values.
 In the simple case of adding the values 1 and 2, a user would enter `1 2 +`, and the result would be the remaining value.
 
-RPN uses the idea of a stack, where values are pushed on and operands pop off the last 1 or 2 values and push on the result.
+RPN does not depend on syntax and an order of operation.
+It depends on the user to define that in the way that calculations are entered.
+
+Implementing an RPN calculator can be done with a stack data structure.
+Values are pushed on and functions pop off the required number of values and push on the result.
 In the example above `1 2 +` pushes 1 and 2 onto the stack, `+` then pops off `1` and `2`, adds them together and pushes `3` back to the stack.
 In the case of a function that takes a single value, like factorial(!), or `sin`, `5 !` pops off a single value, and pushes on the result.
 
