@@ -415,5 +415,57 @@ function test.test_oneOver3()
 	calc.Command( "1 1/x" )
 	assertEquals( 1, calc.Pop() )
 end
+-- temperature functions
+function test.test_toC_bodyTemp()
+	-- the expected values are 'rounded' versions of the actual.  Use ceiling to 'fix' this.
+	calc.Command( "98.6 toC" )
+	assertEquals( 37, math.ceil( calc.stack[1] ) )
+end
+function test.test_toC_waterFreeze()
+	calc.Command( "32 toC" )
+	assertEquals( 0, calc.Pop() )
+end
+function test.test_toC_dryIce()
+	calc.Command( "-109.3 toC" )
+	assertEquals( -78.5, calc.Pop() )
+end
+function test.test_toF_bodyTemp()
+	-- the actual value needs to be 'adjusted' to the truncated expected.
+	calc.Command( "37 toF" )
+	assertEquals( 98.6, math.floor( calc.Pop() * 10 ) / 10 )
+end
+function test.test_toF_waterFreeze()
+	calc.Command( "0 toF" )
+	assertEquals( 32, calc.Pop() )
+end
+function test.test_toF_dryIce()
+	-- the actual value needs to be 'adjusted' to the truncated expected.
+	calc.Command( "-78.5 toF" )
+	assertEquals( -109.3, math.floor( calc.Pop() * 10 ) / 10 )
+end
+function test.test_toC_moltenLead()
+	calc.Command( "621.5 toC" )
+	assertEquals( 327.5, calc.Pop() )
+end
+function test.test_toF_moltenLead()
+	calc.Command( "327.5 toF" )
+	assertEquals( 621.5, calc.Pop() )
+end
+function test.test_toF_sameValue()
+	calc.Command( "-40 toF" )
+	assertEquals( -40, calc.Pop() )
+end
+function test.test_toC_sameValue()
+	calc.Command( "-40 toC" )
+	assertEquals( -40, calc.Pop() )
+end
+function test.test_toC_noValue()
+	calc.Command( "toC" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
+function test.test_toF_noValue()
+	calc.Command( "toF" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
 
 test.run()
