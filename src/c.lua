@@ -197,7 +197,7 @@ end
 function calc.FHelp()
 	calc.Print("+ - * / % ^ ln ! pi e", false)
 	calc.Print("sin cos tan asin acos atan", false)
-	calc.Print("1/x")
+	calc.Print("1/x toC toF", false)
 end
 function calc.WHelp()
 	calc.Print("gold silver copper -- current money in those units", false)
