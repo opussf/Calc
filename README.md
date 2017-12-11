@@ -84,3 +84,18 @@ To streamline this a bit, the entire set of commands can be entered as a single 
     /calc 2
     /calc +
 Would be the same as `/calc 3 2 +`.
+
+### Usage outside of WoW
+While this was intended to be an addon for WoW, I have installed this on a few machines as a command line tool.
+
+The `calc.lua` source files creates a wrapper to allow `c.lua` to be used outside of WoW.
+This removes some of the WoW specific commands, overwrites the `Print` function, and creates a running loop complete with commands to exit.
+
+#### Install
+Installation of this on a linux / Mac machine is fairly simple.
+* Install LUA
+* Copy `c.lua` and `calc.lua` to the `/usr/local/bin/` directory (other places can be used, edit `calc.lua` to allow discovery).
+* Rename `calc.lua` to `calc` and make it executable.
+
+You will now be able to call `calc` from the command line.
+The new commands, 'exit' or 'quit', will quit the calculator.
