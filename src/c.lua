@@ -161,6 +161,29 @@ function calc.Swap()
 	calc.Push( X )
 	calc.Push( Y )
 end
+function calc.ToC()
+	-- F 32 - 9 5 / /
+	if #calc.stack >= 1 then
+		calc.Push( 32 )
+		calc.Sub()
+		calc.Push( 9 )
+		calc.Push( 5 )
+		calc.Div()
+		calc.Div()
+	end
+end
+function calc.ToF()
+	-- C 9 5 / * 32 +
+	if #calc.stack >= 1 then
+		calc.Push( 9 )
+		calc.Push( 5 )
+		calc.Div()
+		calc.Mul()
+		calc.Push( 32 )
+		calc.Add()
+	end
+end
+
 function calc.Help()
 	calc.Print(CALC_MSG_ADDONNAME.." v"..CALC_MSG_VERSION, false)
 	calc.Print("is a RPN calculator. Where '5 2 -' subtracts 2 from 5.", false)
@@ -216,6 +239,9 @@ calc.functions = {
 	-- constants
 	["pi"] = function() calc.Push( math.pi ) end,
 	["e"] = function() calc.Push( math.exp(1) ) end,
+	-- tempConversions
+	["toc"] = calc.ToC,
+	["tof"] = calc.ToF,
 	-- wowVariables
 	["gold"] = function() table.insert( calc.stack, GetMoney() / 10000 ) end,
 	["silver"] = function() table.insert( calc.stack, GetMoney() / 100 ) end,
