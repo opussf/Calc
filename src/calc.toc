@@ -8,3 +8,5 @@
 ## SavedVariablesPerCharacter:
 
 c.lua
+chat.lua
+calc.xml

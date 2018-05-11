@@ -11,10 +11,18 @@ test.outFileName = "testOut.xml"
 -- require the file to test
 package.path = "../src/?.lua;'" .. package.path
 require "c"
+require "chat"
+
+CALC_Frame = CreateFrame()
+OriginalSendChatMessage = SendChatMessage
 
 function test.before()
 	calc.stack = {}
 	calc.useDegree = nil
+	calc.VARIABLES_LOADED()
+end
+function test.after()
+	SendChatMessage = OriginalSendChatMessage
 end
 
 function test.test_MSG_ADDONNAME()
@@ -466,6 +474,32 @@ end
 function test.test_toF_noValue()
 	calc.Command( "toF" )
 	assertEquals( 0, table.getn( calc.stack ) )
+end
+------------------
+-- Chat
+------------------
+function test.test_SendChatMessage_01()
+	calc.SendChatMessage( "10 ==", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_02()
+	calc.SendChatMessage( "As we can see: 10 20 + ==", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_03()
+	calc.SendChatMessage( "10 20 +", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_04()
+	calc.SendChatMessage( "No numbers here.", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_05()
+	calc.SendChatMessage( "10 30 ==", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_06()
+	calc.Command( "16 toF" )
+	calc.SendChatMessage( "toc == ", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_07()
+	calc.SendChatMessage( "10 30 ==", "GUILD", "language", "channel" )
+	calc.SendChatMessage( "+ ==", "GUILD", "language", "channel" )
 end
 
 test.run()
