@@ -105,12 +105,9 @@
 
 	<target name="wow" depends="test" description="copy files to currnet wow install">
 		<mkdir dir="${addon.dir}"/>
-		<copy todir="${addon.dir}" filtering="true">
-			<fileset dir="src">
-				<include name="*.lua"/>
-				<include name="*.toc"/>
-				<include name="*.xml"/>
-				<include name="Readme.txt"/>
+		<copy todir="${addon.dir}" filtering="true" flatten="true">
+			<fileset dir=".">
+				<patternset refid="packageFiles"/>
 			</fileset>
 		</copy>
 	</target>
