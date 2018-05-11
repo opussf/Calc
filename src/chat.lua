@@ -1,5 +1,4 @@
 function calc.SendChatMessage( msgIn, system, language, channel )
-	--print( "calc.SendChatMessage( '"..msgIn.."', "..system..", "..( language or "nil" )..", "..( channel or "nil" ).." )" )
 	msgNew = nil
 	local hasEquals = strfind( msgIn, "==" )
 	if( hasEquals ) then
@@ -16,9 +15,7 @@ function calc.SendChatMessage( msgIn, system, language, channel )
 		end
 		local result = table.concat( calc.stack, " " )
 		msgNew = string.gsub( msgIn, "==", "= "..result )
-		--print( "New msg: "..msgNew )
 	end
-	--print( "msg out: "..( msgNew or msgIn ) )
 	calc.OriginalSendChatMessage( ( msgNew or msgIn ), system, language, channel )
 end
 function calc.OnLoad()
