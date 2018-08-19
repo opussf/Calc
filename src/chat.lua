@@ -1,4 +1,4 @@
-function calc.SendChatMessage( msgIn, system, language, channel )
+function calc.ReplaceMessage( msgIn )
 	msgNew = nil
 	local hasEquals = strfind( msgIn, "==" )
 	if( hasEquals ) then
@@ -16,7 +16,13 @@ function calc.SendChatMessage( msgIn, system, language, channel )
 		local result = table.concat( calc.stack, " " )
 		msgNew = string.gsub( msgIn, "==", "= "..result )
 	end
-	calc.OriginalSendChatMessage( ( msgNew or msgIn ), system, language, channel )
+	return( ( msgNew or msgIn ) )
+end
+function calc.SendChatMessage( msgIn, system, language, channel )
+	calc.OriginalSendChatMessage( calc.ReplaceMessage( msgIn ), system, language, channel )
+end
+function calc.BNSendWhisper( id, msgIn )
+	calc.OriginalBNSendWhisper( id, calc.ReplaceMessage( msgIn ) )
 end
 function calc.OnLoad()
 	CALC_Frame:RegisterEvent( "VARIABLES_LOADED" )
@@ -26,4 +32,6 @@ function calc.VARIABLES_LOADED()
 	-- Intercept chat events
 	calc.OriginalSendChatMessage = SendChatMessage
 	SendChatMessage = calc.SendChatMessage
+	calc.OriginalBNSendWhisper = BNSendWhisper
+	BNSendWhisper = calc.BNSendWhisper
 end
