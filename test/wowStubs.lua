@@ -1130,6 +1130,9 @@ function SendChatMessage( msg, chatType, language, channel )
 	-- returns nil
 	-- @TODO: Expand this
 end
+function BNSendWhisper( id, msg )
+	-- @TODO: Expand this
+end
 function TaxiNodeCost( nodeId )
 	-- http://www.wowwiki.com/API_TaxiNodeCost
 	return TaxiNodes[nodeId].cost

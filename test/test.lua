@@ -15,6 +15,7 @@ require "chat"
 
 CALC_Frame = CreateFrame()
 OriginalSendChatMessage = SendChatMessage
+OriginalBNSendWhisper = BNSendWhisper
 
 function test.before()
 	calc.stack = {}
@@ -23,6 +24,7 @@ function test.before()
 end
 function test.after()
 	SendChatMessage = OriginalSendChatMessage
+	BNSendWhisper = OriginalBNSendWhisper
 end
 
 function test.test_MSG_ADDONNAME()
@@ -500,6 +502,15 @@ end
 function test.test_SendChatMessage_07()
 	calc.SendChatMessage( "10 30 ==", "GUILD", "language", "channel" )
 	calc.SendChatMessage( "+ ==", "GUILD", "language", "channel" )
+end
+------------------
+-- BNSendWhisper
+------------------
+function test.test_ReplaceMessage_01()
+	assertEquals( "2 5 * = 10", calc.ReplaceMessage( "2 5 * ==" ) )
+end
+function test.test_BNSendWhisper_01()
+	calc.BNSendWhisper( 10, "10 ==" )
 end
 
 test.run()
