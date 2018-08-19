@@ -259,7 +259,7 @@ calc.functions = {
 	["jp"] = function() calc.Push( select(2, GetCurrencyInfo(395) ) or 0 ) end,
 	["valor"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
 	["vp"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
-	["token"] = function() calc.Push( C_WowTokenPublic.GetCurrentMarketPrice() or 0 ) end,
+	["token"] = function() calc.Push( C_WowTokenPublic.GetCurrentMarketPrice() / 10000 or 0 ) end,
 }
 
 function calc.Parse( msg )
