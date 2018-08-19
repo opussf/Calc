@@ -208,6 +208,7 @@ function calc.WHelp()
 	calc.Print("honor -- honor points", false)
 	calc.Print("justice jp -- justice points", false)
 	calc.Print("valor vp -- valor points", false)
+	calc.Print("token -- current token price, in gold", false)
 end
 calc.functions = {
 	["help"] = calc.Help,
@@ -258,6 +259,7 @@ calc.functions = {
 	["jp"] = function() calc.Push( select(2, GetCurrencyInfo(395) ) or 0 ) end,
 	["valor"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
 	["vp"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
+	["token"] = function() calc.Push( C_WowTokenPublic.GetCurrentMarketPrice() or 0 ) end,
 }
 
 function calc.Parse( msg )
