@@ -515,35 +515,54 @@ end
 ------------------
 -- Ceiling, Floor, and Round
 ------------------
+function test.test_Ceil_00()
+	calc.Command( "ceil" )
+end
 function test.test_Ceil_01()
-	assertEquals( "1", calc.Command( "0.4 ceil" ), "Should round up to 1" )
+	calc.Command( "0.4 ceil" )
+	assertEquals( 1, calc.Pop() , "Should round up to 1" )
 end
 function test.test_Ceil_02()
-	assertEquals( "44", calc.Command( "43.23 ceil" ) )
+	calc.Command( "43.23 ceil" )
+	assertEquals( 44, calc.Pop() )
 end
 function test.test_Ceil_03()
-	assertEquals( "42", calc.Command( "106 toC ceil" ) )
+	calc.Command( "106 toC ceil" )
+	assertEquals( 42, calc.Pop() )
 end
 function test.test_Ceil_04()
-	assertEquals( "5", calc.Command( "10 1.5 ceil /" ) )
+	calc.Command( "10 1.5 ceil /" )
+	assertEquals( 5, calc.Pop() )
 end
-function test_test_Floor_01()
-	assertEquals( "0", calc.Command( "0.6 floor" ), "Should round down to 0" )
+function test.test_Floor_00()
+	calc.Command( "floor" )
+end
+function test.test_Floor_01()
+	calc.Command( "0.6 floor" )
+	assertEquals( 0, calc.Pop(), "Should round down to 0" )
 end
 function test.test_Floor_02()
-	assertEquals( "43", calc.Command( "43.23 floor" ) )
+	calc.Command( "43.23 floor" )
+	assertEquals( 43, calc.Pop() )
 end
 function test.test_Floor_03()
-	assertEquals( "41", calc.Command( "106 toC floor" ) )
+	calc.Command( "106 toC floor" )
+	assertEquals( 41, calc.Pop() )
 end
 function test.test_Floor_04()
-	assertEquals( "10", calc.Command( "10 1.5 floor /" ) )
+	calc.Command( "10 1.5 floor /" )
+	assertEquals( 10, calc.Pop() )
+end
+function test.test_Round_00()
+	calc.Command( "round" )
 end
 function test.test_Round_01()
-	assertEquals( "0", calc.Command( "0.4 round" ) )
+	calc.Command( "0.4 round" )
+	assertEquals( 0, calc.Pop() )
 end
 function test.test_Round_02()
-	assertEquals( "1", calc.Command( "0.5 round" ) )
+	calc.Command( "0.5 round" )
+	assertEquals( 1, calc.Pop() )
 end
 
 
