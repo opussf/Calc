@@ -512,5 +512,58 @@ end
 function test.test_BNSendWhisper_01()
 	calc.BNSendWhisper( 10, "10 ==" )
 end
+------------------
+-- Ceiling, Floor, and Round
+------------------
+function test.test_Ceil_00()
+	calc.Command( "ceil" )
+end
+function test.test_Ceil_01()
+	calc.Command( "0.4 ceil" )
+	assertEquals( 1, calc.Pop() , "Should round up to 1" )
+end
+function test.test_Ceil_02()
+	calc.Command( "43.23 ceil" )
+	assertEquals( 44, calc.Pop() )
+end
+function test.test_Ceil_03()
+	calc.Command( "106 toC ceil" )
+	assertEquals( 42, calc.Pop() )
+end
+function test.test_Ceil_04()
+	calc.Command( "10 1.5 ceil /" )
+	assertEquals( 5, calc.Pop() )
+end
+function test.test_Floor_00()
+	calc.Command( "floor" )
+end
+function test.test_Floor_01()
+	calc.Command( "0.6 floor" )
+	assertEquals( 0, calc.Pop(), "Should round down to 0" )
+end
+function test.test_Floor_02()
+	calc.Command( "43.23 floor" )
+	assertEquals( 43, calc.Pop() )
+end
+function test.test_Floor_03()
+	calc.Command( "106 toC floor" )
+	assertEquals( 41, calc.Pop() )
+end
+function test.test_Floor_04()
+	calc.Command( "10 1.5 floor /" )
+	assertEquals( 10, calc.Pop() )
+end
+function test.test_Round_00()
+	calc.Command( "round" )
+end
+function test.test_Round_01()
+	calc.Command( "0.4 round" )
+	assertEquals( 0, calc.Pop() )
+end
+function test.test_Round_02()
+	calc.Command( "0.5 round" )
+	assertEquals( 1, calc.Pop() )
+end
+
 
 test.run()

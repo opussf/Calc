@@ -183,6 +183,27 @@ function calc.ToF()
 		calc.Add()
 	end
 end
+function calc.Ceil()
+	if #calc.stack >= 1 then
+		calc.Push( math.ceil( calc.Pop() ) )
+	end
+end
+function calc.Floor()
+	if #calc.stack >= 1 then
+		calc.Push( math.floor( calc.Pop() ) )
+	end
+end
+function calc.Round()
+	if #calc.stack >= 1 then
+		local X = calc.Pop()
+		local _, frac = math.modf( X )
+		if frac < 0.5 then
+			calc.Push( math.floor( X ) )
+		else -- >= 0.5
+			calc.Push( math.ceil( X ) )
+		end
+	end
+end
 
 function calc.Help()
 	calc.Print(CALC_MSG_ADDONNAME.." v"..CALC_MSG_VERSION, false)
@@ -198,6 +219,7 @@ function calc.FHelp()
 	calc.Print("+ - * / % ^ ln ! pi e", false)
 	calc.Print("sin cos tan asin acos atan", false)
 	calc.Print("1/x toC toF", false)
+	calc.Print("ceil floor round", false)
 end
 function calc.WHelp()
 	calc.Print("gold silver copper -- current money in those units", false)
@@ -237,6 +259,9 @@ calc.functions = {
 	["^"] = calc.Power,
 	["ln"] = calc.Log,
 	["!"] = calc.Factorial,
+	["ceil"] = calc.Ceil,
+	["floor"] = calc.Floor,
+	["round"] = calc.Round,
 	-- constants
 	["pi"] = function() calc.Push( math.pi ) end,
 	["e"] = function() calc.Push( math.exp(1) ) end,
