@@ -22,7 +22,6 @@ function calc.SendChatMessage( msgIn, system, language, channel )
 	calc.OriginalSendChatMessage( calc.ReplaceMessage( msgIn ), system, language, channel )
 end
 function calc.BNSendWhisper( id, msgIn )
-	print( "BNSendWhisper( "..id..", "..msgIn.." )" )
 	calc.OriginalBNSendWhisper( id, calc.ReplaceMessage( msgIn ) )
 end
 function calc.OnLoad()
