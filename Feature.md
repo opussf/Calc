@@ -26,5 +26,10 @@ Make this command line.
 '/calc macro list'
 ^^^ lists all the macros
 
+'/calc macro pi 22 7 /'
+^^^ should create an error, since pi is a function already
+
+'/calc AHmountInGold'
+^^^ loads the macro and runs the calculation
 
 

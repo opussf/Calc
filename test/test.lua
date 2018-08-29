@@ -21,6 +21,7 @@ function test.before()
 	calc.stack = {}
 	calc.useDegree = nil
 	calc.VARIABLES_LOADED()
+	calc_macros={}
 end
 function test.after()
 	SendChatMessage = OriginalSendChatMessage
@@ -504,6 +505,13 @@ function test.test_SendChatMessage_07()
 	calc.SendChatMessage( "+ ==", "GUILD", "language", "channel" )
 end
 ------------------
+-- token function
+------------------
+function test.test_Token_01()
+	calc.Command( "token" )
+	assertEquals( 12.3456, calc.Pop() )
+end
+------------------
 -- BNSendWhisper
 ------------------
 function test.test_ReplaceMessage_01()
@@ -564,6 +572,21 @@ function test.test_Round_02()
 	calc.Command( "0.5 round" )
 	assertEquals( 1, calc.Pop() )
 end
-
+------------------
+-- Macros
+------------------
+function test.test_Macro_doesNotPerformMacroOnAssignment()
+	calc.Command( "macro tMacro 5000000 token / ceil" )
+	assertFalse( #calc.stack == 1 )
+end
+function test.test_Macro_performsMacro()
+	calc.Command( "macro tMacro 5000000 token / ceil" )
+	calc.Command( "tMacro" )
+	assertEquals( 405003, calc.Pop() )
+end
+function test.test_Macro_assign()
+	calc.Command( "macro tMacro 50 2 ^" )
+	assertEquals( "50 2 ^", calc_macros.tMacro )
+end
 
 test.run()

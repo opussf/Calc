@@ -14,6 +14,7 @@ COLOR_NEON_BLUE = "|cff4d4dff";
 COLOR_END = "|r";
 
 calc = {}
+calc_macros = {}
 calc.stack = {}
 calc.useDegree = nil -- set this to true to use degrees
 
@@ -214,6 +215,7 @@ function calc.Help()
 	calc.Print("   swap - swap last 2 values", false)
 	calc.Print("   fhelp - list of functions", false)
 	calc.Print("   whelp - list of variables from WoW", false)
+	calc.Print("   mhelp - macro help", false)
 end
 function calc.FHelp()
 	calc.Print("+ - * / % ^ ln ! pi e", false)
@@ -231,6 +233,13 @@ function calc.WHelp()
 	calc.Print("justice jp -- justice points", false)
 	calc.Print("valor vp -- valor points", false)
 	calc.Print("token -- current token price, in gold", false)
+end
+function calc.MHelp()
+	calc.Print("macro <macroName> <macro Contents> -- create or replace macro <macroName>", false)
+	calc.Print("macro <macroName> -- show this macro", false)
+	calc.Print("macro list -- show macros", false)
+	calc.Print("macro del <macroName> -- delete <macroName>", false)
+	calc.Print("<macroName> -- use macro", false)
 end
 calc.functions = {
 	["help"] = calc.Help,
@@ -286,6 +295,21 @@ calc.functions = {
 	["vp"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
 	["token"] = function() calc.Push( C_WowTokenPublic.GetCurrentMarketPrice() / 10000 or 0 ) end,
 }
+calc.macroFunctions = {
+	["list"] = "",
+	["del"] = "",
+	["add"] = "",
+}
+
+function calc.Macro( msgIn )
+	print( "calc.Macro( "..msgIn.." )" )
+	local cmd, msg = calc.Parse( msgIn )
+	print( "cmd: "..cmd )
+	print( "msg: "..msg )
+	if( cmd == "" ) then
+	end
+
+end
 
 function calc.Parse( msg )
 	if msg then
@@ -306,6 +330,11 @@ function calc.Command( msg )
 		if val then
 			if calc.functions[val] then
 				calc.functions[val]()
+			elseif val == "macro" then
+				print( "MACRO: "..msg )
+				calc.Macro( msg )
+			elseif calc_macros[val] then
+				print( "CALL MACRO: "..val )
 			elseif tonumber(val) then -- is a value
 				table.insert( calc.stack, tonumber(val) )
 			else
