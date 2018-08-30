@@ -21,6 +21,7 @@ function test.before()
 	calc.stack = {}
 	calc.useDegree = nil
 	calc.VARIABLES_LOADED()
+	calc_macros={}
 end
 function test.after()
 	SendChatMessage = OriginalSendChatMessage
@@ -504,6 +505,13 @@ function test.test_SendChatMessage_07()
 	calc.SendChatMessage( "+ ==", "GUILD", "language", "channel" )
 end
 ------------------
+-- token function
+------------------
+function test.test_Token_01()
+	calc.Command( "token" )
+	assertEquals( 12.3456, calc.Pop() )
+end
+------------------
 -- BNSendWhisper
 ------------------
 function test.test_ReplaceMessage_01()
@@ -563,6 +571,62 @@ end
 function test.test_Round_02()
 	calc.Command( "0.5 round" )
 	assertEquals( 1, calc.Pop() )
+end
+------------------
+-- Macros
+------------------
+function test.test_Macro_doesNotPerformMacroOnAssignment()
+	calc.Command( "macro tMacro 5000000 token / ceil" )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_performsMacro()
+	calc.Command( "macro tMacro2 5000000 token / ceil" )
+	calc.Command( "tMacro2" )
+	assertEquals( 405003, calc.Pop() )
+end
+function test.test_Macro_add_command_01()
+	calc.Command( "macro tMacro3 50 2 ^" )
+	assertEquals( "50 2 ^", calc_macros.tmacro3 )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_add_function_01()
+	calc.MacroAdd( "m1 5 15 /" )
+	assertEquals( "5 15 /", calc_macros.m1 )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_add_replace_01()
+	calc_macros = { ["m4"] = "42 6 /" }
+	calc.Command( "macro m4 15 5 -" )
+	assertEquals( "15 5 -", calc_macros.m4 )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_add_useFunctionNameShouldFail()
+	calc.Command( "macro pi 13 87 /")
+	assertIsNil( calc_macros["pi"] )
+end
+function test.test_Macro_del_function_01()
+	calc_macros = { ["m2"] = "5000000 pi /" }
+	calc.MacroDel( "m2" )
+	assertIsNil( calc_macros["m2"] )
+end
+function test.test_Macro_del_command_simple()
+	calc_macros = { ["m2"] = "5000000 pi /" }
+	calc.Command( "macro del m2" )
+	assertIsNil( calc_macros["m2"] )
+end
+function test.test_Macro_del_command_withExtra()
+	calc_macros = { ["m2"] = "5000000 pi /" }
+	calc.Command( "macro del m2 6 3 *" )
+	assertIsNil( calc_macros["m2"] )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_list_function_01()
+	calc_macros = { ["m3"] = "42 6 /" }
+	calc.MacroList()
+end
+function test.test_Macro_list_command_01()
+	calc_macros = { ["m3"] = "42 6 /" }
+	calc.Command( "macro list m3" )
 end
 
 
