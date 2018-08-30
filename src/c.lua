@@ -355,7 +355,7 @@ function calc.Parse( msg )
 		end
 	end
 end
-function calc.ProcessLine( msg )
+function calc.ProcessLine( msg, showErrors )
 	while msg and string.len(msg) > 0 do
 		msg = string.lower(msg)
 		-- print( "calc.Command( "..msg, string.len(msg).." )" )
@@ -372,7 +372,7 @@ function calc.ProcessLine( msg )
 				--print( "MACRO: "..msg )
 				calc.Macro( msg )
 				break
-			else
+			elseif showErrors then
 				print("?:"..val..":?")
 			end
 		end
@@ -380,7 +380,7 @@ function calc.ProcessLine( msg )
 	end
 end
 function calc.Command( msg )
-	calc.ProcessLine( msg )
+	calc.ProcessLine( msg, true )
 	calc.ShowStack()
 end
 
