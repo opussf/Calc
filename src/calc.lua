@@ -31,6 +31,7 @@ end
 -- add a command to quit
 calc.functions["quit"] = function() running=false end
 calc.functions["exit"] = calc.functions["quit"]
+calc.functions["q"] = calc.functions["quit"]
 print("Calc (v@VERSION@)")
 
 -- Start the game
