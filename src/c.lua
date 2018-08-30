@@ -14,6 +14,7 @@ COLOR_NEON_BLUE = "|cff4d4dff";
 COLOR_END = "|r";
 
 calc = {}
+calc_macros = {}
 calc.stack = {}
 calc.useDegree = nil -- set this to true to use degrees
 
@@ -214,6 +215,7 @@ function calc.Help()
 	calc.Print("   swap - swap last 2 values", false)
 	calc.Print("   fhelp - list of functions", false)
 	calc.Print("   whelp - list of variables from WoW", false)
+	calc.Print("   mhelp - macro help", false)
 end
 function calc.FHelp()
 	calc.Print("+ - * / % ^ ln ! pi e", false)
@@ -232,10 +234,18 @@ function calc.WHelp()
 	calc.Print("valor vp -- valor points", false)
 	calc.Print("token -- current token price, in gold", false)
 end
+function calc.MHelp()
+	calc.Print("macro <macroName> <macro Contents> -- create or replace macro <macroName>", false)
+	calc.Print("macro <macroName> -- show this macro", false)
+	calc.Print("macro list -- show macros", false)
+	calc.Print("macro del <macroName> -- delete <macroName>", false)
+	calc.Print("<macroName> -- use macro", false)
+end
 calc.functions = {
 	["help"] = calc.Help,
 	["fhelp"] = calc.FHelp,
 	["whelp"] = calc.WHelp,
+	["mhelp"] = calc.MHelp,
 
 	-- commands
 	["ac"] = function() calc.stack={} end,
@@ -286,6 +296,53 @@ calc.functions = {
 	["vp"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
 	["token"] = function() calc.Push( C_WowTokenPublic.GetCurrentMarketPrice() / 10000 or 0 ) end,
 }
+------
+-- Macro Code
+------
+function calc.MacroAdd( msg )
+	--print( "calc.MacroAdd( "..msg.." )" )
+	local macroName, macroStr = calc.Parse( msg )
+	--print( "macroName: "..macroName )
+	--print( "macroStr : "..macroStr )
+	if not calc.functions[macroName] then
+		calc_macros[macroName] = macroStr
+	end
+	calc.Print( ("Macro %s set to: %s"):format( macroName, macroStr ) )
+end
+function calc.MacroList( msg )
+	--print( "calc.MacroList( "..(msg or "nil").." )" )
+	for mName, mStr in pairs( calc_macros ) do
+		calc.Print( (">%s: %s"):format( mName, mStr ), false )
+	end
+end
+function calc.MacroDel( msg )
+	--print( "calc.MacroDel( "..msg.." )" )
+	local macroName = calc.Parse( msg )
+	--print( "macroName: "..macroName )
+	calc_macros[macroName] = nil
+	calc.Print( ("Macro %s has been deleted."):format( macroName ) )
+end
+calc.macroFunctions = {
+	["add"] = calc.MacroAdd,
+	["list"] = calc.MacroList,
+	["del"] = calc.MacroDel,
+}
+function calc.Macro( msgIn )
+	--print( "calc.Macro( "..msgIn.." )" )
+	local cmd, msg = calc.Parse( msgIn )
+	--print( "cmd: "..cmd )
+	--print( "msg: "..msg )
+	if calc.macroFunctions[cmd] then
+		--print( "call cmd: "..cmd.." with param: "..msg )
+		calc.macroFunctions[cmd]( msg )
+	else
+		--print( "unknown command, call add( "..msgIn.." )" )
+		calc.macroFunctions.add( msgIn )
+	end
+end
+------
+-- End Macro Code
+------
 
 function calc.Parse( msg )
 	if msg then
@@ -298,22 +355,32 @@ function calc.Parse( msg )
 		end
 	end
 end
-function calc.Command( msg )
+function calc.ProcessLine( msg, showErrors )
 	while msg and string.len(msg) > 0 do
 		msg = string.lower(msg)
-		--print( msg, string.len(msg) )
+		-- print( "calc.Command( "..msg, string.len(msg).." )" )
 		val, msg = calc.Parse( msg )
 		if val then
 			if calc.functions[val] then
 				calc.functions[val]()
 			elseif tonumber(val) then -- is a value
 				table.insert( calc.stack, tonumber(val) )
-			else
+			elseif calc_macros[val] then
+				--print( "CALL MACRO: "..val )
+				calc.ProcessLine( calc_macros[val] )
+			elseif val == "macro" then
+				--print( "MACRO: "..msg )
+				calc.Macro( msg )
+				break
+			elseif showErrors then
 				print("?:"..val..":?")
 			end
 		end
 		--print( val, msg )
 	end
+end
+function calc.Command( msg )
+	calc.ProcessLine( msg, true )
 	calc.ShowStack()
 end
 

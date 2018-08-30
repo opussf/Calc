@@ -3,16 +3,7 @@ function calc.ReplaceMessage( msgIn )
 	local hasEquals = strfind( msgIn, "==" )
 	if( hasEquals ) then
 		msg = string.lower( msgIn )
-		while msg and string.len( msg ) > 0 do
-			val, msg = calc.Parse( msg )
-			if val then
-				if calc.functions[val] then
-					calc.functions[val]()
-				elseif tonumber(val) then
-					table.insert( calc.stack, tonumber(val) )
-				end
-			end
-		end
+		calc.ProcessLine( msg )
 		local result = table.concat( calc.stack, " " )
 		msgNew = string.gsub( msgIn, "==", "= "..result )
 	end
@@ -35,3 +26,4 @@ function calc.VARIABLES_LOADED()
 	calc.OriginalBNSendWhisper = BNSendWhisper
 	BNSendWhisper = calc.BNSendWhisper
 end
+

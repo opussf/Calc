@@ -57,14 +57,17 @@ The operands currently supported are:
 * `asin` - arcsin of `x`
 * `acos` - arccos of `x`
 * `atan` - arctan of `x`
+* `ceil` - ceiling (round up)
+* `floor` - floor (round down)
+* `round` - normal round
 
 ### Commands
 The current commands supported are:
 * `AC` - All Clear - clear the entire stack
 * `deg` - sets trig functions to use degrees
 * `rad` - sets trig functions to use radians
-* `swap` - swaps `x` and `y`
-* `pop` - pops `x` from the stack
+* `swap` - swaps the last 2 values on the stack
+* `pop` - pops the last value from the stack
 
 ### WowVariables
 These will be replaced with the value at the time:
@@ -74,6 +77,15 @@ These will be replaced with the value at the time:
 * `health` | `hp` - your current max health.
 * `power` - your usable power max (rage / energy / mana)
 * `haste` - your haste rating
+* `token` - current price, in gold, of the WoW Token
+
+### Macros
+Create a macro that can be easily and quickly called.
+* `macro [add] <macroName> <macro string>`  -- creates <macroName> with <macro string>
+* `macro list` -- show all the macros
+* `macro del <macroName>` -- deletes macro <macroName>
+* `<macroName>` -- replaces <macroName> with the macro
+
 
 ### Entering data
 HP is notorius for using, or forcing the use of, **ENTER** to seperate values as they were entered on their calculators.
