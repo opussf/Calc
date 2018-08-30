@@ -600,6 +600,10 @@ function test.test_Macro_add_replace_01()
 	assertEquals( "15 5 -", calc_macros.m4 )
 	assertEquals( 0, #calc.stack )
 end
+function test.test_Macro_add_useFunctionNameShouldFail()
+	calc.Command( "macro pi 13 87 /")
+	assertIsNil( calc_macros["pi"] )
+end
 function test.test_Macro_del_function_01()
 	calc_macros = { ["m2"] = "5000000 pi /" }
 	calc.MacroDel( "m2" )
@@ -624,5 +628,6 @@ function test.test_Macro_list_command_01()
 	calc_macros = { ["m3"] = "42 6 /" }
 	calc.Command( "macro list m3" )
 end
+
 
 test.run()

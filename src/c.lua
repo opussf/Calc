@@ -304,7 +304,9 @@ function calc.MacroAdd( msg )
 	local macroName, macroStr = calc.Parse( msg )
 	--print( "macroName: "..macroName )
 	--print( "macroStr : "..macroStr )
-	calc_macros[macroName] = macroStr
+	if not calc.functions[macroName] then
+		calc_macros[macroName] = macroStr
+	end
 	calc.Print( ("Macro %s set to: %s"):format( macroName, macroStr ) )
 end
 function calc.MacroList( msg )
@@ -353,7 +355,7 @@ function calc.Parse( msg )
 		end
 	end
 end
-function calc.Command( msg )
+function calc.ProcessLine( msg )
 	while msg and string.len(msg) > 0 do
 		msg = string.lower(msg)
 		-- print( "calc.Command( "..msg, string.len(msg).." )" )
@@ -365,7 +367,7 @@ function calc.Command( msg )
 				table.insert( calc.stack, tonumber(val) )
 			elseif calc_macros[val] then
 				--print( "CALL MACRO: "..val )
-				calc.Command( calc_macros[val] )
+				calc.ProcessLine( calc_macros[val] )
 			elseif val == "macro" then
 				--print( "MACRO: "..msg )
 				calc.Macro( msg )
@@ -376,6 +378,9 @@ function calc.Command( msg )
 		end
 		--print( val, msg )
 	end
+end
+function calc.Command( msg )
+	calc.ProcessLine( msg )
 	calc.ShowStack()
 end
 
