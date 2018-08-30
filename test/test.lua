@@ -577,16 +577,52 @@ end
 ------------------
 function test.test_Macro_doesNotPerformMacroOnAssignment()
 	calc.Command( "macro tMacro 5000000 token / ceil" )
-	assertFalse( #calc.stack == 1 )
+	assertEquals( 0, #calc.stack )
 end
 function test.test_Macro_performsMacro()
-	calc.Command( "macro tMacro 5000000 token / ceil" )
-	calc.Command( "tMacro" )
+	calc.Command( "macro tMacro2 5000000 token / ceil" )
+	calc.Command( "tMacro2" )
 	assertEquals( 405003, calc.Pop() )
 end
-function test.test_Macro_assign()
-	calc.Command( "macro tMacro 50 2 ^" )
-	assertEquals( "50 2 ^", calc_macros.tMacro )
+function test.test_Macro_add_command_01()
+	calc.Command( "macro tMacro3 50 2 ^" )
+	assertEquals( "50 2 ^", calc_macros.tmacro3 )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_add_function_01()
+	calc.MacroAdd( "m1 5 15 /" )
+	assertEquals( "5 15 /", calc_macros.m1 )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_add_replace_01()
+	calc_macros = { ["m4"] = "42 6 /" }
+	calc.Command( "macro m4 15 5 -" )
+	assertEquals( "15 5 -", calc_macros.m4 )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_del_function_01()
+	calc_macros = { ["m2"] = "5000000 pi /" }
+	calc.MacroDel( "m2" )
+	assertIsNil( calc_macros["m2"] )
+end
+function test.test_Macro_del_command_simple()
+	calc_macros = { ["m2"] = "5000000 pi /" }
+	calc.Command( "macro del m2" )
+	assertIsNil( calc_macros["m2"] )
+end
+function test.test_Macro_del_command_withExtra()
+	calc_macros = { ["m2"] = "5000000 pi /" }
+	calc.Command( "macro del m2 6 3 *" )
+	assertIsNil( calc_macros["m2"] )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_list_function_01()
+	calc_macros = { ["m3"] = "42 6 /" }
+	calc.MacroList()
+end
+function test.test_Macro_list_command_01()
+	calc_macros = { ["m3"] = "42 6 /" }
+	calc.Command( "macro list m3" )
 end
 
 test.run()
