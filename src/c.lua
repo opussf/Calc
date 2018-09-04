@@ -66,7 +66,7 @@ function calc.Div()
 		end
 	end
 end
-function calc.oneOver()
+function calc.OneOver()
 	-- calc 1/x  (1/2 = 0.5)
 	if #calc.stack >= 1 then
 		calc.Push( 1 )
@@ -253,7 +253,7 @@ calc.functions = {
 	["rad"] = function() calc.useDegree = nil calc.Print("Set to use Radians") end,
 	["pop"] = calc.Pop,
 	["swap"] = calc.Swap,
-	["1/x"] = calc.oneOver,
+	["1/x"] = calc.OneOver,
 	-- functions
 	["+"] = calc.Add,
 	["-"] = calc.Sub,
