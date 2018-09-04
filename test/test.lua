@@ -628,6 +628,8 @@ function test.test_Macro_list_command_01()
 	calc_macros = { ["m3"] = "42 6 /" }
 	calc.Command( "macro list m3" )
 end
-
+function test.test_Macro_empty()
+	calc.Command( "macro" )
+end
 
 test.run()

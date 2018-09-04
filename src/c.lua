@@ -304,10 +304,14 @@ function calc.MacroAdd( msg )
 	local macroName, macroStr = calc.Parse( msg )
 	--print( "macroName: "..macroName )
 	--print( "macroStr : "..macroStr )
-	if not calc.functions[macroName] then
-		calc_macros[macroName] = macroStr
+	if macroName then
+		if not calc.functions[macroName] then
+			calc_macros[macroName] = macroStr
+		end
+		calc.Print( ("Macro %s set to: %s"):format( macroName, macroStr ) )
+	else
+		calc.MacroList()
 	end
-	calc.Print( ("Macro %s set to: %s"):format( macroName, macroStr ) )
 end
 function calc.MacroList( msg )
 	--print( "calc.MacroList( "..(msg or "nil").." )" )
