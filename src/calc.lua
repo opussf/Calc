@@ -24,7 +24,7 @@ end
 
 -- over-ride some functions.
 function calc.Print( msg )
-	msg = "("..(calc.useDegree and "d" or "r")..")> "..msg;
+	msg = "> "..msg;
 	print( msg )
 end
 
@@ -34,10 +34,10 @@ calc.functions["exit"] = calc.functions["quit"]
 calc.functions["q"] = calc.functions["quit"]
 print("Calc (v@VERSION@)")
 
--- Start the game
+-- Start the calculator
 running = true
 while running do
-	io.write("> ")
+	io.write( ("(%s)> "):format( calc.useDegree and "d" or "r" ) )
 	val = io.read("*line")
 	calc.Command( val )
 end
