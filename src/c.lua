@@ -300,10 +300,7 @@ calc.functions = {
 -- Macro Code
 ------
 function calc.MacroAdd( msg )
-	--print( "calc.MacroAdd( "..msg.." )" )
 	local macroName, macroStr = calc.Parse( msg )
-	--print( "macroName: "..macroName )
-	--print( "macroStr : "..macroStr )
 	if macroName then
 		if not calc.functions[macroName] then
 			calc_macros[macroName] = macroStr
@@ -314,15 +311,12 @@ function calc.MacroAdd( msg )
 	end
 end
 function calc.MacroList( msg )
-	--print( "calc.MacroList( "..(msg or "nil").." )" )
 	for mName, mStr in pairs( calc_macros ) do
 		calc.Print( (">%s: %s"):format( mName, mStr ), false )
 	end
 end
 function calc.MacroDel( msg )
-	--print( "calc.MacroDel( "..msg.." )" )
 	local macroName = calc.Parse( msg )
-	--print( "macroName: "..macroName )
 	calc_macros[macroName] = nil
 	calc.Print( ("Macro %s has been deleted."):format( macroName ) )
 end
@@ -332,15 +326,10 @@ calc.macroFunctions = {
 	["del"] = calc.MacroDel,
 }
 function calc.Macro( msgIn )
-	--print( "calc.Macro( "..msgIn.." )" )
 	local cmd, msg = calc.Parse( msgIn )
-	--print( "cmd: "..cmd )
-	--print( "msg: "..msg )
 	if calc.macroFunctions[cmd] then
-		--print( "call cmd: "..cmd.." with param: "..msg )
 		calc.macroFunctions[cmd]( msg )
 	else
-		--print( "unknown command, call add( "..msgIn.." )" )
 		calc.macroFunctions.add( msgIn )
 	end
 end
@@ -351,7 +340,6 @@ end
 function calc.Parse( msg )
 	if msg then
 		local a, b, c = strfind( msg, "(%S+)" )  -- location, size, matched
-		--print(string.format("msg: %s [] %s - %s - %s", msg, a, b, c ) )
 		if a then -- found a number
 			return c, strsub(msg, b+2)
 		else
@@ -370,17 +358,14 @@ function calc.ProcessLine( msg, showErrors )
 			elseif tonumber(val) then -- is a value
 				table.insert( calc.stack, tonumber(val) )
 			elseif calc_macros[val] then
-				--print( "CALL MACRO: "..val )
 				calc.ProcessLine( calc_macros[val] )
 			elseif val == "macro" then
-				--print( "MACRO: "..msg )
 				calc.Macro( msg )
 				break
 			elseif showErrors then
 				print("?:"..val..":?")
 			end
 		end
-		--print( val, msg )
 	end
 end
 function calc.Command( msg )
