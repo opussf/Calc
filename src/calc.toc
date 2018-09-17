@@ -4,7 +4,11 @@
 ## Author: opussf
 ## Version: @VERSION@
 ## Description: Command line calculator.
+<<<<<<< Updated upstream
 ## SavedVariables:
+=======
+## SavedVariables: calc_macros calc_settings
+>>>>>>> Stashed changes
 ## SavedVariablesPerCharacter:
 
 c.lua

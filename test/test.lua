@@ -15,6 +15,13 @@ require "c"
 function test.before()
 	calc.stack = {}
 	calc.useDegree = nil
+	calc.VARIABLES_LOADED()
+	calc_macros={}
+	calc_settings={}
+end
+function test.after()
+	SendChatMessage = OriginalSendChatMessage
+	BNSendWhisper = OriginalBNSendWhisper
 end
 
 function test.test_MSG_ADDONNAME()
@@ -414,6 +421,216 @@ end
 function test.test_oneOver3()
 	calc.Command( "1 1/x" )
 	assertEquals( 1, calc.Pop() )
+end
+-- temperature functions
+function test.test_toC_bodyTemp()
+	-- the expected values are 'rounded' versions of the actual.  Use ceiling to 'fix' this.
+	calc.Command( "98.6 toC" )
+	assertEquals( 37, math.ceil( calc.stack[1] ) )
+end
+function test.test_toC_waterFreeze()
+	calc.Command( "32 toC" )
+	assertEquals( 0, calc.Pop() )
+end
+function test.test_toC_dryIce()
+	calc.Command( "-109.3 toC" )
+	assertEquals( -78.5, calc.Pop() )
+end
+function test.test_toF_bodyTemp()
+	-- the actual value needs to be 'adjusted' to the truncated expected.
+	calc.Command( "37 toF" )
+	assertEquals( 98.6, math.floor( calc.Pop() * 10 ) / 10 )
+end
+function test.test_toF_waterFreeze()
+	calc.Command( "0 toF" )
+	assertEquals( 32, calc.Pop() )
+end
+function test.test_toF_dryIce()
+	-- the actual value needs to be 'adjusted' to the truncated expected.
+	calc.Command( "-78.5 toF" )
+	assertEquals( -109.3, math.floor( calc.Pop() * 10 ) / 10 )
+end
+function test.test_toC_moltenLead()
+	calc.Command( "621.5 toC" )
+	assertEquals( 327.5, calc.Pop() )
+end
+function test.test_toF_moltenLead()
+	calc.Command( "327.5 toF" )
+	assertEquals( 621.5, calc.Pop() )
+end
+function test.test_toF_sameValue()
+	calc.Command( "-40 toF" )
+	assertEquals( -40, calc.Pop() )
+end
+function test.test_toC_sameValue()
+	calc.Command( "-40 toC" )
+	assertEquals( -40, calc.Pop() )
+end
+function test.test_toC_noValue()
+	calc.Command( "toC" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
+function test.test_toF_noValue()
+	calc.Command( "toF" )
+	assertEquals( 0, table.getn( calc.stack ) )
+end
+------------------
+-- Chat
+------------------
+function test.test_SendChatMessage_01()
+	calc.SendChatMessage( "10 ==", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_02()
+	calc.SendChatMessage( "As we can see: 10 20 + ==", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_03()
+	calc.SendChatMessage( "10 20 +", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_04()
+	calc.SendChatMessage( "No numbers here.", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_05()
+	calc.SendChatMessage( "10 30 ==", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_06()
+	calc.Command( "16 toF" )
+	calc.SendChatMessage( "toc == ", "GUILD", "language", "channel" )
+end
+function test.test_SendChatMessage_07()
+	calc.SendChatMessage( "10 30 ==", "GUILD", "language", "channel" )
+	calc.SendChatMessage( "+ ==", "GUILD", "language", "channel" )
+end
+------------------
+-- token function
+------------------
+function test.test_Token_01()
+	calc.Command( "token" )
+	assertEquals( 12.3456, calc.Pop() )
+end
+------------------
+-- BNSendWhisper
+------------------
+function test.test_ReplaceMessage_01()
+	assertEquals( "2 5 * = 10", calc.ReplaceMessage( "2 5 * ==" ) )
+end
+function test.test_BNSendWhisper_01()
+	calc.BNSendWhisper( 10, "10 ==" )
+end
+------------------
+-- Ceiling, Floor, and Round
+------------------
+function test.test_Ceil_00()
+	calc.Command( "ceil" )
+end
+function test.test_Ceil_01()
+	calc.Command( "0.4 ceil" )
+	assertEquals( 1, calc.Pop() , "Should round up to 1" )
+end
+function test.test_Ceil_02()
+	calc.Command( "43.23 ceil" )
+	assertEquals( 44, calc.Pop() )
+end
+function test.test_Ceil_03()
+	calc.Command( "106 toC ceil" )
+	assertEquals( 42, calc.Pop() )
+end
+function test.test_Ceil_04()
+	calc.Command( "10 1.5 ceil /" )
+	assertEquals( 5, calc.Pop() )
+end
+function test.test_Floor_00()
+	calc.Command( "floor" )
+end
+function test.test_Floor_01()
+	calc.Command( "0.6 floor" )
+	assertEquals( 0, calc.Pop(), "Should round down to 0" )
+end
+function test.test_Floor_02()
+	calc.Command( "43.23 floor" )
+	assertEquals( 43, calc.Pop() )
+end
+function test.test_Floor_03()
+	calc.Command( "106 toC floor" )
+	assertEquals( 41, calc.Pop() )
+end
+function test.test_Floor_04()
+	calc.Command( "10 1.5 floor /" )
+	assertEquals( 10, calc.Pop() )
+end
+function test.test_Round_00()
+	calc.Command( "round" )
+end
+function test.test_Round_01()
+	calc.Command( "0.4 round" )
+	assertEquals( 0, calc.Pop() )
+end
+function test.test_Round_02()
+	calc.Command( "0.5 round" )
+	assertEquals( 1, calc.Pop() )
+end
+------------------
+-- Macros
+------------------
+function test.test_Macro_doesNotPerformMacroOnAssignment()
+	calc.Command( "macro tMacro 5000000 token / ceil" )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_performsMacro()
+	calc.Command( "macro tMacro2 5000000 token / ceil" )
+	calc.Command( "tMacro2" )
+	assertEquals( 405003, calc.Pop() )
+end
+function test.test_Macro_add_command_01()
+	calc.Command( "macro tMacro3 50 2 ^" )
+	assertEquals( "50 2 ^", calc_macros.tmacro3 )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_add_function_01()
+	calc.MacroAdd( "m1 5 15 /" )
+	assertEquals( "5 15 /", calc_macros.m1 )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_add_replace_01()
+	calc_macros = { ["m4"] = "42 6 /" }
+	calc.Command( "macro m4 15 5 -" )
+	assertEquals( "15 5 -", calc_macros.m4 )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_add_useFunctionNameShouldFail()
+	calc.Command( "macro pi 13 87 /")
+	assertIsNil( calc_macros["pi"] )
+end
+function test.test_Macro_del_function_01()
+	calc_macros = { ["m2"] = "5000000 pi /" }
+	calc.MacroDel( "m2" )
+	assertIsNil( calc_macros["m2"] )
+end
+function test.test_Macro_del_command_simple()
+	calc_macros = { ["m2"] = "5000000 pi /" }
+	calc.Command( "macro del m2" )
+	assertIsNil( calc_macros["m2"] )
+end
+function test.test_Macro_del_command_withExtra()
+	calc_macros = { ["m2"] = "5000000 pi /" }
+	calc.Command( "macro del m2 6 3 *" )
+	assertIsNil( calc_macros["m2"] )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Macro_list_function_01()
+	calc_macros = { ["m3"] = "42 6 /" }
+	calc.MacroList()
+end
+function test.test_Macro_list_command_01()
+	calc_macros = { ["m3"] = "42 6 /" }
+	calc.Command( "macro list m3" )
+end
+function test.test_Macro_empty()
+	calc.Command( "macro" )
+end
+---- Infix
+
+function test.test_Infix_setInfixMode()
+	calc.Command( "infix" )
 end
 
 test.run()

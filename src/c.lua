@@ -14,6 +14,11 @@ COLOR_NEON_BLUE = "|cff4d4dff";
 COLOR_END = "|r";
 
 calc = {}
+<<<<<<< Updated upstream
+=======
+calc_macros = {}
+calc_settings = {}
+>>>>>>> Stashed changes
 calc.stack = {}
 calc.useDegree = nil -- set this to true to use degrees
 
@@ -192,9 +197,10 @@ calc.functions = {
 	["whelp"] = calc.WHelp,
 
 	-- commands
-	["ac"] = function() calc.stack={} end,
 	["deg"] = function() calc.useDegree = true calc.Print("Set to use Degrees") end,
 	["rad"] = function() calc.useDegree = nil calc.Print("Set to use Radians") end,
+	-- stack commands
+	["ac"] = function() calc.stack={} end,
 	["pop"] = calc.Pop,
 	["swap"] = calc.Swap,
 	["1/x"] = calc.oneOver,
@@ -203,6 +209,7 @@ calc.functions = {
 	["-"] = calc.Sub,
 	["*"] = calc.Mul,
 	["/"] = calc.Div,
+	["1/x"] = calc.OneOver,
 	["%"] = calc.Percent,
 	["sin"] = calc.Sin,
 	["cos"] = calc.Cos,
