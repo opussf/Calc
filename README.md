@@ -2,12 +2,17 @@
 A RPN calculator for WoW
 
 # RPN (postfix)
-In short, RPN is a way of writing calculations without the need of brackets.
+In short, RPN is a way of writing calculations where the function follows the set of values it works on.
 Values are entered, and then the operands are given to work with the previous 1 or 2 values.
-In the simple case of `1 + 2`, a user would enter `1 2 +`, and the result would be the remaining value.
+In the simple case of adding the values 1 and 2, a user would enter `1 2 +`, and the result would be the remaining value.
 
-RPN uses the idea of a stack, where values are pushed on and operands pop off the last 1 or 2 values and push on the result.
+RPN does not depend on syntax and an order of operation.
+It depends on the user to define that in the way that calculations are entered.
+
+Implementing an RPN calculator can be done with a stack data structure.
+Values are pushed on and functions pop off the required number of values and push on the result.
 In the example above `1 2 +` pushes 1 and 2 onto the stack, `+` then pops off `1` and `2`, adds them together and pushes `3` back to the stack.
+In the case of a function that takes a single value, like factorial(!), or `sin`, `5 !` pops off a single value, and pushes on the result.
 
 Conversion of complicated equations is much simplier that one might expect.
 In case the reader does not wish to research this on their own, I'll give a quick example.
@@ -52,14 +57,17 @@ The operands currently supported are:
 * `asin` - arcsin of `x`
 * `acos` - arccos of `x`
 * `atan` - arctan of `x`
+* `ceil` - ceiling (round up)
+* `floor` - floor (round down)
+* `round` - normal round
 
 ### Commands
 The current commands supported are:
 * `AC` - All Clear - clear the entire stack
 * `deg` - sets trig functions to use degrees
 * `rad` - sets trig functions to use radians
-* `swap` - swaps `x` and `y`
-* `pop` - pops `x` from the stack
+* `swap` - swaps the last 2 values on the stack
+* `pop` - pops the last value from the stack
 
 ### WowVariables
 These will be replaced with the value at the time:
@@ -69,6 +77,15 @@ These will be replaced with the value at the time:
 * `health` | `hp` - your current max health.
 * `power` - your usable power max (rage / energy / mana)
 * `haste` - your haste rating
+* `token` - current price, in gold, of the WoW Token
+
+### Macros
+Create a macro that can be easily and quickly called.
+* `macro [add] <macroName> <macro string>`  -- creates <macroName> with <macro string>
+* `macro list` -- show all the macros
+* `macro del <macroName>` -- deletes macro <macroName>
+* `<macroName>` -- replaces <macroName> with the macro
+
 
 ### Entering data
 HP is notorius for using, or forcing the use of, **ENTER** to seperate values as they were entered on their calculators.
@@ -79,3 +96,18 @@ To streamline this a bit, the entire set of commands can be entered as a single 
     /calc 2
     /calc +
 Would be the same as `/calc 3 2 +`.
+
+### Usage outside of WoW
+While this was intended to be an addon for WoW, I have installed this on a few machines as a command line tool.
+
+The `calc.lua` source files creates a wrapper to allow `c.lua` to be used outside of WoW.
+This removes some of the WoW specific commands, overwrites the `Print` function, and creates a running loop complete with commands to exit.
+
+#### Install
+Installation of this on a linux / Mac machine is fairly simple.
+* Install LUA
+* Copy `c.lua` and `calc.lua` to the `/usr/local/bin/` directory (other places can be used, edit `calc.lua` to allow discovery).
+* Rename `calc.lua` to `calc` and make it executable.
+
+You will now be able to call `calc` from the command line.
+The new commands, 'exit' or 'quit', will quit the calculator.

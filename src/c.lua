@@ -14,11 +14,8 @@ COLOR_NEON_BLUE = "|cff4d4dff";
 COLOR_END = "|r";
 
 calc = {}
-<<<<<<< Updated upstream
-=======
 calc_macros = {}
 calc_settings = {}
->>>>>>> Stashed changes
 calc.stack = {}
 calc.useDegree = nil -- set this to true to use degrees
 
@@ -70,7 +67,7 @@ function calc.Div()
 		end
 	end
 end
-function calc.oneOver()
+function calc.OneOver()
 	-- calc 1/x  (1/2 = 0.5)
 	if #calc.stack >= 1 then
 		calc.Push( 1 )
@@ -166,6 +163,50 @@ function calc.Swap()
 	calc.Push( X )
 	calc.Push( Y )
 end
+function calc.ToC()
+	-- F 32 - 9 5 / /
+	if #calc.stack >= 1 then
+		calc.Push( 32 )
+		calc.Sub()
+		calc.Push( 9 )
+		calc.Push( 5 )
+		calc.Div()
+		calc.Div()
+	end
+end
+function calc.ToF()
+	-- C 9 5 / * 32 +
+	if #calc.stack >= 1 then
+		calc.Push( 9 )
+		calc.Push( 5 )
+		calc.Div()
+		calc.Mul()
+		calc.Push( 32 )
+		calc.Add()
+	end
+end
+function calc.Ceil()
+	if #calc.stack >= 1 then
+		calc.Push( math.ceil( calc.Pop() ) )
+	end
+end
+function calc.Floor()
+	if #calc.stack >= 1 then
+		calc.Push( math.floor( calc.Pop() ) )
+	end
+end
+function calc.Round()
+	if #calc.stack >= 1 then
+		local X = calc.Pop()
+		local _, frac = math.modf( X )
+		if frac < 0.5 then
+			calc.Push( math.floor( X ) )
+		else -- >= 0.5
+			calc.Push( math.ceil( X ) )
+		end
+	end
+end
+
 function calc.Help()
 	calc.Print(CALC_MSG_ADDONNAME.." v"..CALC_MSG_VERSION, false)
 	calc.Print("is a RPN calculator. Where '5 2 -' subtracts 2 from 5.", false)
@@ -175,11 +216,13 @@ function calc.Help()
 	calc.Print("   swap - swap last 2 values", false)
 	calc.Print("   fhelp - list of functions", false)
 	calc.Print("   whelp - list of variables from WoW", false)
+	calc.Print("   mhelp - macro help", false)
 end
 function calc.FHelp()
 	calc.Print("+ - * / % ^ ln ! pi e", false)
 	calc.Print("sin cos tan asin acos atan", false)
-	calc.Print("1/x")
+	calc.Print("1/x toC toF", false)
+	calc.Print("ceil floor round", false)
 end
 function calc.WHelp()
 	calc.Print("gold silver copper -- current money in those units", false)
@@ -190,11 +233,20 @@ function calc.WHelp()
 	calc.Print("honor -- honor points", false)
 	calc.Print("justice jp -- justice points", false)
 	calc.Print("valor vp -- valor points", false)
+	calc.Print("token -- current token price, in gold", false)
+end
+function calc.MHelp()
+	calc.Print("macro <macroName> <macro Contents> -- create or replace macro <macroName>", false)
+	calc.Print("macro <macroName> -- show this macro", false)
+	calc.Print("macro list -- show macros", false)
+	calc.Print("macro del <macroName> -- delete <macroName>", false)
+	calc.Print("<macroName> -- use macro", false)
 end
 calc.functions = {
 	["help"] = calc.Help,
 	["fhelp"] = calc.FHelp,
 	["whelp"] = calc.WHelp,
+	["mhelp"] = calc.MHelp,
 
 	-- commands
 	["deg"] = function() calc.useDegree = true calc.Print("Set to use Degrees") end,
@@ -203,7 +255,7 @@ calc.functions = {
 	["ac"] = function() calc.stack={} end,
 	["pop"] = calc.Pop,
 	["swap"] = calc.Swap,
-	["1/x"] = calc.oneOver,
+	["1/x"] = calc.OneOver,
 	-- functions
 	["+"] = calc.Add,
 	["-"] = calc.Sub,
@@ -220,9 +272,15 @@ calc.functions = {
 	["^"] = calc.Power,
 	["ln"] = calc.Log,
 	["!"] = calc.Factorial,
+	["ceil"] = calc.Ceil,
+	["floor"] = calc.Floor,
+	["round"] = calc.Round,
 	-- constants
 	["pi"] = function() calc.Push( math.pi ) end,
 	["e"] = function() calc.Push( math.exp(1) ) end,
+	-- tempConversions
+	["toc"] = calc.ToC,
+	["tof"] = calc.ToF,
 	-- wowVariables
 	["gold"] = function() table.insert( calc.stack, GetMoney() / 10000 ) end,
 	["silver"] = function() table.insert( calc.stack, GetMoney() / 100 ) end,
@@ -239,12 +297,52 @@ calc.functions = {
 	["jp"] = function() calc.Push( select(2, GetCurrencyInfo(395) ) or 0 ) end,
 	["valor"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
 	["vp"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
+	["token"] = function() calc.Push( C_WowTokenPublic.GetCurrentMarketPrice() / 10000 or 0 ) end,
 }
+------
+-- Macro Code
+------
+function calc.MacroAdd( msg )
+	local macroName, macroStr = calc.Parse( msg )
+	if macroName then
+		if not calc.functions[macroName] then
+			calc_macros[macroName] = macroStr
+		end
+		calc.Print( ("Macro %s set to: %s"):format( macroName, macroStr ) )
+	else
+		calc.MacroList()
+	end
+end
+function calc.MacroList( msg )
+	for mName, mStr in pairs( calc_macros ) do
+		calc.Print( (">%s: %s"):format( mName, mStr ), false )
+	end
+end
+function calc.MacroDel( msg )
+	local macroName = calc.Parse( msg )
+	calc_macros[macroName] = nil
+	calc.Print( ("Macro %s has been deleted."):format( macroName ) )
+end
+calc.macroFunctions = {
+	["add"] = calc.MacroAdd,
+	["list"] = calc.MacroList,
+	["del"] = calc.MacroDel,
+}
+function calc.Macro( msgIn )
+	local cmd, msg = calc.Parse( msgIn )
+	if calc.macroFunctions[cmd] then
+		calc.macroFunctions[cmd]( msg )
+	else
+		calc.macroFunctions.add( msgIn )
+	end
+end
+------
+-- End Macro Code
+------
 
 function calc.Parse( msg )
 	if msg then
 		local a, b, c = strfind( msg, "(%S+)" )  -- location, size, matched
-		--print(string.format("msg: %s [] %s - %s - %s", msg, a, b, c ) )
 		if a then -- found a number
 			return c, strsub(msg, b+2)
 		else
@@ -252,22 +350,29 @@ function calc.Parse( msg )
 		end
 	end
 end
-function calc.Command( msg )
+function calc.ProcessLine( msg, showErrors )
 	while msg and string.len(msg) > 0 do
 		msg = string.lower(msg)
-		--print( msg, string.len(msg) )
+		-- print( "calc.Command( "..msg, string.len(msg).." )" )
 		val, msg = calc.Parse( msg )
 		if val then
 			if calc.functions[val] then
 				calc.functions[val]()
 			elseif tonumber(val) then -- is a value
 				table.insert( calc.stack, tonumber(val) )
-			else
+			elseif calc_macros[val] then
+				calc.ProcessLine( calc_macros[val] )
+			elseif val == "macro" then
+				calc.Macro( msg )
+				break
+			elseif showErrors then
 				print("?:"..val..":?")
 			end
 		end
-		--print( val, msg )
 	end
+end
+function calc.Command( msg )
+	calc.ProcessLine( msg, true )
 	calc.ShowStack()
 end
 

@@ -76,6 +76,15 @@ class In2end( object ):
 		while( len(self.opStack) ):
 			self.moveFromOpStack()
 
+def main():
+	con = In2end()
+	running = true
+	while( running ):
+		line = input(">")
+		con.parse( line )
+		print( con )
+		running = line
+
 if __name__ == "__main__":
 	import unittest
 	class ShuntingTest( unittest.TestCase ):
@@ -141,4 +150,5 @@ if __name__ == "__main__":
 			self.con.parse( "1/1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6 + 1/7 + 1/8 + 1/9")
 			self.assertEquals( "", str(self.con) )
 
-	unittest.main()
+	-- unittest.main()
+	main()
