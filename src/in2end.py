@@ -2,7 +2,7 @@
 
 class In2end( object ):
 	""" This takes an infix equation, and makes an endfix (RPN) representation of it.
-	It is an atempt to implement Edsger Dijkstra's method.
+	It is an attempt to implement Edsger Dijkstra's method.
 	https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 	http://scriptasylum.com/tutorials/infix_postfix/algorithms/infix-postfix/
 	"""

@@ -22,10 +22,7 @@ function test.before()
 	calc.useDegree = nil
 	calc.VARIABLES_LOADED()
 	calc_macros={}
-<<<<<<< HEAD
 	calc_settings={}
-=======
->>>>>>> develop
 end
 function test.after()
 	SendChatMessage = OriginalSendChatMessage
