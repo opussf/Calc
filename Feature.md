@@ -22,9 +22,10 @@ There are 3 ways that I can think of currently to handle this:
 
 Questions:
 * How does this handle the stack nature of the calculator?
-* How handle `5<enter>` `+<enter>` `5<enter`
+* How to handle `5<enter>` `+<enter>` `5<enter>`
 	- Build a string, converting to RPN each time. Only complete if a value can be returned from the string.
 	`5 +` is not a valid inFix
+
 
 ## tempFunctions
 Add `toC` and `toF` functions.

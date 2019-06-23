@@ -650,13 +650,22 @@ function test.test_Infix_inlineComplex()
 	calc.Command( "(2+3*2)" )  -- should be 8, not 10  2 + 6 = 8
 	assertEquals( 8, calc.Pop() )
 end
+function test.test_Infix_inlineIncomplete()
+	calc.Command( "(2+3*2" )  -- I'm really not sure what to do here....???  Maybe assume closing ) because of EOL?
+	assertEquals( 8, calc.Pop() )
+end
 function test.test_Infix_inlineComplex_grouped()
 	calc.Command( "((2+3)*2)" )  -- 5 * 2 = 10
 	assertEquals( 10, calc.Pop() )
 end
-function test.test_Infix_setInfixMode_simple()
+function test.test_Infix_useInfixMode_simple()
 	calc.Command( "infix" )
 	calc.Command( "2+3" )
+	assertEquals( 5, calc.Pop() )
+end
+function test.test_Infix_useInfixMode_spaces()
+	calc.Command( "infix" )
+	calc.Command( "2 + 3" )
 	assertEquals( 5, calc.Pop() )
 end
 
