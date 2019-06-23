@@ -1,11 +1,11 @@
-<project name="calc" default="package">
+<project name="wowAddonBuild" default="package">
 
 	<tstamp/>
 	<property file="build.properties"/>
 	<property environment="env"/>
 	<property name="env.BUILD_NUMBER" value=""/>
 	<property name="build.number" value=""/>
-	<property name="addon.dir" location="${ADDONLOC}/${ant.project.name}"/>
+	<property name="addon.dir" location="${ADDONLOC}/${ADDONNAME}"/>
 	<!--  Pull git repo info -->
 	<!-- Get the last tag reachable from this branch -->
 	<exec executable="git" dir="." outputproperty="git.tag" failifexecutionfails="false" errorproperty="">
@@ -52,7 +52,7 @@
 	<echo>Building: ${version.number}</echo>
 	<!-- end git repo info -->
 
-	<property name="project.zip" value="${ant.project.name}_${version.number}.zip"/>
+	<property name="project.zip" value="${ADDONNAME}_${version.number}.zip"/>
 	<property name="test.dir" location="test"/>
 
 	<property name="target.dir" location="target"/>
@@ -88,7 +88,7 @@
 	</target>
 
 	<target name="package" depends="changelog, test" description="Create a deploy package">
-		<property name="package.dir" location="${working.dir}/${ant.project.name}"/>
+		<property name="package.dir" location="${working.dir}/${ADDONNAME}"/>
 		<delete dir="${package.dir}" verbose="false"/>
 		<copy	todir="${package.dir}" filtering="true" flatten="true">
 			<fileset dir=".">
@@ -97,7 +97,7 @@
 		</copy>
 		<zip 	destfile="${target.dir}/${project.zip}"
 				basedir="${working.dir}"
-				includes="${ant.project.name}/**"/>
+				includes="${ADDONNAME}/**"/>
 		<checksum file="${target.dir}/${project.zip}"
 				  property="zip.md5" />
 		<echo file="${target.dir}/${project.zip}.md5">${zip.md5} ${project.zip}${line.separator}</echo>
@@ -134,7 +134,7 @@
 	</target>
 
 	<target name="curse" depends="package" description="Push to CurseForge repo location.">
-		<property name="curse.dir" location="${ant.project.name}-cf"/>
+		<property name="curse.dir" location="${ADDONNAME}-cf"/>
 		<copy todir="${curse.dir}">
 			<fileset dir="${package.dir}"/>
 		</copy>

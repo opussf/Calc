@@ -377,4 +377,5 @@ function calc.Command( msg )
 end
 
 SLASH_CALC1 = "/CALC"
+SLASH_CALC2 = "/RPN"
 SlashCmdList["CALC"] = calc.Command
