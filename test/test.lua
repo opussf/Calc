@@ -635,6 +635,29 @@ end
 ---- Infix
 function test.test_Infix_setInfixMode()
 	calc.Command( "infix" )
+	assertTrue( calc_settings.useInfix )
+end
+function test.test_Infix_setBackToRPN()
+	calc_settings.useInfix = true
+	calc.Command( "rpn" )
+	assertIsNil( calc_settings.useInfix )
+end
+function test.test_Infix_inlineSimple()
+	calc.Command( "(2+3)" )
+	assertEquals( 5, calc.Pop() )
+end
+function test.test_Infix_inlineComplex()
+	calc.Command( "(2+3*2)" )  -- should be 8, not 10  2 + 6 = 8
+	assertEquals( 8, calc.Pop() )
+end
+function test.test_Infix_inlineComplex_grouped()
+	calc.Command( "((2+3)*2)" )  -- 5 * 2 = 10
+	assertEquals( 10, calc.Pop() )
+end
+function test.test_Infix_setInfixMode_simple()
+	calc.Command( "infix" )
+	calc.Command( "2+3" )
+	assertEquals( 5, calc.Pop() )
 end
 
 test.run()
