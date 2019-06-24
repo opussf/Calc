@@ -5,7 +5,7 @@
 ## Version: @VERSION@
 ## Description: Command line calculator.
 ## SavedVariables:
-## SavedVariables: calc_macros calc_settings
+## SavedVariables: calc_macros
 ## SavedVariablesPerCharacter:
 
 c.lua

@@ -662,12 +662,16 @@ function test.test_Infix_inlineComplex_grouped()
 	calc.Command( "((2+3)*2)" )  -- 5 * 2 = 10
 	assertEquals( 10, calc.Pop() )
 end
-function test.test_Infix_useInfixMode_simple()
+function test.test_Infix_inlineComplex_manygroups()
+	calc.Command( "(4+8)*((6-5)/((3-2)*(2+2)))" )
+	assertEquals( 3, calc.Pop() )
+end
+function test.notest_Infix_useInfixMode_simple()
 	calc.Command( "infix" )
 	calc.Command( "2+3" )
 	assertEquals( 5, calc.Pop() )
 end
-function test.test_Infix_useInfixMode_spaces()
+function test.notest_Infix_useInfixMode_spaces()
 	calc.Command( "infix" )
 	calc.Command( "2 + 3" )
 	assertEquals( 5, calc.Pop() )
@@ -690,5 +694,62 @@ function test.test_Infix_inline_variables_pi()
 	assert( calc.stack[1] < 3.142 )
 	assertEquals( math.pi, calc.stack[1] )
 end
+function test.test_Infix_inline_multiply_pi_first()
+	calc.Command( "( pi * 2 )" )
+	assert( calc.stack[1] > 6.283, "remaining value:"..calc.stack[1] )
+	assert( calc.stack[1] < 6.284, "DAMN" )
+	assertEquals( math.pi*2, calc.stack[1] )
+end
+function test.test_Infix_inline_variables_e()
+	calc.Command( "(e)" )
+	assert( calc.stack[1] > 2.718 )
+	assert( calc.stack[1] < 2.719 )
+	assertEquals( math.exp(1), calc.stack[1] )
+end
+function test.test_Infix_inline_variables_gold()
+	myCopper = 123456
+	calc.Command( "(gold)" )
+	assertEquals( 12.3456, calc.Pop() )
+end
+function test.test_Infix_inlineComplex_percent()
+	calc.Command( "(20 + 5 % )" )   -- 20 5 % +
+	assertEquals( 21, calc.Pop() )
+end
+function test.test_Infix_inline_doubleNeg()
+	calc.Command( "(20 - -5) 20 -5 -" )
+	assertEquals( 25, calc.Pop() )
+end
+function test.test_Infix_inline_useZero_first()
+	calc.Command( "( 0 + 17 )" )
+	assertEquals( 17, calc.Pop() )
+end
+function test.test_Infix_inline_useZero_second()
+	calc.Command( "( 42 - 0 )" )
+	assertEquals( 42, calc.Pop() )
+end
+function test.test_Infix_inline_empty()
+	-- regression test.  Used to cause a stackoverflow.
+	calc.Command( "()" )
+	assertEquals( 0, #calc.stack )
+end
+function test.test_Infix_inline_factorial()
+	calc.Command( "( 5 ! )" )
+	assertEquals( 120, calc.Pop() )
+end
+function test.test_Infix_inlinemixed_extraValuesOnStack()
+	calc.Command( "(20 +5) 1 2 3" )
+	assertEquals( 4, #calc.stack )
+end
+function test.test_Infix_inlinemixed_nested_extraValuesOnStack()
+	calc.Command( "((4+8)*((6-5)/((3-2)*(2+2)))) 15 42 17 92" )
+	assertEquals( 5, #calc.stack )
+	assertEquals( 3, calc.stack[1] )
+end
+function test.test_Infix_inlinemixed_nested_extraValuesOnStack_withSpaces()
+	calc.Command( "( ( 4 + 8 ) * ( ( 6 - 5 ) / ( ( 3 - 2 ) * ( 2 + 2 ) ) ) ) 15 42 17 92" )
+	assertEquals( 5, #calc.stack )
+	assertEquals( 3, calc.stack[1] )
+end
+
 
 test.run()
