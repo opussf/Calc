@@ -360,17 +360,31 @@ function calc.In2end( txtIn )
 
 	local txtOut = {}
 	value = nil
+	decimal = nil
 	txtIn:gsub(".", function( c )
 		--print( "PROCESS: >"..c.."<" )
 		v = tonumber(c)
 		if v then  -- is a number.  append to value or create
 			--print( "VALUE:"..v)
+			if decimal ~= nil then -- decimal is >=0 if a "." has been seen.
+				value = value and value * math.pow( 10, decimal ) or 0
+			end
 			value = value and value*10 + v or v
+			decimal = (decimal and decimal>=0) and decimal + 1  -- increment decimal if set
+			if decimal ~= nil then --
+				value = value / math.pow( 10, decimal )
+			end
+			print( "decimal: "..( (decimal and decimal >=0) and decimal or "nil" ) )
+			print( "value  : "..value )
+		elseif( c == "." ) then
+			print( "Set decimal to 0" )
+			decimal = 0
 		elseif operators[c] then -- this is an operator
 			--print( "OPERATOR:>"..c.."<" )
 			if value then -- if value is set, push the value to the stack and reset
 				result[#result+1] = value
 				value = nil
+				decimal = nil
 			end
 			while( #opstack > 0 ) do
 				-- print( "opstack: "..table.concat( opstack, " " ) )
@@ -391,6 +405,7 @@ function calc.In2end( txtIn )
 			if value then  -- save the value if set.
 				result[#result+1] = value
 				value = nil
+				decimal = nil
 			end
 			while( c ~= "(" ) do
 				table.insert( result, table.remove( opstack ) ) -- move an operator from the opstack to the result stack
@@ -412,9 +427,14 @@ function calc.In2end( txtIn )
 		table.insert( result, table.remove( opstack ) ) -- move an operator from the opstack to the result stack
 	end
 
+	-- process each item in here
+	for _,msg in ipairs( result ) do
+		-- print( "do:"..msg)
+		calc.ProcessLine( msg )
+	end
+
 	print( "END result:"..table.concat( result, " " ) )
 	print( "END txtOut:"..table.concat( txtOut, "" ) )
-
 
 
 end
@@ -435,12 +455,27 @@ end
 function calc.ProcessLine( msg, showErrors )
 	while msg and string.len(msg) > 0 do
 		msg = string.lower(msg)
-		if calc_settings.useInfix then
-			msg = calc.In2end( msg )
-		end
+		--if calc_settings.useInfix then
+		--	msg = calc.In2end( msg )
+		--end
 		-- print( "calc.Command( "..msg, string.len(msg).." )" )
 		val, msg = calc.Parse( msg )
-		--print( "val:"..val.." :"..( val[1]=="(" and "true" or "false").." :"..msg )
+		--[[
+		if calc_settings.useInfix then  --  LOLZ...  hack!
+			val = "("..val .. msg .. ")"
+			msg = ""
+		end
+		]]
+		print( "val:"..val.." :"..( val:sub(1,1)=="(" and "true" or "false").." :"..msg )
+		if val and val:sub(1,1) == "(" then
+			print( "Found possible INLINE" )
+			if not string.match( val..""..msg, "[)]" ) then
+				print( "incomplete: "..val..msg )
+				msg = msg .. ")"
+			end
+			val = val .. msg
+			msg = ""
+		end
 		if val then
 			if calc.functions[val] then
 				calc.functions[val]()
