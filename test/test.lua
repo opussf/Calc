@@ -633,6 +633,7 @@ function test.test_Macro_empty()
 	calc.Command( "macro" )
 end
 ---- Infix
+--[[
 function test.test_Infix_setInfixMode()
 	calc.Command( "infix" )
 	assertTrue( calc_settings.useInfix )
@@ -642,6 +643,7 @@ function test.notest_Infix_setBackToRPN()
 	calc.Command( "rpn" )
 	assertIsNil( calc_settings.useInfix )
 end
+]]
 function test.test_Infix_inlineSimple()
 	calc.Command( "(2+3)" )
 	assertEquals( 5, calc.Pop() )
@@ -715,7 +717,7 @@ function test.test_Infix_inlineComplex_percent()
 	calc.Command( "(20 + 5 % )" )   -- 20 5 % +
 	assertEquals( 21, calc.Pop() )
 end
-function test.test_Infix_inline_doubleNeg()
+function test.notest_Infix_inline_doubleNeg()
 	calc.Command( "(20 - -5) 20 -5 -" )
 	assertEquals( 25, calc.Pop() )
 end
