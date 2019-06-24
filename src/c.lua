@@ -359,32 +359,18 @@ function calc.In2end( txtIn )
 	local operators = {["+"] = {2,1}, ["-"] = {2,1}, ["*"] = {3,1}, ["/"] = {3,1}, ["^"] = {4,2} }
 
 	local txtOut = {}
-	value = nil
-	decimal = nil
+	value = {}
 	txtIn:gsub(".", function( c )
-		--print( "PROCESS: >"..c.."<" )
+		print( "PROCESS: >"..c.."<" )
 		v = tonumber(c)
-		if v then  -- is a number.  append to value or create
-			--print( "VALUE:"..v)
-			if decimal ~= nil then -- decimal is >=0 if a "." has been seen.
-				value = value and value * math.pow( 10, decimal ) or 0
-			end
-			value = value and value*10 + v or v
-			decimal = (decimal and decimal>=0) and decimal + 1  -- increment decimal if set
-			if decimal ~= nil then --
-				value = value / math.pow( 10, decimal )
-			end
-			print( "decimal: "..( (decimal and decimal >=0) and decimal or "nil" ) )
-			print( "value  : "..value )
-		elseif( c == "." ) then
-			print( "Set decimal to 0" )
-			decimal = 0
+		if( v or c == "." ) then  -- is a number.  append to value or create
+			print( "VALUE:"..c)
+			value[#value+1] = c
 		elseif operators[c] then -- this is an operator
 			--print( "OPERATOR:>"..c.."<" )
-			if value then -- if value is set, push the value to the stack and reset
-				result[#result+1] = value
-				value = nil
-				decimal = nil
+			if #value>0 then -- if value is set, push the value to the stack and reset
+				result[#result+1] = tonumber( table.concat( value ) )
+				value = {}
 			end
 			while( #opstack > 0 ) do
 				-- print( "opstack: "..table.concat( opstack, " " ) )
@@ -402,10 +388,9 @@ function calc.In2end( txtIn )
 		elseif( c == "(" ) then  -- open paren, save the paren
 			opstack[#opstack+1] = c
 		elseif( c == ")" ) then  -- close paren, do some processing
-			if value then  -- save the value if set.
-				result[#result+1] = value
-				value = nil
-				decimal = nil
+			if #value>0 then  -- save the value if set.
+				result[#result+1] = tonumber( table.concat( value ) )
+				value = {}
 			end
 			while( c ~= "(" ) do
 				table.insert( result, table.remove( opstack ) ) -- move an operator from the opstack to the result stack
@@ -420,8 +405,8 @@ function calc.In2end( txtIn )
 			txtOut[#txtOut+1] = c
 		end
 	end)
-	if( value ) then  -- left over value, push it to the result stack
-		result[#result+1] = value
+	if( #value>0 ) then  -- left over value, push it to the result stack
+		result[#result+1] = tonumber( table.concat( value ) )
 	end
 	while( #opstack > 0 ) do
 		table.insert( result, table.remove( opstack ) ) -- move an operator from the opstack to the result stack
