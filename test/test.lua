@@ -637,7 +637,7 @@ function test.test_Infix_setInfixMode()
 	calc.Command( "infix" )
 	assertTrue( calc_settings.useInfix )
 end
-function test.test_Infix_setBackToRPN()
+function test.notest_Infix_setBackToRPN()
 	calc_settings.useInfix = true
 	calc.Command( "rpn" )
 	assertIsNil( calc_settings.useInfix )
@@ -654,6 +654,10 @@ function test.test_Infix_inlineIncomplete()
 	calc.Command( "(2+3*2" )  -- I'm really not sure what to do here....???  Maybe assume closing ) because of EOL?
 	assertEquals( 8, calc.Pop() )
 end
+function test.test_Infix_inlineIncomplete_spaces()
+	calc.Command( "( 2 + 3 * 2 " )
+	assertEquals( 8, calc.Pop() )
+end
 function test.test_Infix_inlineComplex_grouped()
 	calc.Command( "((2+3)*2)" )  -- 5 * 2 = 10
 	assertEquals( 10, calc.Pop() )
@@ -667,6 +671,24 @@ function test.test_Infix_useInfixMode_spaces()
 	calc.Command( "infix" )
 	calc.Command( "2 + 3" )
 	assertEquals( 5, calc.Pop() )
+end
+function test.test_Infix_inlineComplex_decimal()
+	calc.Command( "( 2.0 + 3.0 * 2.0 )" )
+	assertEquals( 8, calc.Pop() )
+end
+function test.test_Infix_inlineSimple_decimal()
+	calc.Command( "( .2 + .3 )" )
+	assertEquals( .5, calc.Pop() )
+end
+function test.test_Infix_inlineSimple_decimal_longer()
+	calc.Command( " ( .12345 + 0.4321 )" )
+	assertEquals( .55555, calc.Pop() )
+end
+function test.test_Infix_inline_variables_pi()
+	calc.Command( "( pi )" )
+	assert( calc.stack[1] > 3.141 )
+	assert( calc.stack[1] < 3.142 )
+	assertEquals( math.pi, calc.stack[1] )
 end
 
 test.run()
