@@ -366,14 +366,14 @@ function calc.In2end( txtIn )
 		--print( "PROCESS: >"..c.."<" )
 		v = tonumber(c)
 		if( v or c == "." ) then  -- is a number.  append to value or create
-			print( "VALUE:"..c)
+			--print( "VALUE:"..c)
 			value[#value+1] = c
 		elseif operators[c] then -- this is an operator
-			print( "OPERATOR:>"..c.."<" )
+			--print( "OPERATOR:>"..c.."<" )
 			if #txtOut>0 then -- there is SOMETHING in the txtOut queue.....
-				print( "TXTOUT: "..table.concat( txtOut ) )
+				--print( "TXTOUT: "..table.concat( txtOut ) )
 				calc.ProcessLine( table.concat( txtOut ) )
-				print( "STACK>"..table.concat( calc.stack, " " ) )
+				--print( "STACK>"..table.concat( calc.stack, " " ) )
 				txtOut = {}
 			end
 			if #value>0 then -- if value is set, push the value to the stack and reset
@@ -416,7 +416,7 @@ function calc.In2end( txtIn )
 				value = {}
 			end
 		elseif( c ~= " " ) then
-			print( "txtOut: "..table.concat( txtOut ).. "+"..c )
+			--print( "txtOut: "..table.concat( txtOut ).. "+"..c )
 			txtOut[#txtOut+1] = c
 		end
 	end)
@@ -427,19 +427,19 @@ function calc.In2end( txtIn )
 		table.insert( result, table.remove( opstack ) ) -- move an operator from the opstack to the result stack
 	end
 
-	print( "END result:"..table.concat( result, " " ) )
+	--print( "END result:"..table.concat( result, " " ) )
 	-- process each item in here
 	for _,msg in ipairs( result ) do
-		print( "do:"..msg)
+		--print( "do:"..msg)
 		calc.ProcessLine( msg )
 	end
 
 
-	print( "END result:"..table.concat( result, " " ) )
-	print( "END txtOut:"..table.concat( txtOut, "" ) )
+	--print( "END result:"..table.concat( result, " " ) )
+	--print( "END txtOut:"..table.concat( txtOut, "" ) )
 	if #txtOut>0 then -- there is SOMETHING in the txtOut queue.....
 		calc.ProcessLine( table.concat( txtOut ) )
-		print( "STACK>"..table.concat( calc.stack, " " ) )
+		--print( "STACK>"..table.concat( calc.stack, " " ) )
 		txtOut = {}
 	end
 	return table.concat( txtOut, " " )
@@ -474,17 +474,17 @@ function calc.ProcessLine( msg, showErrors )
 			msg = calc.In2end( val..msg )
 		end
 		]]
-		print( "val:"..val.." :"..( val:sub(1,1)=="(" and "true" or "false").." :"..msg )
+		--print( "val:"..val.." :"..( val:sub(1,1)=="(" and "true" or "false").." :"..msg )
 		if val and val:sub(1,1) == "(" then
 			--print( "Found possible INLINE" )
 			if not string.match( val..""..msg, "[)]" ) then
-				print( "incomplete: "..val..msg )
+				--print( "incomplete: "..val..msg )
 				msg = msg .. ")"
 			end
 			val = val .. msg
 			msg = ""
 		end
-		print( "val:"..val.." msg:"..msg )
+		--print( "val:"..val.." msg:"..msg )
 		if val then
 			if calc.functions[val] then
 				calc.functions[val]()
