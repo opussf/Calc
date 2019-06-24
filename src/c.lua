@@ -361,10 +361,10 @@ function calc.In2end( txtIn )
 	local txtOut = {}
 	value = {}
 	txtIn:gsub(".", function( c )
-		print( "PROCESS: >"..c.."<" )
+		--print( "PROCESS: >"..c.."<" )
 		v = tonumber(c)
 		if( v or c == "." ) then  -- is a number.  append to value or create
-			print( "VALUE:"..c)
+			--print( "VALUE:"..c)
 			value[#value+1] = c
 		elseif operators[c] then -- this is an operator
 			--print( "OPERATOR:>"..c.."<" )
@@ -418,8 +418,9 @@ function calc.In2end( txtIn )
 		calc.ProcessLine( msg )
 	end
 
-	print( "END result:"..table.concat( result, " " ) )
-	print( "END txtOut:"..table.concat( txtOut, "" ) )
+	--print( "END result:"..table.concat( result, " " ) )
+	--print( "END txtOut:"..table.concat( txtOut, "" ) )
+	return table.concat( txtOut, " " )
 
 
 end
@@ -451,11 +452,11 @@ function calc.ProcessLine( msg, showErrors )
 			msg = ""
 		end
 		]]
-		print( "val:"..val.." :"..( val:sub(1,1)=="(" and "true" or "false").." :"..msg )
+		--print( "val:"..val.." :"..( val:sub(1,1)=="(" and "true" or "false").." :"..msg )
 		if val and val:sub(1,1) == "(" then
-			print( "Found possible INLINE" )
+			--print( "Found possible INLINE" )
 			if not string.match( val..""..msg, "[)]" ) then
-				print( "incomplete: "..val..msg )
+				--print( "incomplete: "..val..msg )
 				msg = msg .. ")"
 			end
 			val = val .. msg
@@ -465,7 +466,7 @@ function calc.ProcessLine( msg, showErrors )
 			if calc.functions[val] then
 				calc.functions[val]()
 			elseif string.find( val, "%b()" ) then
-				print( "FOUND: "..val )
+				--print( "FOUND: "..val )
 				calc.In2end( val )
 			elseif tonumber(val) then -- is a value
 				table.insert( calc.stack, tonumber(val) )
