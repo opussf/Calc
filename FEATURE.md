@@ -1,5 +1,23 @@
 # Feature.md
 
+## chatcontrol
+The basic idea of this is to limit the amount of the stack that is dumped to chat output.
+This is good because it keeps the output simple, and lets the user keep their stack in place.
+
+After thinking this through a tad bit, I'm actually wondering if this is good, or bad?
+
+
+### How to fix this.
+I think the best way to do this right now is to:
+
+* Create a stack pointer, at the end of the current stack.
+* Move it towards the front of the stack as items are popped off during the chat opperation.
+* Only keep the stack pointer during the chat interaction.
+
+Special cases...
+I still want '==' to show the last value of the stack.
+
+
 ## infix
 Since this is an addon for wow at its core, there is no commandline prompt to clue the user what mode ( rpn / infix ) they are in.
 This is also complicated with the fact that this is originally an RPN calculator.
