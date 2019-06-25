@@ -2,7 +2,7 @@
 
 class In2end( object ):
 	""" This takes an infix equation, and makes an endfix (RPN) representation of it.
-	It is an atempt to implement Edsger Dijkstra's method.
+	It is an attempt to implement Edsger Dijkstra's method.
 	https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 	http://scriptasylum.com/tutorials/infix_postfix/algorithms/infix-postfix/
 	"""
@@ -128,6 +128,9 @@ if __name__ == "__main__":
 		def test_mixedWithParen_04( self ):
 			self.con.parse( "(4+8)*(6-5)/((3-2)*(2+2))" )
 			self.assertEquals( "4 8 + 6 5 - * 3 2 - 2 2 + * /", str(self.con) )
+		def test_mixedWithParen_05( self ):
+			self.con.parse( "(4+8)*((6-5)/((3-2)*(2+2)))" )
+			self.assertEquals( "4 8 + 6 5 - 3 2 - 2 2 + * / *", str(self.con) )
 		def test_mixedWithPowers_01( self ):
 			self.con.parse( "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3" )
 			self.assertEquals( "3 4 2 * 1 5 - 2 3 ^ ^ / +", str(self.con) )
@@ -143,6 +146,9 @@ if __name__ == "__main__":
 		def test_mixed_04( self ):
 			self.con.parse( "(300+23)*(43-21)/(84+7)")
 			self.assertEquals( "300 23 + 43 21 - * 84 7 + /", str(self.con) )
+		def test_mixed_05( self ):
+			self.con.parse( "1/1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6 + 1/7 + 1/8 + 1/9")
+			self.assertEquals( "", str(self.con) )
 
 	-- unittest.main()
 	main()
