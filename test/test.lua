@@ -788,6 +788,19 @@ function test.test_Chatcontrol_showLastValue()
 	calc.SendChatMessage( "==" )
 	assertEquals( "= 96", chatLog[#chatLog].msg )
 end
-
+function test.test_Chatcontrol_addingExtraToTheStack()
+	calc.Command( "5 !" )
+	calc.SendChatMessage( "4 8 + 6 5 ==" )
+	assertEquals( "4 8 + 6 5 = 12 6 5", chatLog[#chatLog].msg )
+end
+function test.test_Chatcontrol_workThrough()
+	-- this might be the classic work through with someone...
+	calc.SendChatMessage( "Finding the area of a triangle with a base of 15 in and a height of 4 in ==" )
+	assertEquals( "Finding the area of a triangle with a base of 15 in and a height of 4 in = 15 4", chatLog[#chatLog].msg )
+	calc.SendChatMessage( "we first * the base by the height ==" )
+	assertEquals( "we first * the base by the height = 60", chatLog[#chatLog].msg )
+	calc.SendChatMessage( "and divide by 2 / giving == square in" )
+	assertEquals( "and divide by 2 / giving = 30 square in", chatLog[#chatLog].msg )
+end
 
 test.run()
