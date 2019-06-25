@@ -15,6 +15,7 @@ COLOR_END = "|r";
 
 calc = {}
 calc_macros = {}
+calc_settings = {}
 calc.stack = {}
 calc.useDegree = nil -- set this to true to use degrees
 
@@ -216,6 +217,7 @@ function calc.Help()
 	calc.Print("   fhelp - list of functions", false)
 	calc.Print("   whelp - list of variables from WoW", false)
 	calc.Print("   mhelp - macro help", false)
+	--calc.Print("   infix / rpn - set the calculator parsing mode", false )
 end
 function calc.FHelp()
 	calc.Print("+ - * / % ^ ln ! pi e", false)
@@ -248,9 +250,10 @@ calc.functions = {
 	["mhelp"] = calc.MHelp,
 
 	-- commands
-	["ac"] = function() calc.stack={} end,
 	["deg"] = function() calc.useDegree = true calc.Print("Set to use Degrees") end,
 	["rad"] = function() calc.useDegree = nil calc.Print("Set to use Radians") end,
+	-- stack commands
+	["ac"] = function() calc.stack={} end,
 	["pop"] = calc.Pop,
 	["swap"] = calc.Swap,
 	["1/x"] = calc.OneOver,
@@ -259,6 +262,7 @@ calc.functions = {
 	["-"] = calc.Sub,
 	["*"] = calc.Mul,
 	["/"] = calc.Div,
+	["1/x"] = calc.OneOver,
 	["%"] = calc.Percent,
 	["sin"] = calc.Sin,
 	["cos"] = calc.Cos,
@@ -295,6 +299,11 @@ calc.functions = {
 	["valor"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
 	["vp"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
 	["token"] = function() calc.Push( C_WowTokenPublic.GetCurrentMarketPrice() / 10000 or 0 ) end,
+--[[
+	-- infix options
+	["infix"] = function() calc_settings.useInfix = true; end,
+	["rpn"] = function() calc_settings.useInfix = nil; end,
+]]
 }
 ------
 -- Macro Code
@@ -336,6 +345,110 @@ end
 ------
 -- End Macro Code
 ------
+------
+-- infix code
+------
+function calc.In2end( txtIn )
+	-- parse an infix statement.  Push the data to the stack in rpn mode.
+	-- return text that is not parseable
+	-- set 'incomplete' flag is I think there should be more?
+	--print( "START: "..txtIn )
+	local result = {}
+	local opstack = {}
+
+	-- ( precidence, associativty - 1=left, 2=right)
+	local operators = {["+"] = {2,1}, ["-"] = {2,1}, ["*"] = {3,1}, ["/"] = {3,1}, ["^"] = {4,2}, ["%"] = {4,2}, ["!"] = {4,2} }
+
+
+	local txtOut = {}
+	value = {}
+	txtIn:gsub(".", function( c )
+		--print( "PROCESS: >"..c.."<" )
+		v = tonumber(c)
+		if( v or c == "." ) then  -- is a number.  append to value or create
+			--print( "VALUE:"..c)
+			value[#value+1] = c
+		elseif operators[c] then -- this is an operator
+			--print( "OPERATOR:>"..c.."<" )
+			if #txtOut>0 then -- there is SOMETHING in the txtOut queue.....
+				--print( "TXTOUT: "..table.concat( txtOut ) )
+				calc.ProcessLine( table.concat( txtOut ) )
+				--print( "STACK>"..table.concat( calc.stack, " " ) )
+				txtOut = {}
+			end
+			if #value>0 then -- if value is set, push the value to the stack and reset
+				result[#result+1] = tonumber( table.concat( value ) )
+				value = {}
+			end
+			while( #opstack > 0 ) do
+				-- print( "opstack: "..table.concat( opstack, " " ) )
+				-- print( (#opstack)..":"..opstack[#opstack] )
+				if( opstack[#opstack] == "(" ) then
+					break
+				elseif( ( operators[c][2] == 1 and operators[c][1] <= operators[opstack[#opstack]][1] ) or
+						( operators[c][2] == 2 and operators[c][1] <  operators[opstack[#opstack]][1] ) ) then
+					table.insert( result, table.remove( opstack ) ) -- move an operator from the opstack to the result stack
+				else
+					break
+				end
+			end
+			opstack[#opstack+1] = c
+		elseif( c == "(" ) then  -- open paren, save the paren
+			opstack[#opstack+1] = c
+		elseif( c == ")" ) then  -- close paren, do some processing
+			if #value>0 then  -- save the value if set.
+				result[#result+1] = tonumber( table.concat( value ) )
+				value = {}
+			end
+			c = opstack[#opstack]
+			while( c ~= "(" ) do
+				table.insert( result, table.remove( opstack ) ) -- move an operator from the opstack to the result stack
+				if( #opstack > 0 ) then
+					c = opstack[#opstack]
+				else
+					break
+				end
+			end
+			table.remove( opstack )
+		elseif( c == " " ) then
+			if #value>0 then  -- save a value (no spaces in numbers)
+				result[#result+1] = tonumber( table.concat( value ) )
+				value = {}
+			end
+		elseif( c ~= " " ) then
+			--print( "txtOut: "..table.concat( txtOut ).. "+"..c )
+			txtOut[#txtOut+1] = c
+		end
+	end)
+	if( #value>0 ) then  -- left over value, push it to the result stack
+		result[#result+1] = tonumber( table.concat( value ) )
+	end
+	while( #opstack > 0 ) do
+		table.insert( result, table.remove( opstack ) ) -- move an operator from the opstack to the result stack
+	end
+
+	--print( "END result:"..table.concat( result, " " ) )
+	-- process each item in here
+	for _,msg in ipairs( result ) do
+		--print( "do:"..msg)
+		calc.ProcessLine( msg )
+	end
+
+
+	--print( "END result:"..table.concat( result, " " ) )
+	--print( "END txtOut:"..table.concat( txtOut, "" ) )
+	if #txtOut>0 then -- there is SOMETHING in the txtOut queue.....
+		calc.ProcessLine( table.concat( txtOut ) )
+		--print( "STACK>"..table.concat( calc.stack, " " ) )
+		txtOut = {}
+	end
+	return table.concat( txtOut, " " )
+
+
+end
+------
+-- end infix code
+------
 
 function calc.Parse( msg )
 	if msg then
@@ -350,11 +463,25 @@ end
 function calc.ProcessLine( msg, showErrors )
 	while msg and string.len(msg) > 0 do
 		msg = string.lower(msg)
-		-- print( "calc.Command( "..msg, string.len(msg).." )" )
 		val, msg = calc.Parse( msg )
+
+		--print( "val:"..val.." :"..( val:sub(1,1)=="(" and "true" or "false").." :"..msg )
+		if val and val:sub(1,1) == "(" then
+			--print( "Found possible INLINE" )
+			if not string.match( val..""..msg, "[)]" ) then
+				--print( "incomplete: "..val..msg )
+				msg = msg .. ")"
+			end
+			val = val .. msg
+			msg = ""
+		end
+		--print( "val:"..val.." msg:"..msg )
 		if val then
 			if calc.functions[val] then
 				calc.functions[val]()
+			elseif string.find( val, "%b()" ) then
+				--print( "FOUND: "..val )
+				calc.In2end( val )
 			elseif tonumber(val) then -- is a value
 				table.insert( calc.stack, tonumber(val) )
 			elseif calc_macros[val] then

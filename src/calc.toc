@@ -4,6 +4,7 @@
 ## Author: opussf
 ## Version: @VERSION@
 ## Description: Command line calculator.
+## SavedVariables:
 ## SavedVariables: calc_macros
 ## SavedVariablesPerCharacter:
 
