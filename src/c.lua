@@ -463,17 +463,8 @@ end
 function calc.ProcessLine( msg, showErrors )
 	while msg and string.len(msg) > 0 do
 		msg = string.lower(msg)
-		--if calc_settings.useInfix then
-		--	msg = calc.In2end( msg )
-		--end
-		-- print( "calc.Command( "..msg, string.len(msg).." )" )
 		val, msg = calc.Parse( msg )
 
-		--[[
-		if calc_settings.useInfix then  --  LOLZ...  hack!
-			msg = calc.In2end( val..msg )
-		end
-		]]
 		--print( "val:"..val.." :"..( val:sub(1,1)=="(" and "true" or "false").." :"..msg )
 		if val and val:sub(1,1) == "(" then
 			--print( "Found possible INLINE" )
