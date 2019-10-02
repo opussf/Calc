@@ -141,6 +141,18 @@ function calc.Log()
 		calc.Push( math.log( calc.Pop() ) )
 	end
 end
+function calc.Log10()
+	if #calc.stack >= 1 then
+		calc.Push( math.log10( calc.Pop() ) )
+	end
+end
+function calc.logy()
+	-- calculate logy(x) from "x y logy"
+	if #calc.stack >= 2 then
+		ly = math.log( calc.Pop() )
+		calc.Push( math.log( calc.Pop() ) / ly )
+	end
+end
 function calc.Factorial()
 	--  EH!  http://www.springerplus.com/content/pdf/2193-1801-3-658.pdf
 	if #calc.stack >= 1 then
@@ -272,6 +284,8 @@ calc.functions = {
 	["atan"] = calc.Atan,
 	["^"] = calc.Power,
 	["ln"] = calc.Log,
+	["log"] = calc.Log10,
+	["logy"] = calc.Logy,
 	["!"] = calc.Factorial,
 	["ceil"] = calc.Ceil,
 	["floor"] = calc.Floor,
