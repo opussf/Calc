@@ -16,8 +16,10 @@ actionLog = {
 -- [1] = "DoEmote(....)""
 chatLog = {
 -- append chat output here
--- [1] = { ["msg"] = "ChatOutpu", ["channel"] = "where", [<other parameters>] = <values> }
+-- [1] = { ["msg"] = "ChatOutput", ["channel"] = "where", [<other parameters>] = <values> }
 }
+
+
 
 local itemDB = {
 }
