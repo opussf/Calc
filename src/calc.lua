@@ -14,6 +14,20 @@ SlashCmdList = {}
 package.path = "/usr/local/bin/?.lua;'" .. package.path
 require "c"
 
+-- find ~/.calc
+pathSeparator = string.sub( package.config, 1, 1 ) -- first character of this string (http://www.lua.org/manual/5.2/manual.html#pdf-package.config)
+settingsFilePath = {
+	os.getenv( "HOME" ),
+	".calc"
+}
+settingsFile = table.concat( settingsFilePath, pathSeparator )
+-- load ~/.calc
+function DoFile( filename )
+	local f = assert( loadfile( filename ) )
+	return f()
+end
+DoFile( settingsFile )
+
 -- remove the WowSpecific commands
 WowSpecific = {"gold","silver","copper","health","hp",
 		"power","haste","mastery","honor","conquest",
@@ -40,4 +54,17 @@ while running do
 	io.write( ("(%s)> "):format( calc.useDegree and "d" or "r" ) )
 	val = io.read("*line")
 	calc.Command( val )
+end
+
+-- save ~/.calc
+file, err = io.open( settingsFile, "w" )
+if err then
+	print( err )
+else
+	file:write( "calc_macros = {\n" )
+	for mName, mStr in pairs( calc_macros ) do
+		file:write( string.format( "\t[\"%s\"] = \"%s\"\n", mName, mStr ) )
+	end
+	file:write( "}\n")
+	io.close( file )
 end
