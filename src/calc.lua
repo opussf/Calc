@@ -23,8 +23,12 @@ settingsFilePath = {
 settingsFile = table.concat( settingsFilePath, pathSeparator )
 -- load ~/.calc
 function DoFile( filename )
-	local f = assert( loadfile( filename ) )
-	return f()
+	local f, err = loadfile( filename )
+	if f then
+		return f()
+	else
+		calc_macros = {}
+	end
 end
 DoFile( settingsFile )
 
