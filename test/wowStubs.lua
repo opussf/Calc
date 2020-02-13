@@ -279,6 +279,7 @@ min = math.min
 abs = math.abs
 random = math.random
 tinsert = table.insert
+unpack = table.unpack
 
 bit = {}
 function bit.lshift( x, by )
@@ -1542,4 +1543,11 @@ end
 
 function IsQuestFlaggedCompleted( questID )
 	return nil
+end
+-- C_MountJournal
+C_MountJournal = {}
+C_MountJournal.critters = { ["mount"] = {}, ["critter"] = {} }
+
+function C_MountJournal.GetMountIDs( )
+	return {}
 end
