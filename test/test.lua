@@ -484,26 +484,35 @@ end
 ------------------
 function test.test_SendChatMessage_01()
 	calc.SendChatMessage( "10 ==", "GUILD", "language", "channel" )
+	assertEquals( "10 = 10", chatLog[#chatLog].msg )
+	assertEquals( "GUILD", chatLog[#chatLog].chatType )
 end
 function test.test_SendChatMessage_02()
 	calc.SendChatMessage( "As we can see: 10 20 + ==", "GUILD", "language", "channel" )
+	assertEquals( "As we can see: 10 20 + = 30", chatLog[#chatLog].msg )
 end
 function test.test_SendChatMessage_03()
 	calc.SendChatMessage( "10 20 +", "GUILD", "language", "channel" )
+	assertEquals( "10 20 +", chatLog[#chatLog].msg )
 end
 function test.test_SendChatMessage_04()
 	calc.SendChatMessage( "No numbers here.", "GUILD", "language", "channel" )
+	assertEquals( "No numbers here.", chatLog[#chatLog].msg )
 end
 function test.test_SendChatMessage_05()
 	calc.SendChatMessage( "10 30 ==", "GUILD", "language", "channel" )
+	assertEquals( "10 30 = 10 30", chatLog[#chatLog].msg )
 end
 function test.test_SendChatMessage_06()
+	-- the 'extra' space at the end is to test that it is preserved.  This is intentional
 	calc.Command( "16 toF" )
 	calc.SendChatMessage( "toc == ", "GUILD", "language", "channel" )
+	assertEquals( "toc = 16 ", chatLog[#chatLog].msg )
 end
 function test.test_SendChatMessage_07()
 	calc.SendChatMessage( "10 30 ==", "GUILD", "language", "channel" )
 	calc.SendChatMessage( "+ ==", "GUILD", "language", "channel" )
+	assertEquals( "+ = 40", chatLog[#chatLog].msg )
 end
 ------------------
 -- token function
@@ -520,6 +529,7 @@ function test.test_ReplaceMessage_01()
 end
 function test.test_BNSendWhisper_01()
 	calc.BNSendWhisper( 10, "10 ==" )
+	assertEquals( "10 = 10", chatLog[#chatLog].msg )
 end
 ------------------
 -- Ceiling, Floor, and Round
@@ -752,6 +762,45 @@ function test.test_Infix_inlinemixed_nested_extraValuesOnStack_withSpaces()
 	assertEquals( 5, #calc.stack )
 	assertEquals( 3, calc.stack[1] )
 end
-
+-- chatcontrol
+function test.test_Chatcontrol_showAValue()
+	calc.SendChatMessage( "9 ==", "GUILD", "language", "channel" )
+	assertEquals( "9 = 9", chatLog[#chatLog].msg )
+end
+function test.test_Chatcontrol_hasOtherValues()
+	calc.Command( "pi" )
+	calc.SendChatMessage( "8 ==", "GUILD", "language", "channel" )
+	assertEquals( "8 = 8", chatLog[#chatLog].msg )
+end
+function test.test_Chatcontrol_consumesStack_showsValue()
+	calc.Command( "42" )
+	calc.SendChatMessage( "7 + ==" )
+	assertEquals( "7 + = 49", chatLog[#chatLog].msg )
+end
+function test.test_Chatcontrol_nothingOnStack()
+	-- admit it...  it is going to happen...
+	calc.Command( "AC" )
+	calc.SendChatMessage( "==" )
+	assertEquals( "= ", chatLog[#chatLog].msg )
+end
+function test.test_Chatcontrol_showLastValue()
+	calc.Command( "96" )
+	calc.SendChatMessage( "==" )
+	assertEquals( "= 96", chatLog[#chatLog].msg )
+end
+function test.test_Chatcontrol_addingExtraToTheStack()
+	calc.Command( "5 !" )
+	calc.SendChatMessage( "4 8 + 6 5 ==" )
+	assertEquals( "4 8 + 6 5 = 12 6 5", chatLog[#chatLog].msg )
+end
+function test.test_Chatcontrol_workThrough()
+	-- this might be the classic work through with someone...
+	calc.SendChatMessage( "Finding the area of a triangle with a base of 15 in and a height of 4 in ==" )
+	assertEquals( "Finding the area of a triangle with a base of 15 in and a height of 4 in = 15 4", chatLog[#chatLog].msg )
+	calc.SendChatMessage( "we first * the base by the height ==" )
+	assertEquals( "we first * the base by the height = 60", chatLog[#chatLog].msg )
+	calc.SendChatMessage( "and divide by 2 / giving == square in" )
+	assertEquals( "and divide by 2 / giving = 30 square in", chatLog[#chatLog].msg )
+end
 
 test.run()
