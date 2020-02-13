@@ -165,7 +165,7 @@ function test.test_Sin_simple_04()
 end
 function test.test_Sin_noVals()
 	calc.Command( "sIn" )
-	assertEquals( 0, table.getn( calc.stack ) )
+	assertEquals( 0, #calc.stack )
 end
 function test.test_Cos_simple_01()
 	calc.Command( "pi cos" )
@@ -226,7 +226,7 @@ end
 function test.test_specialFunctions_AC()
 	calc.Command( "2 5 3 2 3 4" )
 	calc.Command( "AC" )
-	assertEquals( 0, table.getn( calc.stack ) )
+	assertEquals( 0, #calc.stack )
 end
 function test.test_specialFunctions_AC_inTheMiddle()
 	calc.Command( "2 3 AC 42 69 + + +" )
@@ -306,7 +306,7 @@ end
 -- 1.2 tests
 function test.test_Fac_noVals()
 	calc.Command( "!" )
-	assertEquals( 0, table.getn( calc.stack ) )
+	assertEquals( 0, #calc.stack )
 end
 function test.test_Fac_negative()
 	calc.Command( "-1 !" )
@@ -336,19 +336,19 @@ end
 function test.test_Pop_oneVal_01()
 	calc.Command( "5" )
 	calc.Command( "pop" )
-	assertEquals( 0, table.getn( calc.stack ) )
+	assertEquals( 0, #calc.stack )
 end
 function test.test_Pop_oneVal_02()
 	calc.Command( "5 pop" )
-	assertEquals( 0, table.getn( calc.stack ) )
+	assertEquals( 0, #calc.stack )
 end
 function test.test_Pop_noVal()
 	calc.Command( "pop" )
-	assertEquals( 0, table.getn( calc.stack ) )
+	assertEquals( 0, #calc.stack )
 end
 function test.test_Pop_twoVal()
 	calc.Command( "5 3 pop" )
-	assertEquals( 1, table.getn( calc.stack ) )
+	assertEquals( 1, #calc.stack )
 	assertEquals( 5, calc.stack[1] )
 end
 function test.test_Swap_oneVal()
@@ -473,11 +473,11 @@ function test.test_toC_sameValue()
 end
 function test.test_toC_noValue()
 	calc.Command( "toC" )
-	assertEquals( 0, table.getn( calc.stack ) )
+	assertEquals( 0, #calc.stack )
 end
 function test.test_toF_noValue()
 	calc.Command( "toF" )
-	assertEquals( 0, table.getn( calc.stack ) )
+	assertEquals( 0, #calc.stack )
 end
 ------------------
 -- Chat
@@ -507,7 +507,7 @@ function test.test_SendChatMessage_06()
 	-- the 'extra' space at the end is to test that it is preserved.  This is intentional
 	calc.Command( "16 toF" )
 	calc.SendChatMessage( "toc == ", "GUILD", "language", "channel" )
-	assertEquals( "toc = 16 ", chatLog[#chatLog].msg )
+	assertEquals( "toc = 16.0 ", chatLog[#chatLog].msg )
 end
 function test.test_SendChatMessage_07()
 	calc.SendChatMessage( "10 30 ==", "GUILD", "language", "channel" )
@@ -528,7 +528,9 @@ function test.test_ReplaceMessage_01()
 	assertEquals( "2 5 * = 10", calc.ReplaceMessage( "2 5 * ==" ) )
 end
 function test.test_BNSendWhisper_01()
+	print( #chatLog )
 	calc.BNSendWhisper( 10, "10 ==" )
+	print( #chatLog )
 	assertEquals( "10 = 10", chatLog[#chatLog].msg )
 end
 ------------------
@@ -800,7 +802,7 @@ function test.test_Chatcontrol_workThrough()
 	calc.SendChatMessage( "we first * the base by the height ==" )
 	assertEquals( "we first * the base by the height = 60", chatLog[#chatLog].msg )
 	calc.SendChatMessage( "and divide by 2 / giving == square in" )
-	assertEquals( "and divide by 2 / giving = 30 square in", chatLog[#chatLog].msg )
+	assertEquals( "and divide by 2 / giving = 30.0 square in", chatLog[#chatLog].msg )
 end
 
 test.run()
