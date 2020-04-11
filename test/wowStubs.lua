@@ -1375,7 +1375,9 @@ function ClearAchievementComparisonUnit()
 	-- mostly does nothing...
 end
 function BNSendWhisper( id, msg )
-	-- @TODO: Expand this
+	table.insert( chatLog,
+			{ ["msg"] = msg, ["chatType"] = "BNWhisper", ["language"] = "", ["channel"] = "BNWhisper" }
+	)
 end
 function TaxiNodeCost( nodeId )
 	-- http://www.wowwiki.com/API_TaxiNodeCost
