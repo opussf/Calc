@@ -8,10 +8,7 @@ require "wowTest"
 
 test.outFileName = "testOut.xml"
 
--- require the file to test
-package.path = "../src/?.lua;'" .. package.path
-require "c"
-require "chat"
+ParseTOC( "../src/calc.toc" )
 
 CALC_Frame = CreateFrame()
 OriginalSendChatMessage = SendChatMessage
@@ -37,6 +34,7 @@ function test.test_MSG_VERSION()
 	assert( CALC_MSG_VERSION )
 end
 function test.test_MSG_AUTHOR()
+	-- just make sure this is assigned
 	assert( CALC_MSG_AUTHOR )
 end
 function test.test_Command()
