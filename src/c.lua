@@ -218,6 +218,56 @@ function calc.Round()
 		end
 	end
 end
+function calc.Farey()
+	local limit = 10000   -- set this as an option at some point.
+	if #calc.stack >= 1 then
+		local val = calc.Pop()
+		local isNeg = false
+		if val < 0 then
+			isNeg = true
+			val = math.abs( val )
+		end
+		local whole = math.floor( val )
+		local decimal = val - whole
+		decimalStr = string.format( "%s", decimal )
+
+		local numerator = { 0, 1 }
+		local denominator = { 1, 1 }
+		local mediant = 0
+		if decimal == 0 then  -- Special case.  whole number becomes that number over 1.
+			calc.Push( whole * ( isNeg and -1 or 1 ) )
+			calc.Push( 1 )
+			return
+		end
+		repeat  -- since the whole value is removed first,
+			-- decrement the limit
+			limit = limit - 1
+			-- find the mediant
+			numerator[3] = numerator[1] + numerator[2]
+			denominator[3] = denominator[1] + denominator[2]
+			mediant = numerator[3] / denominator[3]
+
+			mediantStr = string.format( "%s", mediant )
+
+			-- test which side of the mediant
+			if( mediantStr == decimalStr ) then  -- use strings to test equals (float comparison  etc.....)
+				calc.Push( ( numerator[3] + ( whole * denominator[3] ) ) * ( isNeg and -1 or 1 ) )
+				calc.Push( denominator[3] )
+				limit = 0
+				return
+			elseif decimal < mediant then  -- less than mediant, get rid of high value
+				numerator[2] = numerator[3]
+				denominator[2] = denominator[3]
+			elseif decimal > mediant then  -- greater than mediant, get rid of low value
+				numerator[1] = numerator[3]
+				denominator[1] = denominator[3]
+			end
+		until( limit <= 0 )
+		-- if it falls out, set the fraction as the origianl over 1
+		calc.Push( val * ( isNeg and -1 or 1 ) )
+		calc.Push( 1 )
+	end
+end
 
 function calc.Help()
 	calc.Print(CALC_MSG_ADDONNAME.." v"..CALC_MSG_VERSION, false)
@@ -236,6 +286,7 @@ function calc.FHelp()
 	calc.Print("sin cos tan asin acos atan", false)
 	calc.Print("1/x toC toF", false)
 	calc.Print("ceil floor round", false)
+	calc.Print("///", false)
 end
 function calc.WHelp()
 	calc.Print("gold silver copper -- current money in those units", false)
@@ -313,6 +364,9 @@ calc.functions = {
 	["valor"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
 	["vp"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
 	["token"] = function() calc.Push( C_WowTokenPublic.GetCurrentMarketPrice() / 10000 or 0 ) end,
+
+	-- Farey
+	["///"] = calc.Farey,
 --[[
 	-- infix options
 	["infix"] = function() calc_settings.useInfix = true; end,
