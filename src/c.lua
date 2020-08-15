@@ -219,7 +219,7 @@ function calc.Round()
 	end
 end
 function calc.Farey()
-	local limit = 11   -- set this as an option at some point.
+	local limit = 10000   -- set this as an option at some point.
 	if #calc.stack >= 1 then
 		local val = calc.Pop()
 		local isNeg = false
@@ -270,8 +270,9 @@ function calc.Farey()
 				denominator[1] = denominator[3]
 			end
 		until( limit <= 0 )
-
-
+		-- if it falls out, set the fraction as the origianl over 1
+		calc.Push( val * ( isNeg and -1 or 1 ) )
+		calc.Push( 1 )
 	end
 end
 
