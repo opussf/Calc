@@ -526,9 +526,9 @@ function test.test_ReplaceMessage_01()
 	assertEquals( "2 5 * = 10", calc.ReplaceMessage( "2 5 * ==" ) )
 end
 function test.test_BNSendWhisper_01()
-	print( #chatLog )
+	--print( #chatLog )
 	calc.BNSendWhisper( 10, "10 ==" )
-	print( #chatLog )
+	--print( #chatLog )
 	assertEquals( "10 = 10", chatLog[#chatLog].msg )
 end
 ------------------
