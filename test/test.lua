@@ -802,5 +802,40 @@ function test.test_Chatcontrol_workThrough()
 	calc.SendChatMessage( "and divide by 2 / giving == square in" )
 	assertEquals( "and divide by 2 / giving = 30.0 square in", chatLog[#chatLog].msg )
 end
+-------------------
+-- Farey
+-------------------
+function test.test_Farey_NoNumbers()
+	calc.Command( "///" )
+end
+function test.test_Farey_OneHalf()
+	calc.Command( "1 2 / ///" )
+	assertEquals( 2, #calc.stack )
+	assertEquals( 1, calc.stack[1] )
+	assertEquals( 2, calc.stack[2] )
+end
+function test.test_Farey_WholeNumber()
+	calc.Command( "15 ///" )
+	assertEquals( 2, #calc.stack )
+	assertEquals( 15, calc.stack[1] )
+	assertEquals( 1, calc.stack[2] )
+end
+function test.test_Farey_LargeDecimal()
+	calc.Command( "15.2 ///" )
+	assertEquals( 2, #calc.stack )
+	assertEquals( 76, calc.stack[1] )
+	assertEquals( 5, calc.stack[2] )
+end
+function test.test_Farey_LargeDecimalNeg()
+	calc.Command( "-15.2 ///" )
+	assertEquals( 2, #calc.stack )
+	assertEquals( -76, calc.stack[1] )
+	assertEquals( 5, calc.stack[2] )
+end
+function test.test_Farey_SpecialTest()
+	calc.Command( "11 6 ^ 13 / ///" )
+	assertEquals( 2, #calc.stack )
+end
+
 
 test.run()
