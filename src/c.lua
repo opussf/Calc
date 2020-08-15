@@ -230,12 +230,11 @@ function calc.Farey()
 		local whole = math.floor( val )
 		local decimal = val - whole
 		decimalStr = string.format( "%s", decimal )
-		print( "Whole: "..whole.."  decimal: "..decimal )
+		--print( "Whole: "..whole.."  decimal: "..decimal )
 		local numerator = { 0, 1 }
 		local denominator = { 1, 1 }
 		local mediant = 0
-		if decimal == 0 then
-			print( "Special case" )
+		if decimal == 0 then  -- Special case.  whole number becomes that number over 1.
 			calc.Push( whole * ( isNeg and -1 or 1 ) )
 			calc.Push( 1 )
 			return
@@ -248,9 +247,9 @@ function calc.Farey()
 			denominator[3] = denominator[1] + denominator[2]
 			mediant = numerator[3] / denominator[3]
 
-			print( numerator[1].."\t"..numerator[3].."\t"..numerator[2] )
-			print( "-\t-\t-")
-			print( denominator[1].."\t"..denominator[3].."\t"..denominator[2] )
+			--print( numerator[1].."\t"..numerator[3].."\t"..numerator[2] )
+			--print( "-\t-\t-")
+			--print( denominator[1].."\t"..denominator[3].."\t"..denominator[2] )
 
 			mediantStr = string.format( "%s", mediant )
 
@@ -261,11 +260,11 @@ function calc.Farey()
 				limit = 0
 				return
 			elseif decimal < mediant then  -- less than mediant, get rid of high value
-				print( decimal.." < "..mediant )
+				--print( decimal.." < "..mediant )
 				numerator[2] = numerator[3]
 				denominator[2] = denominator[3]
 			elseif decimal > mediant then  -- greater than mediant, get rid of low value
-				print( decimal.." > "..mediant )
+				--print( decimal.." > "..mediant )
 				numerator[1] = numerator[3]
 				denominator[1] = denominator[3]
 			end
