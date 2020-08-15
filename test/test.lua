@@ -832,6 +832,10 @@ function test.test_Farey_LargeDecimalNeg()
 	assertEquals( -76, calc.stack[1] )
 	assertEquals( 5, calc.stack[2] )
 end
+function test.test_Farey_SpecialTest()
+	calc.Command( "11 6 ^ 13 / ///" )
+	assertEquals( 2, #calc.stack )
+end
 
 
 test.run()
