@@ -1,5 +1,10 @@
 # Feature.md
 
+## Farey Fractions
+Use /// on a number to create a fraction.
+Show this as the numerator denominator, such that using / would convert this back to a decimal value.
+
+
 ## chatcontrol
 The basic idea of this is to limit the amount of the stack that is dumped to chat output.
 This is good because it keeps the output simple, and lets the user keep their stack in place.
