@@ -58,6 +58,7 @@
 	<property name="target.dir" location="target"/>
 	<property name="working.dir" location="${target.dir}/working"/>
 	<property name="report.dir" location="${target.dir}/reports"/>
+	<property name="package.dir" location="${working.dir}/${ADDONNAME}"/>
 
 	<condition property="test.check">
 		<available file="${test.dir}/test.lua" type="file"/>
@@ -74,6 +75,11 @@
 		<include name="${working.dir}/*.txt"/>
 	</patternset>
 
+	<patternset id="installFiles">
+		<include name="target/working/calc/c.lua"/>
+		<include name="target/working/calc/calc"/>
+	</patternset>
+
 	<target name="clean" description="Cleans old builds">
 		<delete dir="target" verbose="true"/>
 	</target>
@@ -88,7 +94,7 @@
 	</target>
 
 	<target name="package" depends="changelog, test" description="Create a deploy package">
-		<property name="package.dir" location="${working.dir}/${ADDONNAME}"/>
+		<!-- Create versioned files, and package into a versioned .zip file -->
 		<delete dir="${package.dir}" verbose="false"/>
 		<copy	todir="${package.dir}" filtering="true" flatten="true">
 			<fileset dir=".">
@@ -114,6 +120,18 @@
 			</fileset>
 		</copy>
 		<echo>Deployed ${version.number} locally</echo>
+	</target>
+
+	<target name="install" depends="package" description="copy file to system for local install" if="INSTALLLOC">
+		<copy	file="${package.dir}/calc.lua" tofile="${package.dir}/calc" />
+		<chmod 	perm="ugo+x" dir="${package.dir}" includes="calc" />
+		<echo>Package.dir: ${package.dir} -> ${INSTALLLOC}</echo>
+		<copy	todir="${INSTALLLOC}" verbose="true">
+			<fileset dir=".">
+				<patternset refid="installFiles"/>
+			</fileset>
+		</copy>
+
 	</target>
 
 	<target name="open" description="open the addon dir in the current wow install">
