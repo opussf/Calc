@@ -251,7 +251,7 @@ function calc.Farey()
 			--mediantStr = string.format( "%s", mediant )
 
 			-- test which side of the mediant
-			if( abs( mediant - decimal ) < epsilon ) then  -- use strings to test equals (float comparison  etc.....)
+			if( math.abs( mediant - decimal ) < epsilon ) then  -- use strings to test equals (float comparison  etc.....)
 				calc.Push( ( numerator[3] + ( whole * denominator[3] ) ) * ( isNeg and -1 or 1 ) )
 				calc.Push( denominator[3] )
 				limit = 0
