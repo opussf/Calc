@@ -125,7 +125,6 @@
 	<target name="install" depends="package" description="copy file to system for local install" if="INSTALLLOC">
 		<copy	file="${package.dir}/calc.lua" tofile="${package.dir}/calc" />
 		<chmod 	perm="ugo+x" dir="${package.dir}" includes="calc" />
-		<echo>Package.dir: ${package.dir} -> ${INSTALLLOC}</echo>
 		<copy	todir="${INSTALLLOC}" verbose="true" flatten="true">
 			<fileset dir=".">
 				<patternset refid="installFiles"/>
