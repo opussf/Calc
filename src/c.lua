@@ -283,7 +283,7 @@ function calc.Help()
 	--calc.Print("   infix / rpn - set the calculator parsing mode", false )
 end
 function calc.FHelp()
-	calc.Print("+ - * / % ^ ln ! pi e", false)
+	calc.Print("+ - * / % ^ ln ! pi e log logy", false)
 	calc.Print("sin cos tan asin acos atan", false)
 	calc.Print("1/x toC toF", false)
 	calc.Print("ceil floor round", false)
