@@ -220,6 +220,7 @@ function calc.Round()
 end
 function calc.Farey()
 	local limit = 10000   -- set this as an option at some point.
+	local epsilon = 1.0e-14
 	if #calc.stack >= 1 then
 		local val = calc.Pop()
 		local isNeg = false
@@ -229,7 +230,7 @@ function calc.Farey()
 		end
 		local whole = math.floor( val )
 		local decimal = val - whole
-		decimalStr = string.format( "%s", decimal )
+		--decimalStr = string.format( "%s", decimal )
 
 		local numerator = { 0, 1 }
 		local denominator = { 1, 1 }
@@ -247,10 +248,10 @@ function calc.Farey()
 			denominator[3] = denominator[1] + denominator[2]
 			mediant = numerator[3] / denominator[3]
 
-			mediantStr = string.format( "%s", mediant )
+			--mediantStr = string.format( "%s", mediant )
 
 			-- test which side of the mediant
-			if( mediantStr == decimalStr ) then  -- use strings to test equals (float comparison  etc.....)
+			if( abs( mediant - decimal ) < epsilon ) then  -- use strings to test equals (float comparison  etc.....)
 				calc.Push( ( numerator[3] + ( whole * denominator[3] ) ) * ( isNeg and -1 or 1 ) )
 				calc.Push( denominator[3] )
 				limit = 0
