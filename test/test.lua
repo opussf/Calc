@@ -838,6 +838,29 @@ function test.test_Farey_SpecialTest()
 	assertEquals( 2, #calc.stack )
 	assertEquals( 1, calc.stack[2] )
 end
+-------------------
+-- mass
+-------------------
+function test.test_Mass_KGtoLB()
+	calc.Command( "1 kgtolb" )
+	assertEquals( 1, #calc.stack )
+	assertEquals( 2.20462, calc.stack[1] )
+end
+function test.test_Mass_LGtoKG()
+	calc.Command( "1 lbtokg 10000000 * round" )
+	assertEquals( 1, #calc.stack )
+	assertEquals( 4535929, calc.stack[1] )
+end
+function test.test_Mass_KGtoLBtoKG()
+	calc.Command( "1 kgtolb lbtokg" )
+	assertEquals( 1, #calc.stack )
+	assertEquals( 1, calc.stack[1] )
+end
+function test.test_Mass_LBtoKGtoLB()
+	calc.Command( "1 lbtokg kgtolb" )
+	assertEquals( 1, #calc.stack )
+	assertEquals( 1, calc.stack[1] )
+end
 
 
 test.run()

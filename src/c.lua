@@ -197,6 +197,20 @@ function calc.ToF()
 		calc.Add()
 	end
 end
+function calc.KGtoLB()
+	-- 1kg = 2.20462lbs
+	if #calc.stack >= 1 then
+		calc.Push( 2.20462 )
+		calc.Mul()
+	end
+end
+function calc.LBtoKG()
+	-- 1kg = 2.20462lbs
+	if #calc.stack >= 1 then
+		calc.Push( 2.20462 )
+		calc.Div()
+	end
+end
 function calc.Ceil()
 	if #calc.stack >= 1 then
 		calc.Push( math.ceil( calc.Pop() ) )
@@ -210,12 +224,7 @@ end
 function calc.Round()
 	if #calc.stack >= 1 then
 		local X = calc.Pop()
-		local _, frac = math.modf( X )
-		if frac < 0.5 then
-			calc.Push( math.floor( X ) )
-		else -- >= 0.5
-			calc.Push( math.ceil( X ) )
-		end
+		calc.Push( math.floor( X + 0.5 ) )
 	end
 end
 function calc.Farey()
@@ -285,7 +294,7 @@ end
 function calc.FHelp()
 	calc.Print("+ - * / % ^ ln ! pi e log logy", false)
 	calc.Print("sin cos tan asin acos atan", false)
-	calc.Print("1/x toC toF", false)
+	calc.Print("1/x toC toF LBtoKG KGtoLB", false)
 	calc.Print("ceil floor round", false)
 	calc.Print("///", false)
 end
@@ -348,6 +357,9 @@ calc.functions = {
 	-- tempConversions
 	["toc"] = calc.ToC,
 	["tof"] = calc.ToF,
+	-- mass conversions
+	["kgtolb"] = calc.KGtoLB,
+	["lbtokg"] = calc.LBtoKG,
 	-- wowVariables
 	["gold"] = function() table.insert( calc.stack, GetMoney() / 10000 ) end,
 	["silver"] = function() table.insert( calc.stack, GetMoney() / 100 ) end,
