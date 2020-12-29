@@ -303,10 +303,7 @@ function calc.WHelp()
 	calc.Print("health hp -- current health", false)
 	calc.Print("power -- max rage / mana / power", false)
 	calc.Print("haste mastery -- your current values", false)
-	calc.Print("conquest cp -- conquest points", false)
-	calc.Print("honor -- honor points", false)
-	calc.Print("justice jp -- justice points", false)
-	calc.Print("valor vp -- valor points", false)
+	calc.Print( "xp maxxp", false )
 	calc.Print("token -- current token price, in gold", false)
 end
 function calc.MHelp()
@@ -369,13 +366,8 @@ calc.functions = {
 	["power"] = function() calc.Push( UnitPowerMax('player') ) end,
 	["haste"] = function() calc.Push( GetHaste() ) end,
 	["mastery"] = function() calc.Push( GetMastery() ) end,
-	["conquest"] = function() calc.Push( select(2, GetCurrencyInfo(390) ) or 0 ) end,
-	["cp"] = function() calc.Push( select(2, GetCurrencyInfo(390) ) or 0 ) end,
-	["honor"] = function() calc.Push( select(2, GetCurrencyInfo(392) ) or 0 ) end,
-	["justice"] = function() calc.Push( select(2, GetCurrencyInfo(395) ) or 0 ) end,
-	["jp"] = function() calc.Push( select(2, GetCurrencyInfo(395) ) or 0 ) end,
-	["valor"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
-	["vp"] = function() calc.Push( select(2, GetCurrencyInfo(396) ) or 0 ) end,
+	["xp"] = function() calc.Push( UnitXP( "player" ) ) end,
+	["xpmax"] = function() calc.Push( UnitXPMax( "player" ) ) end,
 	["token"] = function() calc.Push( C_WowTokenPublic.GetCurrentMarketPrice() / 10000 or 0 ) end,
 
 	-- Farey

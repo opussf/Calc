@@ -266,40 +266,13 @@ function test.test_wowVariable_mastery()
 	calc.Command( "mastery" )
 	assertEquals( 21.3572, calc.stack[1] )
 end
-function test.test_wowCurrency_honor()
-	myCurrencies["392"] = 12
-	calc.Command( "honor" )
-	assertEquals( 12, calc.stack[1] )
+function test.test_wowVariable_xp()
+	calc.Command( "xp" )
+	assertEquals( 100, calc.stack[1] )
 end
-function test.test_wowCurrency_conquest()
-	myCurrencies["390"] = 10
-	calc.Command( "conquest" )
-	assertEquals( 10, calc.stack[1] )
-end
-function test.test_wowVariable_cp()
-	myCurrencies["390"] = 10
-	calc.Command( "cp" )
-	assertEquals( 10, calc.stack[1] )
-end
-function test.test_wowCurrency_justice()
-	myCurrencies["395"] = 15
-	calc.Command( "justice" )
-	assertEquals( 15, calc.stack[1] )
-end
-function test.test_wowCurrency_jp()
-	myCurrencies["395"] = 15
-	calc.Command( "jp" )
-	assertEquals( 15, calc.stack[1] )
-end
-function test.test_wowCurrency_valor()
-	myCurrencies["396"] = 16
-	calc.Command( "valor" )
-	assertEquals( 16, calc.stack[1] )
-end
-function test.test_wowCurrency_vp()
-	myCurrencies["396"] = 16
-	calc.Command( "vp" )
-	assertEquals( 16, calc.stack[1] )
+function test.test_wowVariable_xpMax()
+	calc.Command( "xpMax" )
+	assertEquals( 1000, calc.stack[1] )
 end
 -- 1.2 tests
 function test.test_Fac_noVals()
