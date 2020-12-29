@@ -303,7 +303,7 @@ function calc.WHelp()
 	calc.Print("health hp -- current health", false)
 	calc.Print("power -- max rage / mana / power", false)
 	calc.Print("haste mastery -- your current values", false)
-	calc.Print( "xp maxxp", false )
+	calc.Print( "xp xpmax", false )
 	calc.Print("token -- current token price, in gold", false)
 end
 function calc.MHelp()
