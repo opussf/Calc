@@ -834,6 +834,11 @@ function test.test_Mass_LBtoKGtoLB()
 	assertEquals( 1, #calc.stack )
 	assertEquals( 1, calc.stack[1] )
 end
+-----
+function test.test_LOGY_2()
+	calc.Command( "10000000 2 logy" )
+	assertEquals( 1, #calc.stack )
+end
 
 
 test.run()

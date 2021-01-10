@@ -146,7 +146,7 @@ function calc.Log10()
 		calc.Push( math.log10( calc.Pop() ) )
 	end
 end
-function calc.logy()
+function calc.Logy()
 	-- calculate logy(x) from "x y logy"
 	if #calc.stack >= 2 then
 		ly = math.log( calc.Pop() )
