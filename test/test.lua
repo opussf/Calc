@@ -703,6 +703,7 @@ end
 function test.notest_Infix_inline_doubleNeg()
 	calc.Command( "(20 - -5) 20 -5 -" )
 	assertEquals( 25, calc.Pop() )
+	assertEquals( 25, calc.Pop() )
 end
 function test.test_Infix_inline_useZero_first()
 	calc.Command( "( 0 + 17 )" )
