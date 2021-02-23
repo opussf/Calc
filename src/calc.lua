@@ -66,7 +66,7 @@ if err then
 else
 	file:write( "calc_macros = {\n" )
 	for mName, mStr in pairs( calc_macros ) do
-		file:write( string.format( "\t[\"%s\"] = \"%s\"\n", mName, mStr ) )
+		file:write( string.format( "\t[\"%s\"] = \"%s\",\n", mName, mStr ) )
 	end
 	file:write( "}\n")
 	io.close( file )
