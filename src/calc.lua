@@ -1,9 +1,12 @@
 #!/usr/bin/env lua
+-- This is the wrapper for calc to allow it to be used on the command line.
+
+-- arg is the array of arguments on the command line.
+-- 0 is the command name,  #arg is the number of commands on the command line
 
 -- over-ride or define stubs for functions
 strfind = string.find
 strsub = string.sub
-
 
 function GetAddOnMetadata( )
 	return "@VERSION@"
@@ -53,6 +56,21 @@ print("Calc (v@VERSION@)")
 
 -- Start the calculator
 running = true
+
+if #arg > 0 then
+	previousShowStack = calc.ShowStack
+	calc.ShowStack = function() end
+
+	-- Handle Command line
+	for n = 1, #arg do
+		calc.Command( arg[n] )
+	end
+
+	calc.ShowStack = previousShowStack
+	calc.ShowStack()
+end
+
+-- run the calc
 while running do
 	io.write( ("(%s)> "):format( calc.useDegree and "d" or "r" ) )
 	val = io.read("*line")

@@ -840,6 +840,12 @@ function test.test_LOGY_2()
 	calc.Command( "10000000 2 logy" )
 	assertEquals( 1, #calc.stack )
 end
+-------------------
+-- command line
+-------------------
+function test.test_commandLine_01()
+
+end
 
 
 test.run()
