@@ -9,7 +9,8 @@ on:
 jobs:
   build:
     runs-on:
-      - ubuntu-latest
+      - self-hosted
+      #- ubuntu-latest
 
     steps:
       - name: checkout code
@@ -49,3 +50,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           asset_paths: '["./target/*.zip*"]'
+
