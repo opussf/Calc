@@ -1,7 +1,7 @@
 -----------------------------------------
 -- Author  :  Opussf
 -- Date    :  $Date:$
--- Revision:  9.0.1.0-1-g972430b
+-- Revision:  9.0.1.0-4-geb224a3
 -----------------------------------------
 -- These are functions from wow that have been needed by addons so far
 -- Not a complete list of the functions.
@@ -9,6 +9,8 @@
 -- This is not intended to replace WoWBench, but to provide a stub structure for
 --     automated unit tests.
 
+settings = {
+}
 actionLog = {
 }
 -- append actions to the log to track actions that may not have an other sideeffects.
@@ -210,6 +212,8 @@ globals.FACTION_STANDING_LABEL5 = "Friendly"
 globals.FACTION_STANDING_LABEL6 = "Honored"
 globals.FACTION_STANDING_LABEL7 = "Revered"
 globals.FACTION_STANDING_LABEL8 = "Exalted"
+
+COMBATLOG_OBJECT_AFFILIATION_OUTSIDER = 8
 
 --			TT.fName, TT.fDescription, TT.fStandingId, TT.fBottomValue, TT.fTopValue, TT.fEarnedValue, TT.fAtWarWith,
 --					TT.fCanToggleAtWar, TT.fIsHeader, TT.fIsCollapsed, TT.fIsWatched, TT.isChild, TT.factionID,
@@ -1012,6 +1016,10 @@ function GetNumEquipmentSets()
 	-- Returns 0,MAX_NUM_EQUIPMENT_SETS
 	return #EquipmentSets
 end
+function GetRepairAllCost()
+	-- Returns cost to repair all, and if can repair
+	return 5000, true  -- 50s and yes
+end
 function GetNumFactions()
 	-- returns number of factions
 	-- I believe that this should return the correct number that are SHOWN.
@@ -1281,6 +1289,9 @@ function RegisterAddonMessagePrefix( prefix )
 	-- Cannot be empty.
 	-- What does this do?  In a bigger system, it could allow random messages to be generated
 end
+function RepairAllItems( useGuild )
+	-- performs rapir, uses guild money if useGuild is true
+end
 function RequestTimePlayed()
 end
 function Screenshot( )
@@ -1380,6 +1391,12 @@ function TaxiNodeGetType( nodeId )
 	-- http://www.wowwiki.com/API_TaxiNodeGetType
 	return TaxiNodes[nodeId].type
 end
+function setUnitOnTaxi( valueIn )
+	settings.unitOnTaxi = valueIn
+end
+function UnitOnTaxi()
+	return settings.unitOnTaxi or false
+end
 function UnitAffectingCombat( unit )
 	return false
 end
@@ -1404,7 +1421,8 @@ function UnitFactionGroup( who )
 	return unpack( Units[who].faction )
 end
 function UnitIsDeadOrGhost( who )
-
+end
+function UnitIsPVP( who )
 end
 function UnitLevel( who )
 	local unitLevels = {
