@@ -24,7 +24,7 @@ func sub() {
 let calcFunctions: [String: ()->Void] = [
 	"+": sum,
 	"-": sub,
-	"q": func()->Void { running = false }
+	"q": { () -> Void in running = false }
 ]
 
 
