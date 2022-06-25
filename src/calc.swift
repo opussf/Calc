@@ -4,7 +4,7 @@ import Foundation
 var stack : [Double] = []
 var running : Bool = true
 
-func gettwo() -> (var1: Double, var2: Double)? {
+func getTwo() -> (var1: Double, var2: Double)? {
 	guard let var1 = stack.popLast() else { return nil }
 	guard let var2 = stack.popLast() else {
 		stack.append(var1)
@@ -13,19 +13,19 @@ func gettwo() -> (var1: Double, var2: Double)? {
 	return (var1, var2)
 }
 func sum() {
-	guard let tup = gettwo() else { return }
+	guard let tup = getTwo() else { return }
 	stack.append(tup.var1+tup.var2)
 }
 func sub() {
-	guard let tup = gettwo() else { return }
+	guard let tup = getTwo() else { return }
 	stack.append(tup.var2-tup.var1)
 }
 func mul() {
-	guard let tup = gettwo() else { return }
+	guard let tup = getTwo() else { return }
 	stack.append(tup.var2*tup.var1)
 }
 func divide() {
-	guard let tup = gettwo() else { return }
+	guard let tup = getTwo() else { return }
 	guard tup.var1 != 0 else {
 		print("Connot divide by zero. Numbers pushed back on the stack.")
 		stack.append(tup.var2)
@@ -35,7 +35,7 @@ func divide() {
 	stack.append(tup.var2 / tup.var1)
 }
 func percent() {
-	guard let tup = gettwo() else { return }
+	guard let tup = getTwo() else { return }
 	stack.append( tup.var2 )
 	stack.append( tup.var2 )
 	stack.append( tup.var1 )
@@ -44,11 +44,11 @@ func percent() {
 	mul()
 }
 func power() {
-	guard let tup = gettwo() else { return }
+	guard let tup = getTwo() else { return }
 	stack.append( pow( tup.var2, tup.var1 ) )
 }
 func swap() {
-	guard let tup = gettwo() else { return }
+	guard let tup = getTwo() else { return }
 	stack.append( tup.var1 )
 	stack.append( tup.var2 )
 }
@@ -60,12 +60,37 @@ let calcFunctions: [String: ()->Void] = [
 	"/": divide,
 	"%": percent,
 	"^": power,
+	"pi": { () -> Void in stack.append( Double.pi ) },
+	"e": { () -> Void in stack.append( exp( 1 ) ) },
 	"pop": { () -> Void in stack.removeLast() },
 	"swap": swap,
 	"ac": { () -> Void in stack = [] },
 	"q": { () -> Void in running = false }
 ]
 
+func in2End( _ txtIn: String ) {
+	var result : [String] = []
+	var opStack: [String] = []
+
+	let operators: [Character: [Int] ] = [
+		"+": [2,1], "-": [2,1]
+	]
+
+	print("txtIn: " + txtIn )
+	var value: String = ""
+	for c in txtIn {
+		let op = operators[c]
+		if op == nil {
+			value += String(c)
+		} else {
+			if value.count > 0 {
+				result.append( value )
+				value = ""
+			}
+		}
+	}
+	print( result )
+}
 
 while running {
 	print(stack.map{String($0)}.joined(separator: " ") + " >", terminator: "")
@@ -83,6 +108,8 @@ while running {
 			let calcFunction = calcFunctions[first!]
 			if calcFunction != nil {
 				calcFunction!()
+			} else if first!.prefix(1) == "(" && first!.suffix(1) == ")" {
+				in2End(first!)
 			} else {
 				stack.append( (first! as NSString).doubleValue )
 			}
