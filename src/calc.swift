@@ -73,13 +73,16 @@ func in2End( _ txtIn: String ) {
 	var opStack: [String] = []
 
 	let operators: [Character: [Int] ] = [
-		"+": [2,1], "-": [2,1]
+		"+": [2,1], "-": [2,1], "*": [3,1], "/": [3,1], "^": [4,2], "%": [4,2], "!": [4,2]
 	]
 
 	print("txtIn: " + txtIn )
 	var value: String = ""
 	for c in txtIn {
-		print(c)
+		print(c, terminator: "\t")
+		print(value, terminator: "\t")
+		print(result, terminator: "\t")
+		print(opStack)
 		let op = operators[c]
 		if op != nil {
 			if value.count > 0 {
@@ -87,7 +90,15 @@ func in2End( _ txtIn: String ) {
 				value = ""
 			}
 			while( opStack.count > 0 ) {
-
+				let lastOp = Character( opStack.last! )
+				if opStack.last == "(" { break }
+				else if ( ( operators[c]![1] == 1 && operators[c]![0] <= operators[lastOp]![0] ) ||
+				          ( operators[c]![1] == 2 && operators[c]![0] <  operators[lastOp]![0] ) ) {
+				        	result.append( opStack.popLast()! )
+				        }
+				else {
+					break
+				}
 			}
 			opStack.append( String(c) )
 		} else if c == "(" {
@@ -97,12 +108,19 @@ func in2End( _ txtIn: String ) {
 				result.append( value )
 				value = ""
 			}
-			var cc: Character? = c
-			while( cc! != "(" ) {
+			var opstackC: String? = opStack.last
+			while( opstackC != nil && opstackC != "(" ) {
 				result.append( opStack.popLast()! )
-				guard cc = opStack.last else { break }
+				opstackC = opStack.last
 			}
 			opStack.removeLast()
+		} else if c == " " {
+			if value.count > 0 {
+				result.append( value )
+				value = ""
+			}
+		} else {
+			value = value + String( c )
 		}
 
 
