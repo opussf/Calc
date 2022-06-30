@@ -21,7 +21,7 @@ class In2end( object ):
 		return " ".join( map( lambda x: str(x), self.result ) )
 
 	def moveFromOpStack( self ):
-		self.result.append( self.opStack.pop () )
+		self.result.append( self.opStack.pop() )
 
 	def parse( self, lineIn ):
 		"""Takes a string"""

@@ -79,17 +79,38 @@ func in2End( _ txtIn: String ) {
 	print("txtIn: " + txtIn )
 	var value: String = ""
 	for c in txtIn {
+		print(c)
 		let op = operators[c]
-		if op == nil {
-			value += String(c)
-		} else {
+		if op != nil {
 			if value.count > 0 {
 				result.append( value )
 				value = ""
 			}
+			while( opStack.count > 0 ) {
+
+			}
+			opStack.append( String(c) )
+		} else if c == "(" {
+			opStack.append( String(c) )
+		} else if c == ")" {
+			if value.count > 0 {
+				result.append( value )
+				value = ""
+			}
+			var cc: Character? = c
+			while( cc! != "(" ) {
+				result.append( opStack.popLast()! )
+				guard cc = opStack.last else { break }
+			}
+			opStack.removeLast()
 		}
+
+
+
 	}
+	print("result: ", terminator: "")
 	print( result )
+	print( opStack )
 }
 
 while running {
