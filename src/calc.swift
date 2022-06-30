@@ -122,13 +122,11 @@ func in2End( _ txtIn: String ) {
 		} else {
 			value = value + String( c )
 		}
-
-
-
 	}
 	print("result: ", terminator: "")
 	print( result )
 	print( opStack )
+
 }
 
 while running {
