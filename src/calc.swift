@@ -76,6 +76,7 @@ let calcFunctions: [String: ()->Void] = [
 	"^": power,
 	"!": factorial,
 	"pi": { () -> Void in stack.append( Double.pi ) },
+	"π": { () -> Void in stack.append( Double.pi ) },
 	"e": { () -> Void in stack.append( exp( 1 ) ) },
 	"pop": { () -> Void in stack.removeLast() },
 	"swap": swap,
