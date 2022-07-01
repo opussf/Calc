@@ -1,8 +1,8 @@
 #!/usr/bin/env swift
 import Foundation
 
-var stack : [Double] = []
-var running : Bool = true
+var stack: [Double] = []
+var running: Bool = true
 
 func getTwo() -> (var1: Double, var2: Double)? {
 	guard let var1 = stack.popLast() else { return nil }
@@ -47,6 +47,20 @@ func power() {
 	guard let tup = getTwo() else { return }
 	stack.append( pow( tup.var2, tup.var1 ) )
 }
+func factorial() {
+    guard let value = stack.popLast() else { return }
+    if value < 0 {
+        stack.append( Double.infinity )
+    } else if value == 0 {
+        stack.append( 1 )
+    } else {
+        var fac: Double = 1
+        for lcv in 1...Int(value) {
+            fac *= Double(lcv)
+        }
+        stack.append( fac )
+    }
+}
 func swap() {
 	guard let tup = getTwo() else { return }
 	stack.append( tup.var1 )
@@ -60,6 +74,7 @@ let calcFunctions: [String: ()->Void] = [
 	"/": divide,
 	"%": percent,
 	"^": power,
+	"!": factorial,
 	"pi": { () -> Void in stack.append( Double.pi ) },
 	"e": { () -> Void in stack.append( exp( 1 ) ) },
 	"pop": { () -> Void in stack.removeLast() },
@@ -69,22 +84,24 @@ let calcFunctions: [String: ()->Void] = [
 ]
 
 func in2End( _ txtIn: String ) {
-	var result : [String] = []
+	var  result: [String] = []
 	var opStack: [String] = []
 
 	let operators: [Character: [Int] ] = [
-		"+": [2,1], "-": [2,1], "*": [3,1], "/": [3,1], "^": [4,2], "%": [4,2], "!": [4,2]
+		"+": [2, 1], "-": [2, 1],
+		"*": [3, 1], "/": [3, 1],
+		"^": [4, 2], "%": [4, 2], "!": [4, 2]
 	]
 
 	print("txtIn: " + txtIn )
 	var value: String = ""
-	for c in txtIn {
-		print(c, terminator: "\t")
-		print(value, terminator: "\t")
-		print(result, terminator: "\t")
-		print(opStack)
-		let op = operators[c]
-		if op != nil {
+	for char in txtIn {
+		// print(char, terminator: "\t")
+		// print(value, terminator: "\t")
+		// print(result, terminator: "\t")
+		// print(opStack)
+		let currentOp = operators[char]
+		if currentOp != nil {
 			if value.count > 0 {
 				result.append( value )
 				value = ""
@@ -92,18 +109,18 @@ func in2End( _ txtIn: String ) {
 			while( opStack.count > 0 ) {
 				let lastOp = Character( opStack.last! )
 				if opStack.last == "(" { break }
-				else if ( ( operators[c]![1] == 1 && operators[c]![0] <= operators[lastOp]![0] ) ||
-				          ( operators[c]![1] == 2 && operators[c]![0] <  operators[lastOp]![0] ) ) {
+				else if ( ( currentOp![1] == 1 && currentOp![0] <= operators[lastOp]![0] ) ||
+				          ( currentOp![1] == 2 && currentOp![0] <  operators[lastOp]![0] ) ) {
 				        	result.append( opStack.popLast()! )
 				        }
 				else {
 					break
 				}
 			}
-			opStack.append( String(c) )
-		} else if c == "(" {
-			opStack.append( String(c) )
-		} else if c == ")" {
+			opStack.append( String(char) )
+		} else if char == "(" {
+			opStack.append( String(char) )
+		} else if char == ")" {
 			if value.count > 0 {
 				result.append( value )
 				value = ""
@@ -114,25 +131,24 @@ func in2End( _ txtIn: String ) {
 				opstackC = opStack.last
 			}
 			opStack.removeLast()
-		} else if c == " " {
+		} else if char == " " {
 			if value.count > 0 {
 				result.append( value )
 				value = ""
 			}
 		} else {
-			value = value + String( c )
+			value = value + String( char )
 		}
 	}
-	print("result: ", terminator: "")
-	print( result )
-	print( opStack )
-
+	// print("result: ", terminator: "")
+	// print( result )
+	// print( opStack )
 }
 
 while running {
 	print(stack.map{String($0)}.joined(separator: " ") + " >", terminator: "")
 
-	guard let input:String = readLine(strippingNewline: true) else {
+	guard let input: String = readLine(strippingNewline: true) else {
 		running = false
 		fatalError("Missing input")
 	}
@@ -140,7 +156,7 @@ while running {
 	var valsIn = ArraySlice(input.components(separatedBy: " "))
 	var first = valsIn.popFirst()
 	while first != nil {
-		//print( first )
+		// print( first )
 		if first != "" {
 			let calcFunction = calcFunctions[first!]
 			if calcFunction != nil {
