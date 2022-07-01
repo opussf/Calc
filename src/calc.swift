@@ -83,7 +83,7 @@ let calcFunctions: [String: ()->Void] = [
 	"q": { () -> Void in running = false }
 ]
 
-func in2End( _ txtIn: String ) {
+func in2End( _ txtIn: String ) -> [String] {
 	var  result: [String] = []
 	var opStack: [String] = []
 
@@ -93,7 +93,7 @@ func in2End( _ txtIn: String ) {
 		"^": [4, 2], "%": [4, 2], "!": [4, 2]
 	]
 
-	print("txtIn: " + txtIn )
+	// print("txtIn: " + txtIn )
 	var value: String = ""
 	for char in txtIn {
 		// print(char, terminator: "\t")
@@ -143,6 +143,7 @@ func in2End( _ txtIn: String ) {
 	// print("result: ", terminator: "")
 	// print( result )
 	// print( opStack )
+	return result
 }
 
 while running {
@@ -162,7 +163,8 @@ while running {
 			if calcFunction != nil {
 				calcFunction!()
 			} else if first!.prefix(1) == "(" && first!.suffix(1) == ")" {
-				in2End(first!)
+				valsIn = in2End(first!) + valsIn
+				print( valsIn )
 			} else {
 				stack.append( (first! as NSString).doubleValue )
 			}
