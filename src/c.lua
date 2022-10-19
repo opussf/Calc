@@ -422,11 +422,13 @@ end
 -- Map Code
 ------
 function calc.Map( msg )
+	print( calc.stack )
 	local reverseStack = {}
 	while #calc.stack > 0 do
 		table.insert( reverseStack, table.remove( calc.stack ) )
 	end
-	while #reverseStack > 0 do
+	print( reverseStack )
+	while #reverseStack > 1 do
 		calc.ProcessLine( table.remove( reverseStack ).." "..msg )
 	end
 end

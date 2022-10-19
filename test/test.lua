@@ -858,6 +858,7 @@ function test.test_Map_Sum_02()
 	calc.Command( "4 5 6 map 1 +" )
 	assertEquals( 3, #calc.stack )
 	assertEquals( 5, calc.stack[1] )
+	assertEquals( 7, calc.stack[3] )
 end
 function test.test_Map_Mul_01()
 	calc.Command( "1 2 3 map *" )
