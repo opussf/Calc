@@ -846,6 +846,28 @@ end
 function test.test_commandLine_01()
 
 end
-
+-------------------
+-- map
+-------------------
+function test.test_Map_Sum_01()
+	calc.Command( "1 2 3 map +" )
+	assertEquals( 1, #calc.stack )
+	assertEquals( 6, calc.stack[1] )
+end
+function test.test_Map_Sum_02()
+	calc.Command( "4 5 6 map 1 +" )
+	assertEquals( 3, #calc.stack )
+	assertEquals( 5, calc.stack[1] )
+end
+function test.test_Map_Mul_01()
+	calc.Command( "1 2 3 map *" )
+	assertEquals( 1, #calc.stack )
+	assertEquals( 6, calc.stack[1] )
+end
+function test.test_Map_Sub_01()
+	calc.Command( "3 2 1 map -" )
+	assertEquals( 1, #calc.stack )
+	assertEquals( 0, calc.stack[1] )
+end
 
 test.run()
