@@ -1,5 +1,15 @@
 # Feature.md
 
+## Map action
+Add a map function.
+The map function is simular to a short term macro that aplies the 'macro' to all elements in the stack.
+
+> map +
+Will sum all the items in the stack.
+
+> map 2 *
+Will multiply all the items in the stack by 2
+
 ## Farey Fractions
 Use /// on a number to create a fraction.
 Show this as the numerator denominator, such that using / would convert this back to a decimal value.

@@ -419,6 +419,20 @@ end
 -- End Macro Code
 ------
 ------
+-- Map Code
+------
+function calc.Map( msg )
+	local reverseStack = {}
+	while #calc.stack > 0 do
+		table.insert( reverseStack, table.remove( calc.stack ) )
+	end
+	while #reverseStack > 1 do  -- do this one less time than in the stack, since the at the end the msg is appended to the line
+		calc.ProcessLine( table.remove( reverseStack ).." "..msg )
+	end
+	calc.ProcessLine( table.remove( reverseStack ) )
+end
+calc.functions["map"] = calc.Map
+------
 -- infix code
 ------
 function calc.In2end( txtIn )
@@ -551,7 +565,7 @@ function calc.ProcessLine( msg, showErrors )
 		--print( "val:"..val.." msg:"..msg )
 		if val then
 			if calc.functions[val] then
-				calc.functions[val]()
+				calc.functions[val]( msg )
 			elseif string.find( val, "%b()" ) then
 				--print( "FOUND: "..val )
 				calc.In2end( val )
