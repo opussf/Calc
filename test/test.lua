@@ -870,5 +870,10 @@ function test.test_Map_Sub_01()
 	assertEquals( 1, #calc.stack )
 	assertEquals( 0, calc.stack[1] )
 end
+function test.test_Map_Complex_01()
+	calc.Command( "10 11 12 11 10 11 12 map 10 + 5 * +")
+	assertEquals( 1, #calc.stack )
+	assertEquals( 735, calc.stack[1] )
+end
 
 test.run()
