@@ -1,7 +1,7 @@
 -----------------------------------------
 -- Author  :  Opussf
--- Date    :  January 2 2023
--- Revision:  9.0.3-5-g5f3a636-100002
+-- Date    :  April 3 2023
+-- Revision:  9.0.4-1-gd43e27b
 -----------------------------------------
 -- These are functions from wow that have been needed by addons so far
 -- Not a complete list of the functions.
@@ -53,6 +53,7 @@ onCursor = {}
 globals = {}
 accountExpansionLevel = 4   -- 0 to 5
 -- registeredPrefixes - populated by the RegisterAddonMessagePrefix( prefix )
+unitSpeeds = { ["player"] = 0 }
 
 myStatistics = {
 	[60] = 42  -- 60 = deaths
@@ -794,6 +795,7 @@ end
 
 
 C_Container = {}
+C_Container.SortBagsRightToLeft = false -- this is normal
 function C_Container.GetContainerItemInfo( bagId, slotId )
 end
 function C_Container.GetContainerItemLink( bagId, slotId )
@@ -823,6 +825,9 @@ function C_Container.GetContainerNumSlots( bagId )
 	else
 		return 0
 	end
+end
+function C_Container.GetSortBagsRightToLeft()
+	return C_Container.SortBagsRightToLeft
 end
 function C_Container.UseContainerItem( bagId, slotId )
 end
@@ -1153,6 +1158,11 @@ function GetUnitName( lookupStr )
 		return myParty.roster[partyIndex]
 	end
 end
+function GetUnitSpeed( lookupStr )
+	lookupStr = string.lower( lookupStr )
+
+	return (unitSpeeds[lookupStr])
+end
 --[[
 function HasNewMail()
 	return true
@@ -1195,6 +1205,10 @@ function IsInRaid()
 	-- 1, nill boolean return of being in raid
 	-- myParty = { ["group"] = nil, ["raid"] = nil } -- set one of these to true to reflect being in group or raid.
 	return ( myParty["raid"] and 1 or nil )
+end
+function IsFlying()
+end
+function IsMounted()
 end
 function GetCursorInfo()
 end
@@ -1613,6 +1627,14 @@ function C_CurrencyInfo.GetCurrencyLink( id )
 	if Currencies[id] then
 		return Currencies[id].link
 	end
+end
+
+Enum = {}
+Enum.TooltipDataType = {}
+Enum.TooltipDataType.Item = 0
+
+TooltipDataProcessor = {}
+function TooltipDataProcessor.AddTooltipPostCall()
 end
 
 -----------------------------------------
