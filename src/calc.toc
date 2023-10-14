@@ -4,6 +4,7 @@
 ## Author: opussf
 ## Version: @VERSION@
 ## Description: Command line calculator.
+## IconTexture: Interface\Icons\Inv_misc_enggizmos_39
 ## SavedVariables:
 ## SavedVariables: calc_macros
 ## SavedVariablesPerCharacter:
