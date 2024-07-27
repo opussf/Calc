@@ -36,4 +36,8 @@ function calc.VARIABLES_LOADED()
 	SendChatMessage = calc.SendChatMessage
 	calc.OriginalBNSendWhisper = BNSendWhisper
 	BNSendWhisper = calc.BNSendWhisper
+	-- hooksecurefunc( "SendChatMessage", calc.SendChatMessage )
 end
+
+
+-- hooksecurefunc(C_PetJournal, "SetPetLoadOutInfo", function(...) self:OnSetPetLoadOut(...) end)
