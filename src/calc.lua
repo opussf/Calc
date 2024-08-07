@@ -15,7 +15,9 @@ SlashCmdList = {}
 
 -- import the addon file
 package.path = "/usr/local/bin/?.lua;'" .. package.path
-require "c"
+
+local loadedfile = assert( loadfile( "/usr/local/bin/c.lua" ) )
+loadedfile( addonName, {} )
 
 -- find ~/.calc
 pathSeparator = string.sub( package.config, 1, 1 ) -- first character of this string (http://www.lua.org/manual/5.2/manual.html#pdf-package.config)
