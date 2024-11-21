@@ -303,11 +303,9 @@ function calc.WHelp()
 	calc.Print("gold silver copper -- current money in those units", false)
 	calc.Print("health hp -- current health", false)
 	calc.Print("power -- max rage / mana / power", false)
-	calc.Print("haste% haste", false)
-	calc.Print("mastery% mastery", false)
-
-	 -- mastery -- your current values", false)
-	calc.Print( "xp xpmax", false )
+	calc.Print("haste% haste, mastery% mastery vers", false)
+	calc.Print("str agil stam int spirit", false )
+	calc.Print("xp xpmax", false )
 	calc.Print("token -- current token price, in gold", false)
 end
 function calc.MHelp()
@@ -374,6 +372,14 @@ calc.functions = {
 	["mastery"] = function() calc.Push( GetCombatRating( CR_MASTERY ) ) end,
 	["crit%"] = function() calc.Push( GetCritChance() ) end,
 	["crit"] = function() calc.Push( GetCombatRating( CR_CRIT_MELEE ) ) end,
+	-- ["vers%"] = function() calc.Push( GetCritChance() ) end,
+	["vers"] = function() calc.Push( GetCombatRating( CR_VERSATILITY_DAMAGE_DONE ) ) end,
+	["str"]  = function() calc.Push( select(2, UnitStat("player", 1))) end,
+	["agil"] = function() calc.Push( select(2, UnitStat("player", 2))) end,
+	["stam"] = function() calc.Push( select(2, UnitStat("player", 3))) end,
+	["int"]  = function() calc.Push( select(2, UnitStat("player", 4))) end,
+	["spirit"]= function() calc.Push( select(2, UnitStat("player", 5))) end,
+
 	["xp"] = function() calc.Push( UnitXP( "player" ) ) end,
 	["xpmax"] = function() calc.Push( UnitXPMax( "player" ) ) end,
 	["token"] = function() calc.Push( C_WowTokenPublic.GetCurrentMarketPrice() / 10000 or 0 ) end,

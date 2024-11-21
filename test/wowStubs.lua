@@ -1616,6 +1616,10 @@ function UnitSex( who )
 	-- 1 = unknown, 2 = Male, 3 = Female
 	return Units[who].sex
 end
+function UnitStat( unitID, statID )
+	stats = { 15, 20, 25, 30, 35 } -- str, agil, stam, int, spirit
+	return stats[statID], stats[statID], 0, 0
+end
 function UnitXP( who )
 	return 100
 end
