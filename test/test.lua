@@ -258,13 +258,53 @@ function test.test_wowVariable_power()
 	calc.Command( "power" )
 	assertEquals( 12345, calc.stack[1] )
 end
+function test.test_wowVariable_hastePerCent()
+	calc.Command( "haste%" )
+	assertEquals( 15.42345, calc.stack[1] )
+end
 function test.test_wowVariable_haste()
 	calc.Command( "haste" )
-	assertEquals( 15.42345, calc.stack[1] )
+	assertEquals( 2734, calc.stack[1] )
+end
+function test.test_wowVariable_masteryPerCent()
+	calc.Command( "mastery%" )
+	assertEquals( 21.3572, calc.stack[1] )
 end
 function test.test_wowVariable_mastery()
 	calc.Command( "mastery" )
-	assertEquals( 21.3572, calc.stack[1] )
+	assertEquals( 2734, calc.stack[1] )
+end
+function test.test_wowVariable_critPerCent()
+	calc.Command( "crit%" )
+	assertEquals( 25.42345, calc.stack[1] )
+end
+function test.test_wowVariable_crit()
+	calc.Command( "crit" )
+	assertEquals( 2734, calc.stack[1] )
+end
+function test.notest_wowVariable_versPerCent()
+	calc.Command( "vers%" )
+	assertEquals( 25.42345, calc.stack[1] )
+end
+function test.test_wowVariable_vers()
+	calc.Command( "vers" )
+	assertEquals( 2734, calc.stack[1] )
+end
+function test.test_wowVariable_str()
+	calc.Command( "str" )
+	assertEquals( 15, calc.stack[1] )
+end
+function test.test_wowVariable_agil()
+	calc.Command( "agil" )
+	assertEquals( 20, calc.stack[1] )
+end
+function test.test_wowVariable_stam()
+	calc.Command( "stam" )
+	assertEquals( 25, calc.stack[1] )
+end
+function test.test_wowVariable_int()
+	calc.Command( "int" )
+	assertEquals( 30, calc.stack[1] )
 end
 function test.test_wowVariable_xp()
 	calc.Command( "xp" )
