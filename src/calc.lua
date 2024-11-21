@@ -39,7 +39,9 @@ DoFile( settingsFile )
 
 -- remove the WowSpecific commands
 WowSpecific = {"gold","silver","copper","health","hp",
-		"power","haste","mastery","token","xp","xpmax"}
+		"power","haste%","haste","mastery%","mastery",
+		"crit%", "crit", "vers%", "vers", "str", "agil",
+		"stam", "int", "token","xp","xpmax"}
 for _, fun in pairs(WowSpecific) do
 	calc.functions[fun] = nil
 end
