@@ -8,7 +8,8 @@
 strfind = string.find
 strsub = string.sub
 
-function GetAddOnMetadata( )
+C_AddOns = {}
+function C_AddOns.GetAddOnMetadata( )
 	return "@VERSION@"
 end
 SlashCmdList = {}
