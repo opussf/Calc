@@ -114,7 +114,7 @@
 		<delete>
 			<fileset dir="${addon.dir}" includes="*.toc"/>
 		</delete>
-		<copy todir="${addon.dir}" filtering="true" flatten="true">
+		<copy todir="${addon.dir}" filtering="true" flatten="true" verbose="true">
 			<fileset dir=".">
 				<patternset refid="packageFiles"/>
 			</fileset>
