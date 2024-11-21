@@ -1,7 +1,7 @@
 -----------------------------------------
 -- Author  :  Opussf
--- Date    :  August 6 2024
--- Revision:  9.4.3-11-ga7a1da8
+-- Date    :  September 30 2024
+-- Revision:  9.5-10-g3db6671
 -----------------------------------------
 -- These are functions from wow that have been needed by addons so far
 -- Not a complete list of the functions.
@@ -843,6 +843,9 @@ function GetStatistic( statID )
 
 	return Achievements[statID].value
 end
+function GetCombatRating( ratingEnum )
+	return 2734
+end
 function GetComparisonStatistic( achievementID )
 	-- https://wowwiki.fandom.com/wiki/API_GetComparisonStatistic
 	-- achievementID: integer - ID of the achievement
@@ -1297,6 +1300,9 @@ end
 function IsFlying()
 end
 function IsMounted()
+end
+function GetCritChance()
+	return 25.42345
 end
 function GetCursorInfo()
 end
