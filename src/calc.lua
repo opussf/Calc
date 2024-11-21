@@ -41,7 +41,7 @@ DoFile( settingsFile )
 WowSpecific = {"gold","silver","copper","health","hp",
 		"power","haste%","haste","mastery%","mastery",
 		"crit%", "crit", "vers%", "vers", "str", "agil",
-		"stam", "int", "spirit", "token","xp","xpmax"}
+		"stam", "int", "token","xp","xpmax"}
 for _, fun in pairs(WowSpecific) do
 	calc.functions[fun] = nil
 end

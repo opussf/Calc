@@ -304,7 +304,7 @@ function calc.WHelp()
 	calc.Print("health hp -- current health", false)
 	calc.Print("power -- max rage / mana / power", false)
 	calc.Print("haste% haste, mastery% mastery vers", false)
-	calc.Print("str agil stam int spirit", false )
+	calc.Print("str agil stam int", false )
 	calc.Print("xp xpmax", false )
 	calc.Print("token -- current token price, in gold", false)
 end
@@ -378,7 +378,6 @@ calc.functions = {
 	["agil"] = function() calc.Push( select(2, UnitStat("player", 2))) end,
 	["stam"] = function() calc.Push( select(2, UnitStat("player", 3))) end,
 	["int"]  = function() calc.Push( select(2, UnitStat("player", 4))) end,
-	["spirit"]= function() calc.Push( select(2, UnitStat("player", 5))) end,
 
 	["xp"] = function() calc.Push( UnitXP( "player" ) ) end,
 	["xpmax"] = function() calc.Push( UnitXPMax( "player" ) ) end,

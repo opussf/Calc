@@ -1617,7 +1617,7 @@ function UnitSex( who )
 	return Units[who].sex
 end
 function UnitStat( unitID, statID )
-	stats = { 15, 20, 25, 30, 35 } -- str, agil, stam, int, spirit
+	stats = { 15, 20, 25, 30 } -- str, agil, stam, int
 	return stats[statID], stats[statID], 0, 0
 end
 function UnitXP( who )

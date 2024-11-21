@@ -306,10 +306,6 @@ function test.test_wowVariable_int()
 	calc.Command( "int" )
 	assertEquals( 30, calc.stack[1] )
 end
-function test.test_wowVariable_spirit()
-	calc.Command( "spirit" )
-	assertEquals( 35, calc.stack[1] )
-end
 function test.test_wowVariable_xp()
 	calc.Command( "xp" )
 	assertEquals( 100, calc.stack[1] )
