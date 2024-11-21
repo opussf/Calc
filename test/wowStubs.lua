@@ -12,6 +12,7 @@
 -- * Create test.lua  - Add #!/usr/bin/env lua
 -- * require "wowTest"
 -- * set test.outFileName to an ouput.xml file
+-- * set test.coberturaFileName = "../coverage.xml" to enable coverage output
 -- * Parse the TOC - ParseTOC( "../src/sonthing.toc" )
 -- * Setup any 'Normal Frames'
 
@@ -283,6 +284,19 @@ FactionInfo = {
 		["isChild"] = false, ["isHeader"] = true, ["isHeaderWithRep"] = true, ["isCollapsed"] = false, ["isWatched"] = false,
 		["hasBonusRepGain"] = false, ["canSetInactive"] = false, ["isAccountWide"] = true,
 	},
+	{
+		["factionID"] = 1282, ["name"] = "Fish Fellrend", ["description"] = "", ["reaction"] = 5, ["currentReactionThreshold"] = 0,
+		["nextReactionThreshold"] = 4000, ["currentStanding"] = 0, ["atWarWith"] = false, ["canToggleAtWar"] = true,
+		["isChild"] = false, ["isHeader"] = true, ["isHeaderWithRep"] = true, ["isCollapsed"] = false, ["isWatched"] = false,
+		["hasBonusRepGain"] = false, ["canSetInactive"] = false, ["isAccountWide"] = true,
+	},
+	{
+		["factionID"] = 2010, ["name"] = "Max", ["description"] = "", ["reaction"] = 8, ["currentReactionThreshold"] = 42000,
+		["nextReactionThreshold"] = 42000, ["currentStanding"] = 42000, ["atWarWith"] = false, ["canToggleAtWar"] = true,
+		["isChild"] = false, ["isHeader"] = true, ["isHeaderWithRep"] = true, ["isCollapsed"] = false, ["isWatched"] = false,
+		["hasBonusRepGain"] = false, ["canSetInactive"] = false, ["isAccountWide"] = true,
+	},
+
 }
 --Auras
 -- IIRC (Look this up) Auras are index based, use an index based system
@@ -320,7 +334,7 @@ format = string.format
 strmatch = string.match
 strfind = string.find
 strsub = string.sub
-strtolower = string.lower
+strlower = string.lower
 strlen = string.len
 time = os.time
 date = os.date
@@ -605,11 +619,25 @@ end
 EditBox = {
 		["SetText"] = function(self,text) self.text=text; end,
 		["SetCursorPosition"] = function(self,pos) self.cursorPosition=pos; end,
-
+		["HighlightText"] = function(self,start,last) end,
+		["IsNumeric"] = function() end,
 }
 function CreateEditBox( name, ... )
 	me = {}
 	for k,v in pairs(EditBox) do
+		me[k] = v
+	end
+	me.name = name
+	return me
+end
+Button = {
+	["enabled"] = true,
+	["SetEnabled"] = function(self,enabled) self.enabled = enabled; end,
+	["IsEnabled"] = function(self) return self.enabled; end,
+}
+function CreateButton( name, ... )
+	me = {}
+	for k,v in pairs(Button) do
 		me[k] = v
 	end
 	me.name = name
@@ -852,11 +880,6 @@ function GetComparisonStatistic( achievementID )
 	-- returns: string - the value of the requested statistic
 	return Achievements[achievementID].value
 end
-function GetAddOnMetadata( addon, field )
-	-- returns addonData[field] for 'addon'
-	-- local addonData = { ["version"] = "1.0", }
-	return addonData[field]
-end
 function GetCategoryList()
 	-- http://www.wowwiki.com/API_GetCategoryList
 	-- Returns a table of achievement categories
@@ -873,6 +896,20 @@ function GetCategoryNumAchievements( catID )
 	-- numCompleted: Number of completed achievements (or 0 for stats)
 	-- numIncomplete: Number of incomplete achievements
 	return 5,0,5
+end
+
+C_AddOns = {}
+function C_AddOns.GetAddOnMetadata( addon, field )
+	-- returns addonData[field] for 'addon'
+	-- local addonData = { ["version"] = "1.0", }
+	return addonData[field]
+end
+function C_AddOns.GetNumAddOns()
+	return 1
+end
+function C_AddOns.LoadAddOn( addonName )
+end
+function C_AddOns.DisableAddOn( addonName, playerName )
 end
 
 C_Container = {}
@@ -1232,17 +1269,7 @@ function GetTradeSkillRecipeLink( index )
 	return TradeSkillItems[index].elink
 end
 function GetUnitName( lookupStr )
-	lookupStr = string.lower( lookupStr )
-	-- return the player's UnitName if asking for "player"
-	if lookupStr == "player" then
-		return UnitName( lookupStr )
-	end
-	_, _, partyType, partyIndex = string.find( lookupStr, "(%S+)(%d+)" )
-	partyIndex = tonumber( partyIndex )
-	-- only return the indexed playername if the party type matches, and the index exists
-	if( myParty[partyType] and myParty.roster[partyIndex] ) then
-		return myParty.roster[partyIndex]
-	end
+	error("This is deprecated")
 end
 function GetUnitSpeed( lookupStr )
 	lookupStr = string.lower( lookupStr )
@@ -1322,8 +1349,6 @@ function GetFramerate()
 end
 function IsResting()
 	return true
-end
-function LoadAddOn()
 end
 function NumTaxiNodes()
 	-- http://www.wowwiki.com/API_NumTaxiNodes
@@ -1529,20 +1554,26 @@ end
 function UnitAffectingCombat( unit )
 	return false
 end
-function UnitAura( unit, index, filter )
+C_UnitAuras = {}
+function C_UnitAuras.GetAuraDataByIndex( unit, index )
 	-- @TODO: Look this up to get a better idea of what this function does.
-	-- Returns the aura name
-	-- unit, [index] [,filter]
-	-- Returns True or nil
+	-- Returns an auraData table
 	if( UnitAuras[unit] and UnitAuras[unit][index] ) then
-		return UnitAuras[unit][index].name
+		return UnitAuras[unit][index]
 	end
 end
 function UnitClass( who )
 	return Units[who].class, Units[who].classCAPS, Units[who].classIndex
 end
+function UnitExists( who )
+	return Units[who] and true or nil
+end
 function UnitGUID( who )
 	return "playerGUID"
+end
+function UnitGroupRolesAssigned( who )
+	print( "UnitGroupRolesAssigned( "..who.." )")
+	return Units[who].role
 end
 function UnitHealthMax( who )
 	-- http://wowwiki.wikia.com/wiki/API_UnitHealth
@@ -1673,6 +1704,12 @@ function GetEquipmentSetInfoByName( nameIn )
 			return EquipmentSets[i].icon, i-1
 		end
 	end
+end
+function CanMerchantRepair()
+	return true
+end
+function CanGuildBankRepair()
+	return true
 end
 
 --http://wow.gamepedia.com/Patch_7.0.3/API_changes
@@ -1847,6 +1884,19 @@ function C_ToyBox.IsToyUsable( id )
 end
 
 ----------
+-- Settings
+----------
+Settings = {}
+function Settings.OpenToCategory( id )
+end
+function Settings.RegisterCanvasLayoutCategory( frame, name )
+	-- return a category structure
+	return ( {["GetID"] = function() return 234; end} )
+end
+function Settings.RegisterAddOnCategory(category)
+end
+
+----------
 -- C_Reputation
 ----------
 C_Reputation = {}
@@ -1861,6 +1911,14 @@ function C_Reputation.GetFactionParagonInfo()
 end
 
 ----------
+-- C_GossipInfo
+----------
+C_GossipInfo = {}
+function C_GossipInfo.GetFriendshipReputation( idIn )
+	return {["maxRep"]=0, ["text"]="", ["reversedColor"]=false, ["reaction"]="", ["standing"]=0, ["reactionThreshold"]=0, ["friendshipFactionID"]=0, ["textrue"]=0}
+end
+
+----------
 -- C_Item
 ----------
 C_Item = {}
@@ -1871,6 +1929,21 @@ C_Item.GetItemCount = GetItemCount
 ----------
 Menu = {}
 function Menu.ModifyMenu( ... )
+end
+
+----------
+-- C_Timer
+----------
+C_Timer = {}
+function C_Timer.After( seconds, callback )
+end
+
+----------
+-- C_QuestLog
+----------
+C_QuestLog = {}
+function C_QuestLog.IsQuestFlaggedCompleted()
+	return false
 end
 
 -- A SAX parser takes a content handler, which provides these methods:
@@ -2023,15 +2096,24 @@ function saxParser.parse( fileIn )
 	end
 end
 function ParseXML( xmlFile )
+	parents = {}
 	ch = contentHandler
 	ch.startElement = function( self, tagIn, attribs )
 		if _G["Create"..tagIn] then
-			if attribs.name then
-				_G[attribs.name] = _G["Create"..tagIn]( attribs.name )
-				_G[attribs.name].framename = attribs.name
-			else
-				fail("A "..tagIn.." needs a name")
+			if (attribs.name and (not attribs.virtual or attribs.virtual == "false")) then
+				-- print("Create: "..attribs.name..">"..(#parents > 0 and string.gsub(attribs.name, "$parent", parents[#parents]) or "") )
+				frameName = (#parents > 0 and string.gsub(attribs.name, "$parent", parents[#parents]) or attribs.name)
+				_G[frameName] = _G["Create"..tagIn]( frameName )
+				_G[frameName].framename = frameName
 			end
+		end
+		if string.find( tagIn, "Frame$") then
+			table.insert( parents, attribs.name )
+		end
+	end
+	ch.endElement = function( self, tagIn )
+		if string.find( tagIn, "Frame$" ) then
+			table.remove( parents )
 		end
 	end
 	parser = saxParser.makeParser()

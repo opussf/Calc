@@ -1,7 +1,7 @@
-CALC_SLUG, calc = ...
-CALC_MSG_ADDONNAME = GetAddOnMetadata( CALC_SLUG, "Title" )
-CALC_MSG_AUTHOR    = GetAddOnMetadata( CALC_SLUG, "Author" )
-CALC_MSG_VERSION   = GetAddOnMetadata( CALC_SLUG, "Version" )
+CALC_SLUG, calc    = ...
+CALC_MSG_ADDONNAME = C_AddOns.GetAddOnMetadata( CALC_SLUG, "Title" )
+CALC_MSG_AUTHOR    = C_AddOns.GetAddOnMetadata( CALC_SLUG, "Author" )
+CALC_MSG_VERSION   = C_AddOns.GetAddOnMetadata( CALC_SLUG, "Version" )
 
 COLOR_RED = "|cffff0000"
 COLOR_GREEN = "|cff00ff00"
