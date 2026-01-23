@@ -1,6 +1,5 @@
-function calc.ReplaceMessage( msgIn )
+function calc.ParseMessage( msgIn )
 	if msgIn then
-		msgNew = nil
 		local hasEquals = strfind( msgIn, "==" )
 		if( hasEquals ) then
 			msg = string.lower( msgIn )
@@ -17,13 +16,15 @@ function calc.ReplaceMessage( msgIn )
 			-- table.concat seems to have a 'bug?' where giving a starting index larger than the size of the array, or if the array is empty
 			-- causes an error:  "invalid value (nil) at index 0 in table for 'concat'"
 			local result = table.concat( calc.stack, " ", stackCount )
-			msgNew = string.gsub( msgIn, "==", "= "..result )
+			return "Calc: = "..result
 		end
-		return( ( msgNew or msgIn ) )
 	end
 end
-function calc.SendChatMessage( msgIn, system, language, channel )
-	calc.OriginalSendChatMessage( calc.ReplaceMessage( msgIn ), system, language, channel )
+function calc.SendCalcResult( msgIn, system, language, channel )
+	local calcMsg = calc.ParseMessage( msgIn )
+	if calcMsg then
+		C_ChatInfo.SendChatMessage( calcMsg, system, language, channel )
+	end
 end
 function calc.BNSendWhisper( id, msgIn )
 	calc.OriginalBNSendWhisper( id, calc.ReplaceMessage( msgIn ) )
@@ -34,12 +35,5 @@ end
 function calc.VARIABLES_LOADED()
 	CALC_Frame:UnregisterEvent( "VARIABLES_LOADED" )
 	-- Intercept chat events
-	calc.OriginalSendChatMessage = SendChatMessage
-	SendChatMessage = calc.SendChatMessage
-	calc.OriginalBNSendWhisper = BNSendWhisper
-	BNSendWhisper = calc.BNSendWhisper
-	-- hooksecurefunc( "SendChatMessage", calc.SendChatMessage )
+	hooksecurefunc( C_ChatInfo, "SendChatMessage", calc.SendCalcResult )
 end
-
-
--- hooksecurefunc(C_PetJournal, "SetPetLoadOutInfo", function(...) self:OnSetPetLoadOut(...) end)

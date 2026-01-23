@@ -1635,6 +1635,7 @@ function SendAddonMessage( prefix, text, type, target )
 	-- all characters 1-255 can be used (no NULL)
 end
 function SendChatMessage( msg, chatType, language, channel )
+	error("Don't use this.")
 	-- http://www.wowwiki.com/API_SendChatMessage
 	-- This could simulate sending text to the channel, in the language, and raise the correct event.
 	-- returns nil
@@ -2041,6 +2042,11 @@ function C_ChatInfo.RegisterAddonMessagePrefix( prefix )
 end
 function C_ChatInfo.SendAddonMessage()
 	return true
+end
+function C_ChatInfo.SendChatMessage( msg, chatType, language, channel )
+	table.insert( chatLog,
+		{ ["msg"] = msg, ["chatType"] = chatType, ["language"] = language, ["channel"] = channel }
+	)
 end
 
 ----------
